@@ -28,7 +28,7 @@
       "ost": "",
       "iText": [
         "Hi there, little learner!",
-        "Welcome to Tick-Tock Clock Town! Let's learn about time today!",
+        "Welcome to Tick-Tock <span class='red'>Clock Town!</span> Let's learn about time today!",
         "Look here! This is a <span class='red'>clock.</span>",
         "A clock tells us the time.",
         "Oh no!",

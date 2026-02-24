@@ -211,7 +211,7 @@ function addSectionData() {
       });
 
       $("#homeBack").on("click", function () {
-
+        $(".playPause").hide();
         jumtoPage(_controller.pageCnt - 1);
 
       });
@@ -494,6 +494,9 @@ function _buildGuideHandsHTML(sec) {
 }
 
 
+
+
+
 function _initNumberDragDrop(sec, draggableNums, numPositions) {
 
   draggableNums.forEach(n => {
@@ -501,29 +504,64 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
     const dragEl = document.getElementById('drag-' + n);
     if (!dragEl) return;
 
-    let isDragging = false;
-    let startX, startY, origLeft, origTop;
+    let ghost = null;
+    let offsetX = 0;
+    let offsetY = 0;
+    let currentScale = 1;
+    // ← Use animat-container as the ghost parent — it spans the full body area
+    const ghostParent = document.querySelector('.animat-container');
 
     dragEl.addEventListener('mousedown', onDragStart);
     dragEl.addEventListener('touchstart', onDragStart, { passive: false });
 
     function onDragStart(e) {
       e.preventDefault();
-      isDragging = true;
-      dragEl.classList.add('dragging');
 
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-      // ← Calculate offset from where user clicked WITHIN the element
-      const rect = dragEl.getBoundingClientRect();
-      offsetX = clientX - rect.left;
-      offsetY = clientY - rect.top;
+      // Detect scale
+      const wrapper = document.getElementById('f_wrapper') || document.body;
+      currentScale = wrapper.getBoundingClientRect().width / wrapper.offsetWidth;
 
-      dragEl.style.position = 'fixed';
-      dragEl.style.left = clientX - offsetX + 'px';
-      dragEl.style.top = clientY - offsetY + 'px';
-      dragEl.style.zIndex = 9999;
+      // Offset = where inside the element user clicked, scaled
+      const rect = dragEl.getBoundingClientRect();
+      offsetX = (clientX - rect.left) / currentScale;
+      offsetY = (clientY - rect.top) / currentScale;
+
+      // Hide original
+      dragEl.style.opacity = '0';
+      dragEl.style.pointerEvents = 'none';
+
+      // Build ghost
+      ghost = document.createElement('div');
+      ghost.style.cssText = `
+        position: absolute;
+        width: ${dragEl.offsetWidth}px;
+        height: ${dragEl.offsetHeight}px;
+        z-index: 99999;
+        pointer-events: none;
+        border-radius: 50%;
+        background: url('pages/module_1/page_9/images/number_outline.png') no-repeat center / contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+        color: #000;
+        font-family: inherit;
+        margin: 0;
+        transform: none;
+        top: 0;
+        left: 0;
+      `;
+      ghost.textContent = n;
+
+      // ← Append to animat-container, not num-item
+      ghostParent.appendChild(ghost);
+
+      // Position immediately so there's no 0,0 flash
+      moveAt(clientX, clientY);
 
       document.addEventListener('mousemove', onDragMove);
       document.addEventListener('touchmove', onDragMove, { passive: false });
@@ -531,19 +569,26 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
       document.addEventListener('touchend', onDragEnd);
     }
 
+    function moveAt(clientX, clientY) {
+      if (!ghost) return;
+      // ← parentRect from ghostParent (animat-container), same container ghost lives in
+      const parentRect = ghostParent.getBoundingClientRect();
+      const posX = (clientX - parentRect.left) / currentScale - offsetX;
+      const posY = (clientY - parentRect.top) / currentScale - offsetY;
+      ghost.style.left = posX + 'px';
+      ghost.style.top  = posY + 'px';
+    }
+
     function onDragMove(e) {
-      if (!isDragging) return;
+      if (!ghost) return;
       e.preventDefault();
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      dragEl.style.left = clientX - offsetX + 'px';  // ← use captured offset
-      dragEl.style.top = clientY - offsetY + 'px';   // ← use captured offset
+      moveAt(clientX, clientY);
     }
 
     function onDragEnd(e) {
-      if (!isDragging) return;
-      isDragging = false;
-      dragEl.classList.remove('dragging');
+      if (!ghost) return;
 
       const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
       const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
@@ -553,22 +598,25 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
       document.removeEventListener('mouseup', onDragEnd);
       document.removeEventListener('touchend', onDragEnd);
 
-      // Check if dropped on correct slot
+      ghost.parentNode.removeChild(ghost);
+      ghost = null;
+
       const slot = document.getElementById('slot-' + n);
-      if (!slot) return;
+      if (!slot) {
+        dragEl.style.opacity = '1';
+        dragEl.style.pointerEvents = 'auto';
+        return;
+      }
 
       const slotRect = slot.getBoundingClientRect();
       const hit = (
         clientX >= slotRect.left && clientX <= slotRect.right &&
-        clientY >= slotRect.top && clientY <= slotRect.bottom
+        clientY >= slotRect.top  && clientY <= slotRect.bottom
       );
 
       if (hit) {
-        // ✅ Correct — place number on clock face
-        dragEl.style.position = '';
-        dragEl.style.left = '';
-        dragEl.style.top = '';
-        dragEl.style.zIndex = '';
+        dragEl.style.opacity = '1';
+        dragEl.style.pointerEvents = 'auto';
         dragEl.classList.add('placed');
 
         slot.innerHTML = n;
@@ -580,28 +628,21 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         slot.style.justifyContent = 'center';
         slot.style.alignItems = 'center';
 
-        _placedNumbers[n] = true;  // ← ADD THIS LINE
+        _placedNumbers[n] = true;
         _placedCount++;
-        // Hide original num-item in grid
+
         const numItem = dragEl.closest('.num-item');
         if (numItem) numItem.style.visibility = 'hidden';
 
         if (_placedCount === draggableNums.length) {
-          // All placed → go to Scene 6
           const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
           const sec = _pageData.sections[sectionCnt - 1];
-          // playBtnSounds(sec.content.replayAudios[4], function () {
           initNumbersFixedScene(mountEl, sec);
-          // initHandScene(mountEl, sec, 0);
-          // });
         }
 
       } else {
-        // ❌ Wrong — snap back to grid
-        dragEl.style.position = '';
-        dragEl.style.left = '';
-        dragEl.style.top = '';
-        dragEl.style.zIndex = '';
+        dragEl.style.opacity = '1';
+        dragEl.style.pointerEvents = 'auto';
       }
     }
 
@@ -824,21 +865,59 @@ function initMinuteHandDragScene(mountEl, sec) {
 
 
 // ── DRAG HAND ONTO CLOCK (drop anywhere on clock face) ───────
+
+
+
 function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
 
   const hand = document.getElementById(handId);
   const face = document.getElementById(faceId);
   if (!hand || !face) return;
 
-  let isDragging = false;
+  let ghost = null;
+  let offsetX = 0;
+  let offsetY = 0;
+  let currentScale = 1;
+  const ghostParent = document.querySelector('.animat-container');
 
   function onStart(e) {
     e.preventDefault();
-    isDragging = true;
-    hand.style.cursor = 'grabbing';
-    hand.style.position = 'fixed';
-    hand.style.zIndex = 9999;
-    _moveHandTo(e);
+
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+    // Detect scale
+    const wrapper = document.getElementById('f_wrapper') || document.body;
+    currentScale = wrapper.getBoundingClientRect().width / wrapper.offsetWidth;
+
+    // Capture click offset within the hand image
+    const rect = hand.getBoundingClientRect();
+    offsetX = (clientX - rect.left) / currentScale;
+    offsetY = (clientY - rect.top) / currentScale;
+
+    // Hide original
+    hand.style.opacity = '0';
+    hand.style.pointerEvents = 'none';
+
+    // Build ghost matching hand image exactly
+    ghost = document.createElement('img');
+    ghost.src = hand.src;
+    ghost.style.cssText = `
+      position: absolute;
+      width: ${hand.offsetWidth}px;
+      height: ${hand.offsetHeight}px;
+      z-index: 99999;
+      pointer-events: none;
+      margin: 0;
+      transform: ${hand.style.transform || 'none'};
+      object-fit: contain;
+      top: 0;
+      left: 0;
+    `;
+    ghostParent.appendChild(ghost);
+
+    // Position immediately — no 0,0 flash
+    moveAt(clientX, clientY);
 
     document.addEventListener('mousemove', onMove);
     document.addEventListener('touchmove', onMove, { passive: false });
@@ -846,50 +925,61 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
     document.addEventListener('touchend', onEnd);
   }
 
-  function onMove(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    _moveHandTo(e);
+  function moveAt(clientX, clientY) {
+    if (!ghost) return;
+    const parentRect = ghostParent.getBoundingClientRect();
+
+    const isRotated = (hand.style.transform || '').includes('270') || (hand.style.transform || '').includes('90');
+    const nudgeX = isRotated ? 25 : 0;  // +5px right for hour hand
+    const nudgeY = isRotated ? -25 : 0; // -5px top for hour hand (negative = up)
+
+    const posX = (clientX - parentRect.left) / currentScale - offsetX + nudgeX;
+    const posY = (clientY - parentRect.top)  / currentScale - offsetY + nudgeY;
+    ghost.style.left = posX + 'px';
+    ghost.style.top  = posY + 'px';
   }
 
-  function _moveHandTo(e) {
+  function onMove(e) {
+    if (!ghost) return;
+    e.preventDefault();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    hand.style.left = clientX - 20 + 'px';
-    hand.style.top = clientY - 60 + 'px';
+    moveAt(clientX, clientY);
   }
 
   function onEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
+    if (!ghost) return;
+
+    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
 
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('touchmove', onMove);
     document.removeEventListener('mouseup', onEnd);
     document.removeEventListener('touchend', onEnd);
 
-    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+    ghost.parentNode.removeChild(ghost);
+    ghost = null;
+
+    // Restore hand visibility
+    hand.style.opacity = '1';
+    hand.style.pointerEvents = 'auto';
 
     const faceRect = face.getBoundingClientRect();
     const hit = (
       clientX >= faceRect.left && clientX <= faceRect.right &&
-      clientY >= faceRect.top && clientY <= faceRect.bottom
+      clientY >= faceRect.top  && clientY <= faceRect.bottom
     );
 
     if (hit) {
-      // ✅ Dropped on clock — snap to center
-      hand.style.position = '';
-      hand.style.left = '';
-      hand.style.top = '';
-      hand.style.zIndex = '';
+      // ✅ Dropped on clock — move hand into face
+      hand.style.opacity = '';
+      hand.style.pointerEvents = 'none';
       hand.style.cursor = 'default';
 
-      // Move hand image INTO the clock face
       face.appendChild(hand);
-      hand.className = 'clock-hand-img ' + (handClass || 'hour-hand-img');  // ← use passed class
-      hand.style.transform = 'rotate(' + (defaultAngle || 0) + 'deg)';  // ← use defaultAngle
-      hand.style.pointerEvents = 'none';
+      hand.className = 'clock-hand-img ' + (handClass || 'hour-hand-img');
+      hand.style.transform = 'rotate(' + (defaultAngle || 0) + 'deg)';
 
       // Hide the container on right
       const container = hand.closest('.hand-display') || document.getElementById(handId.replace('Drag', 'Container'));
@@ -899,11 +989,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
       setTimeout(onSuccess, 500);
 
     } else {
-      // ❌ Snap back
-      hand.style.position = '';
-      hand.style.left = '';
-      hand.style.top = '';
-      hand.style.zIndex = '';
+      // ❌ Snap back — already restored above
       hand.style.cursor = 'grab';
     }
   }
@@ -1322,6 +1408,7 @@ function _showCompletedPopup() {
   });
 
   $("#homeBack").on("click", function () {
+    $(".playPause").hide();
     jumtoPage(0);
   });
 }
@@ -1330,25 +1417,41 @@ function _showCompletedPopup() {
 
 
 
+function playPauseSimulation(btn) {
+  playClickThen();
+  var audio = document.getElementById("simulationAudio");
+  var hasAudio = !!audio.getAttribute("src");
 
+  _isSimulationPaused = !_isSimulationPaused;
 
-
-
-
-
-
-
-
-
-
+  if (_isSimulationPaused) {
+    // Pause state
+    // ✅ Only pause if audio is actually playing right now
+    if (hasAudio && !audio.paused && !audio.ended) {
+      audio.pause();
+    }
+    disableAll();
+    btn.classList.remove("play");
+    btn.classList.add("pause");
+    btn.dataset.tooltip = "Play";
+  } else {
+    // Play state
+    // ✅ Only resume if audio is paused mid-way — not if it already ended
+    if (hasAudio && audio.paused && !audio.ended && audio.currentTime > 0) {
+      audio.play().catch(() => { });
+    }
+    enableAll();
+    btn.classList.remove("pause");
+    btn.classList.add("play");
+    btn.dataset.tooltip = "Pause";
+  }
+}
 
 
 function enableAll() {
   playClickThen();
-  if (gameStarted) {
-    window.enableSnakeControls();
-    window.enableIdleStart();
-  }
+  window.enableSnakeControls();
+  // window.enableIdleStart();
   $(".home_btn, .music,.introInfo,#full-screen, .wrapTextaudio").prop("disabled", false);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
@@ -1363,13 +1466,63 @@ function enableAll() {
 function disableAll() {
   playClickThen();
   window.disableSnakeControls();
-  window.disableIdleStart();
+  // window.disableIdleStart();
   $(".home_btn, .music,.introInfo,#full-screen,.wrapTextaudio").prop("disabled", true);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
     audio.pause();
   }
 }
+
+  // ENABLE movement + controls
+  window.enableSnakeControls = function () {
+    $(".draggable").prop("disabled", false);
+    $(".draggable").css({"pointerEvents":"auto"});
+    
+    $(".draggable-hand").prop("disabled", false);
+    $(".draggable-hand").css({"pointerEvents":"auto"});
+
+    $(".hour-hand-img").prop("disabled", false);
+    $(".hour-hand-img").css({"pointerEvents":"auto"});
+
+    $(".minute-hand-img").prop("disabled", false);
+    $(".minute-hand-img").css({"pointerEvents":"auto"});
+
+    $(".target-ring").css("display","block");
+    console.log("Snake controls enabled");
+  };
+
+  // DISABLE movement + controls
+  window.disableSnakeControls = function () {
+    $(".draggable").prop("disabled", true);
+    $(".draggable").css({"pointerEvents":"none"});
+
+    $(".draggable-hand").prop("disabled", true);
+    $(".draggable-hand").css({"pointerEvents":"none"});
+
+    $(".hour-hand-img").prop("disabled", true);
+    $(".hour-hand-img").css({"pointerEvents":"none"});
+
+    $(".minute-hand-img").prop("disabled", true);
+    $(".minute-hand-img").css({"pointerEvents":"none"});
+
+    $(".target-ring").css("display","none");
+    console.log("Snake controls disabled");
+  };
+
+  // ENABLE idle system
+  // window.enableIdleStart = function () {
+  //   if (isGameActive) {
+  //     resetIdleTimer();
+  //   }
+  //   console.log("Idle enabled");
+  // };
+
+  // // DISABLE idle system
+  // window.disableIdleStart = function () {
+  //   stopIdleTimer();
+  //   console.log("Idle disabled");
+  // };
 
 
 function updateText(txt, audio) {
@@ -1612,10 +1765,10 @@ function showEndAnimations() {
       $audio.off("timeupdate");
     }
   })
-//  else {
-//     // Fallback if no audio exists
-//     $(".popup").css({ visibility: "visible", opacity: "1", display: "flex" });
-//   }
+  //  else {
+  //     // Fallback if no audio exists
+  //     $(".popup").css({ visibility: "visible", opacity: "1", display: "flex" });
+  //   }
 }
 
 function replayLastAudio(btnElement, audioSrc) {
