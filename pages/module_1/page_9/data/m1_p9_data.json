@@ -53,8 +53,6 @@
         "Great job! This is <span class='red'>12 o'clock</span>",
         "Amazing! You built the <span class='red'>clock!</span><br/>You are a time star! "
       ],
-      "scene2Text": "Look here! This is a clock. But it is incomplete now.",
-      "finalText": "Amazing! You built the clock!",
       "endAudio": "",
       "infoImg": "pages/module_1/page_9/images/info.png",
       "backBtnSrc": "assets/images/back.png",
@@ -96,7 +94,10 @@
           "pages/module_1/page_9/audios/Scene16.mp3",
           "pages/module_1/page_9/audios/Scene17.mp3",
           "pages/module_1/page_9/audios/Scene18.mp3",
-          "pages/module_1/page_9/audios/Scene19.mp3"
+          "pages/module_1/page_9/audios/Scene19.mp3",
+          "pages/module_1/page_9/audios/Scene2-3.mp3",
+          "pages/module_1/page_9/audios/Scene8-2.mp3",
+          "pages/module_1/page_9/audios/Scene9-2.mp3"
         ],
         "correctAudio": "pages/module_1/page_9/audios/correct.mp3",
         "clockImg": "pages/module_1/page_9/images/clock_bg.png",

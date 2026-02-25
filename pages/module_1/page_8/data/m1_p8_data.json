@@ -6,75 +6,7 @@
   },
   "bgImgs": [
     {
-      "imageSRC": "pages/module_1/page_8/images/18.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/20.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/19.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/4.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/5.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/6.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/7.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/8.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/9.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/11.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/12.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/13.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/15.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/16.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/17.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/18.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/19.png",
-      "altText": ""
-    },
-    {
-      "imageSRC": "pages/module_1/page_8/images/20.png",
+      "imageSRC": "pages/module_1/page_8/images/banana.png",
       "altText": ""
     },
     {
@@ -182,132 +114,117 @@
       "headerTitle": "Heavy - Light",
       "headerImg": "pages/module_1/page_8/images/header_bg.png",
       "headerText": "pages/module_1/page_8/images/header_title.png",
-      "ost": "",
-      "iText": "<span>Drag</span> and drop the cups in the correct order. <span class='audio'></span>",
-      "endAudio": "",
-      "infoImg": "pages/module_1/page_8/images/fun_game.png",      
-      "backBtnSrc":"pages/module_1/page_8/images/back.png",
-      "replayBtnAudios":"pages/module_1/page_8/audios/intro_audio.mp3",
       "infoAudio": "pages/module_1/page_8/audios/info_audio.mp3",
+      "replayBtnAudios": "pages/module_1/page_8/audios/ost_audio.mp3",
+      "infoImg": "pages/module_1/page_8/images/fun_game.png",
+      "ost": "",
+      "iText": "What <span>time</span> is this? <span>Tap</span> the correct answer.",
+      "endAudio": "",
+      "backBtnSrc": "pages/module_1/page_8/images/back.png",
       "introAudio": "pages/module_1/page_8/audios/intro_audio.mp3",
-      "correctAudio":"pages/module_1/page_8/audios/good_job.mp3",
-      "wrongAudio":"pages/module_1/page_8/audios/try_again.mp3",
-      "finalAudio":"pages/module_1/page_8/audios/final_audio.mp3",
+      "correctAudio": "pages/module_1/page_8/audios/good_job.mp3",
+      "wrongAudio": "pages/module_1/page_8/audios/try_again.mp3",
+      "finalAudio": "pages/module_1/page_8/audios/final_audio.mp3",
+      "defaultPng": "pages/module_1/page_8/images/option_default.png",
+      "correctPng": "pages/module_1/page_8/images/option_correct.png",
+      "wrongPng": "pages/module_1/page_8/images/option_wrong.png",
+
       "content": {
-        "btnAudios": [
-          "pages/module_1/page_8/audios/click.mp3",
-          "pages/module_1/page_8/audios/bg_music.mp3"
-        ],
-        "numberObjects": [
+        "questions": [
           {
-            "patternId": 1,
-            "sequence": [
-              4,
-              5,
-              6
-            ],
-            "items": [
+            "id": 1,
+            "watchFaceImage": "pages/module_1/page_8/images/clock_3.png",
+            "options": [
               {
-                "value": 4,
-                "img": "pages/module_1/page_8/images/4.png"
+                "id": "A",
+                "text": "3 o'clock"
               },
               {
-                "value": 5,
-                "img": "pages/module_1/page_8/images/5.png"
+                "id": "B",
+                "text": "2 o'clock"
               },
               {
-                "value": 6,
-                "img": "pages/module_1/page_8/images/6.png"
+                "id": "C",
+                "text": "5 o'clock"
               }
-            ]
+            ],
+            "correctOption": "A"
           },
           {
-            "patternId": 2,
-            "sequence": [
-              7,
-              8,
-              9
-            ],
-            "items": [
+            "id": 2,
+            "watchFaceImage": "pages/module_1/page_8/images/clock_5.png",
+            "options": [
               {
-                "value": 7,
-                "img": "pages/module_1/page_8/images/7.png"
+                "id": "A",
+                "text": "11 o'clock"
               },
               {
-                "value": 8,
-                "img": "pages/module_1/page_8/images/8.png"
+                "id": "B",
+                "text": "5 o'clock"
               },
               {
-                "value": 9,
-                "img": "pages/module_1/page_8/images/9.png"
+                "id": "C",
+                "text": "4 o'clock"
               }
-            ]
+            ],
+            "correctOption": "B"
           },
           {
-            "patternId": 3,
-            "sequence": [
-              11,
-              12,
-              13
-            ],
-            "items": [
+            "id": 3,
+            "watchFaceImage": "pages/module_1/page_8/images/clock_9.png",
+            "options": [
               {
-                "value": 11,
-                "img": "pages/module_1/page_8/images/11.png"
+                "id": "A",
+                "text": "6 o'clock"
               },
               {
-                "value": 12,
-                "img": "pages/module_1/page_8/images/12.png"
+                "id": "B",
+                "text": "8 o'clock"
               },
               {
-                "value": 13,
-                "img": "pages/module_1/page_8/images/13.png"
+                "id": "C",
+                "text": "9 o'clock"
               }
-            ]
+            ],
+            "correctOption": "C"
           },
           {
-            "patternId": 4,
-            "sequence": [
-              18,
-              19,
-              20
-            ],
-            "items": [
+            "id": 4,
+            "watchFaceImage": "pages/module_1/page_8/images/clock_1.png",
+            "options": [
               {
-                "value": 18,
-                "img": "pages/module_1/page_8/images/18.png"
+                "id": "A",
+                "text": "12 o'clock"
               },
               {
-                "value": 19,
-                "img": "pages/module_1/page_8/images/19.png"
+                "id": "B",
+                "text": "1 o'clock"
               },
               {
-                "value": 20,
-                "img": "pages/module_1/page_8/images/20.png"
+                "id": "C",
+                "text": "5 o'clock"
               }
-            ]
+            ],
+            "correctOption": "B"
           },
           {
-            "patternId": 5,
-            "sequence": [
-              15,
-              16,
-              17
-            ],
-            "items": [
+            "id": 5,
+            "watchFaceImage": "pages/module_1/page_8/images/clock_12.png",
+            "options": [
               {
-                "value": 15,
-                "img": "pages/module_1/page_8/images/15.png"
+                "id": "A",
+                "text": "10 o'clock"
               },
               {
-                "value": 16,
-                "img": "pages/module_1/page_8/images/16.png"
+                "id": "B",
+                "text": "6 o'clock"
               },
               {
-                "value": 17,
-                "img": "pages/module_1/page_8/images/17.png"
+                "id": "C",
+                "text": "12 o'clock"
               }
-            ]
+            ],
+            "correctOption": "C"
           }
         ]
       }

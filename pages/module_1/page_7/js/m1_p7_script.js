@@ -203,7 +203,7 @@ function addSectionData() {
 
       $("#homeBack").on("click", function () {
         playClickThen();
-        jumtoPage(_controller.pageCnt - 1);
+        jumtoPage(5);
       });
 
       // ---- Bind card clicks ----

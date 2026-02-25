@@ -111,21 +111,20 @@ function addSectionData() {
         </p>`;
       }
 
+      // ---- Header content ---- (UNCHANGED)
+      let headerContent = `<div class="confetti" id="confettiContainer"></div>`;
+
 
       /* ================= POPUP ================= */
 
       let popupDiv = "";
 
-      popupDiv += '<div class="popup">';
-      popupDiv += '<div class="popup-wrap">';
-      popupDiv += '<div class="popBtns">';
+      popupDiv += '<div class="popup"><div class="popup-wrap"><div class="popBtns">';
       popupDiv += '<button id="refresh" data-tooltip="Replay"></button>';
       popupDiv += '<button id="homeBack" data-tooltip="Back"></button>';
       popupDiv += "</div></div></div>";
       popupDiv += '<div class="greetingsPop">';
-      popupDiv += '<div class="popup-wrap">';
-      popupDiv += "</div>";
-      popupDiv += "</div>";
+      popupDiv += '<div class="popup-wrap"></div></div>';
       popupDiv += `<div id="introPopup-7"><div class="popup-content">
       <button class="introPopAudio mute" onclick="togglePopAudio(this, '${_pageData.sections[sectionCnt - 1].infoAudio}')"></button>
       <button class="introPopclose" data-tooltip="Close" onClick="closeIntroPop('introPopup-7')"></button>
@@ -155,6 +154,7 @@ function addSectionData() {
         .append(
           '<div class="inst">' + instText + '</div>' +
           popupDiv +
+          headerContent +
           '<div class="body">' +
           '<div class="animations"></div>' +
           '<div class="animat-container"></div>' +
@@ -174,25 +174,36 @@ function addSectionData() {
 
         // ---------- Scene 2 ----------
         initClockScene(mountEl, sec);
+        // FIRST LINE AUDIO
         playBtnSounds(sec.content.replayAudios[1], function () {
 
-          // Scene 3
-          initClockOverlayScene(mountEl, sec);
-          playBtnSounds(sec.content.replayAudios[2], function () {
+          // AFTER FIRST AUDIO → CHANGE TEXT
+          $("#sceneText").fadeOut(250, function () {
 
-            // Scene 4
-            initClockScene4(mountEl, sec);
-            playBtnSounds(sec.content.replayAudios[3], function () {
+            $(this).html(sec.iText[3] || "").fadeIn(250);
 
-              // ✅ Scene 5 Numbers
-              initNumberArrangeScene(mountEl, sec);
+            // SECOND LINE AUDIO
+            playBtnSounds(sec.content.replayAudios[19], function () {
+
+              // NOW GO TO NEXT SCENE
+              initClockOverlayScene(mountEl, sec);
+              playBtnSounds(sec.content.replayAudios[2], function () {
+
+                // Scene 4
+                initClockScene4(mountEl, sec);
+                playBtnSounds(sec.content.replayAudios[3], function () {
+
+                  // ✅ Scene 5 Numbers
+                  initNumberArrangeScene(mountEl, sec);
+
+                });
+
+              });
 
             });
 
           });
-
         });
-
       });
 
 
@@ -212,7 +223,7 @@ function addSectionData() {
 
       $("#homeBack").on("click", function () {
         $(".playPause").hide();
-        jumtoPage(_controller.pageCnt - 1);
+        jumtoPage(0);
 
       });
 
@@ -220,16 +231,16 @@ function addSectionData() {
   }
 }
 
-function updateScene2Text(sec) {
+// function updateScene2Text(sec) {
 
-  let html = `
-    <p tabindex="0">${sec.iText[2]}</p>
-    <p tabindex="0">${sec.iText[3]}</p>
-  `;
+//   let html = `
+//     <p tabindex="0">${sec.iText[2]}</p>
+//     <p tabindex="0">${sec.iText[3]}</p>
+//   `;
 
-  $(".inst").html(html);
+//   $(".inst").html(html);
 
-}
+// }
 
 
 
@@ -297,12 +308,8 @@ function initClockScene(mountEl, sec) {
 
       <div class="clock-right">
 
-          <div class="clock-title">
+          <div class="clock-title" id="sceneText">
               ${sec.iText[2] || ""}
-          </div>
-
-          <div class="clock-message">
-              ${sec.iText[3] || ""}
           </div>
 
       </div>
@@ -576,7 +583,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
       const posX = (clientX - parentRect.left) / currentScale - offsetX;
       const posY = (clientY - parentRect.top) / currentScale - offsetY;
       ghost.style.left = posX + 'px';
-      ghost.style.top  = posY + 'px';
+      ghost.style.top = posY + 'px';
     }
 
     function onDragMove(e) {
@@ -611,7 +618,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
       const slotRect = slot.getBoundingClientRect();
       const hit = (
         clientX >= slotRect.left && clientX <= slotRect.right &&
-        clientY >= slotRect.top  && clientY <= slotRect.bottom
+        clientY >= slotRect.top && clientY <= slotRect.bottom
       );
 
       if (hit) {
@@ -793,7 +800,7 @@ function initHourHandDragScene(mountEl, sec) {
                        src="${hourImg}" alt="hour hand" style="transform:rotate(270deg)"/>
               </div>
           </div>
-          <div class="clock-message">
+          <div class="clock-message" id="hourSecondText" style="visibility:hidden;">
               ${sec.iText[13] || "The <span class='red'> short hand </span> shows the hour."}
           </div>
       </div>
@@ -801,8 +808,23 @@ function initHourHandDragScene(mountEl, sec) {
   </div>
   `;
 
+  // ❗ Disable drag initially (optional but recommended)
+  let dragEnabled = false;
+
+  // ✅ PLAY FIRST AUDIO WHEN SCENE LOADS
+  playBtnSounds(sec.content.replayAudios[7], function () {
+    // After first audio finishes → enable drag
+    dragEnabled = true;
+  });
+
   _initHandDropDrag('hourHandDrag', 'clockFaceHour', function () {
-    playBtnSounds(sec.content.replayAudios[7], function () {
+    // ✅ Show second text
+    const secondText = document.getElementById("hourSecondText");
+    if (secondText) {
+      secondText.style.visibility = "visible";
+    }
+
+    playBtnSounds(sec.content.replayAudios[20], function () {
       initMinuteHandDragScene(mountEl, sec);
     });
   }, 'hour-hand-img', 270);
@@ -847,7 +869,7 @@ function initMinuteHandDragScene(mountEl, sec) {
                        src="${minuteImg}" alt="minute hand"/>
               </div>
           </div>
-          <div class="clock-message">
+          <div class="clock-message" id="hourMinuteText" style="visibility:hidden;">
               ${sec.iText[15] || "This is the <span class='red'>long hand.</span>"}
           </div>
       </div>
@@ -855,9 +877,23 @@ function initMinuteHandDragScene(mountEl, sec) {
   </div>
   `;
 
+  // ❗ Disable drag initially (optional but recommended)
+  let dragEnabled = false;
+
+  // ✅ PLAY FIRST AUDIO WHEN SCENE LOADS
+  playBtnSounds(sec.content.replayAudios[8], function () {
+    // After first audio finishes → enable drag
+    dragEnabled = true;
+  });
+
   _initHandDropDrag('minuteHandDrag', 'clockFaceMinute', function () {
+    // ✅ Show second text
+    const secondText = document.getElementById("hourMinuteText");
+    if (secondText) {
+      secondText.style.visibility = "visible";
+    }
     // Both hands placed → now go to HAND_TASKS (3 o'clock etc.)
-    playBtnSounds(sec.content.replayAudios[8], function () {
+    playBtnSounds(sec.content.replayAudios[21], function () {
       initHandScene(mountEl, sec, 0);
     });
   }, 'minute-hand-img', 0);
@@ -934,9 +970,9 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
     const nudgeY = isRotated ? -25 : 0; // -5px top for hour hand (negative = up)
 
     const posX = (clientX - parentRect.left) / currentScale - offsetX + nudgeX;
-    const posY = (clientY - parentRect.top)  / currentScale - offsetY + nudgeY;
+    const posY = (clientY - parentRect.top) / currentScale - offsetY + nudgeY;
     ghost.style.left = posX + 'px';
-    ghost.style.top  = posY + 'px';
+    ghost.style.top = posY + 'px';
   }
 
   function onMove(e) {
@@ -968,7 +1004,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
     const faceRect = face.getBoundingClientRect();
     const hit = (
       clientX >= faceRect.left && clientX <= faceRect.right &&
-      clientY >= faceRect.top  && clientY <= faceRect.bottom
+      clientY >= faceRect.top && clientY <= faceRect.bottom
     );
 
     if (hit) {
@@ -1399,7 +1435,17 @@ function _showCompletedPopup() {
   //   </div>
   // `);
 
-  $(".popup").css({ visibility: "visible", opacity: "1" });
+  $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+  $(".confetti").addClass("show");
+
+  setTimeout(function () {
+    $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+    $(".popup").css({ visibility: "visible", opacity: "1" });
+  }, 1500);
+  setTimeout(function () {
+        $(".confetti").removeClass("show");
+        // $(".confetti").hide();                
+      }, 2000);
 
   // Re-bind buttons since innerHTML was replaced
   $("#refresh").on("click", function () {
@@ -1450,7 +1496,7 @@ function playPauseSimulation(btn) {
 
 function enableAll() {
   playClickThen();
-  window.enableSnakeControls();
+  window.enableClockControls();
   // window.enableIdleStart();
   $(".home_btn, .music,.introInfo,#full-screen, .wrapTextaudio").prop("disabled", false);
   const audio = document.getElementById("audio_src");
@@ -1465,7 +1511,7 @@ function enableAll() {
 
 function disableAll() {
   playClickThen();
-  window.disableSnakeControls();
+  window.disableClockControls();
   // window.disableIdleStart();
   $(".home_btn, .music,.introInfo,#full-screen,.wrapTextaudio").prop("disabled", true);
   const audio = document.getElementById("audio_src");
@@ -1474,55 +1520,55 @@ function disableAll() {
   }
 }
 
-  // ENABLE movement + controls
-  window.enableSnakeControls = function () {
-    $(".draggable").prop("disabled", false);
-    $(".draggable").css({"pointerEvents":"auto"});
-    
-    $(".draggable-hand").prop("disabled", false);
-    $(".draggable-hand").css({"pointerEvents":"auto"});
+// ENABLE movement + controls
+window.enableClockControls = function () {
+  $(".draggable").prop("disabled", false);
+  $(".draggable").css({ "pointerEvents": "auto" });
 
-    $(".hour-hand-img").prop("disabled", false);
-    $(".hour-hand-img").css({"pointerEvents":"auto"});
+  $(".draggable-hand").prop("disabled", false);
+  $(".draggable-hand").css({ "pointerEvents": "auto" });
 
-    $(".minute-hand-img").prop("disabled", false);
-    $(".minute-hand-img").css({"pointerEvents":"auto"});
+  $(".hour-hand-img").prop("disabled", false);
+  $(".hour-hand-img").css({ "pointerEvents": "auto" });
 
-    $(".target-ring").css("display","block");
-    console.log("Snake controls enabled");
-  };
+  $(".minute-hand-img").prop("disabled", false);
+  $(".minute-hand-img").css({ "pointerEvents": "auto" });
 
-  // DISABLE movement + controls
-  window.disableSnakeControls = function () {
-    $(".draggable").prop("disabled", true);
-    $(".draggable").css({"pointerEvents":"none"});
+  $(".target-ring").css("display", "block");
+  console.log("Snake controls enabled");
+};
 
-    $(".draggable-hand").prop("disabled", true);
-    $(".draggable-hand").css({"pointerEvents":"none"});
+// DISABLE movement + controls
+window.disableClockControls = function () {
+  $(".draggable").prop("disabled", true);
+  $(".draggable").css({ "pointerEvents": "none" });
 
-    $(".hour-hand-img").prop("disabled", true);
-    $(".hour-hand-img").css({"pointerEvents":"none"});
+  $(".draggable-hand").prop("disabled", true);
+  $(".draggable-hand").css({ "pointerEvents": "none" });
 
-    $(".minute-hand-img").prop("disabled", true);
-    $(".minute-hand-img").css({"pointerEvents":"none"});
+  $(".hour-hand-img").prop("disabled", true);
+  $(".hour-hand-img").css({ "pointerEvents": "none" });
 
-    $(".target-ring").css("display","none");
-    console.log("Snake controls disabled");
-  };
+  $(".minute-hand-img").prop("disabled", true);
+  $(".minute-hand-img").css({ "pointerEvents": "none" });
 
-  // ENABLE idle system
-  // window.enableIdleStart = function () {
-  //   if (isGameActive) {
-  //     resetIdleTimer();
-  //   }
-  //   console.log("Idle enabled");
-  // };
+  $(".target-ring").css("display", "none");
+  console.log("Snake controls disabled");
+};
 
-  // // DISABLE idle system
-  // window.disableIdleStart = function () {
-  //   stopIdleTimer();
-  //   console.log("Idle disabled");
-  // };
+// ENABLE idle system
+// window.enableIdleStart = function () {
+//   if (isGameActive) {
+//     resetIdleTimer();
+//   }
+//   console.log("Idle enabled");
+// };
+
+// // DISABLE idle system
+// window.disableIdleStart = function () {
+//   stopIdleTimer();
+//   console.log("Idle disabled");
+// };
 
 
 function updateText(txt, audio) {
@@ -1769,6 +1815,37 @@ function showEndAnimations() {
   //     // Fallback if no audio exists
   //     $(".popup").css({ visibility: "visible", opacity: "1", display: "flex" });
   //   }
+}
+
+function showEndAnimations() {
+  var $audio = $("#simulationAudio");
+  closePopup('introPopup-1');
+  console.log("Audio ending");
+  pageVisited();
+
+  $audio.on("timeupdate", function () {
+    var currentTime = this.currentTime;
+    $(".greetingsPop").css("visibility", "visible");
+    $(".greetingsPop").css("opacity", "1");
+
+    if (currentTime >= 1) {
+      $(".confetti").addClass("show");
+      // $(".confetti").show();
+      setTimeout(function () {
+        $(".greetingsPop").css("visibility", "hidden");
+        $(".greetingsPop").css("opacity", "0");
+        $(".popup").css("visibility", "visible");
+        $(".popup").css("opacity", "1");
+      }, 1500)
+      setTimeout(function () {
+        $(".confetti").removeClass("show");
+        // $(".confetti").hide();                
+      }, 2000);
+
+      $audio.off("timeupdate");
+    }
+
+  });
 }
 
 function replayLastAudio(btnElement, audioSrc) {

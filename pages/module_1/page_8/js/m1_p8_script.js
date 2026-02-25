@@ -21,11 +21,6 @@ _checkAudioFlag = false;
 _tweenTimeline = null;
 _popTweenTimeline = null;
 var lastPatternId = null;
-var patterns = null;
-var allPatterns = null;
-
-var currentPatternIndex = 0;
-var totalPatterns = 0;
 
 var _audioIndex = 0;
 _videoId = null;
@@ -36,6 +31,16 @@ var totalSection = 0;
 var prevSectionCnt = -1;
 var sectionTopPos = [];
 var playMainAudio = false;
+
+var dataValue = []; var currentPattern = null; var currentIndex = 0;
+var patterns = [];
+// ---------- Memory Game State ----------
+var memCards = [];
+var memFlipped = [];
+var memMatched = 0;
+var memLock = false;
+var isEnd = false;
+
 // ------------------ common function start ------------------------------------------------------------------------
 $(document).ready(function () {
   //console.log('Page ready')
@@ -56,17 +61,16 @@ function _pageLoaded() {
   if (_videoRequired) _videoId = "courseVideo";
 
   //addSlideData();
-  // console.log(_pageData.sections, _pageData.sections[0].backBtnSrc, "pageDAtat")
+  console.log(_pageData.sections, _pageData.sections[0].backBtnSrc, "pageDAtat")
+  appState.pageCount = _controller.pageCnt - 1;
   addSectionData();
-  initPageAnimations();
-  appState.pageCount = 4;
-  $('.introInfo').attr('data-popup', 'introPopup-8');
+  $('.introInfo').attr('data-popup', 'introPopup-7');
   $("#f_header").css({ backgroundImage: `url(${_pageData.sections[0].headerImg})` });
   $("#f_header").find("#f_courseTitle").css({ backgroundImage: `url(${_pageData.sections[0].headerText})` });
   $(".home_btn").css({ backgroundImage: `url(${_pageData.sections[0].backBtnSrc})` });
   // playBtnSounds(_pageData.sections[sectionCnt - 1].endAudio);
   //   showEndAnimations();
-  // checkGlobalAudio();
+  //checkGlobalAudio();
   assignAudio(
     _audioId,
     _audioIndex,
@@ -79,21 +83,29 @@ function _pageLoaded() {
   pagePreLoad();
 }
 
-// ------------------ common function end ------------------------------------------------------------------------
 
 // -------- adding slide data ------------
+// ─── Quiz State ───────────────────────────────────────────
+var quizCurrentIndex = 0;
+var quizAnswered = false;
+var quizQuestions = [];
+
+// ─── addSectionData — ONLY the inner content block changes ─
 function addSectionData() {
   totalSection = _pageData.sections.length;
   for (let n = 0; n < _pageData.sections.length; n++) {
     sectionCnt = n + 1;
     if (sectionCnt == 1) {
-      playBtnSounds(_pageData.sections[sectionCnt - 1].introAudio);
+
+      playBtnSounds(_pageData.sections[sectionCnt - 1].replayBtnAudios);
       audioEnd(function () {
         $(".dummy-patch").hide();
+        $(".wrapTextaudio").removeClass("playing");
+        $(".wrapTextaudio").addClass("paused");
         resetSimulationAudio();
-        $(".wrapTextaudio").removeClass("playing")
-        $(".wrapTextaudio").addClass("paused")
-      })
+      });
+
+      // ---- Instruction line ---- (UNCHANGED)
       $("#section-" + sectionCnt)
         .find(".content-holder")
         .find(".col-left")
@@ -101,86 +113,66 @@ function addSectionData() {
         .find(".content-bg")
         .find(".content-style")
         .append(`
-  <div class="inst">    
-    <p tabindex="0" aria-label="${removeTags(_pageData.sections[sectionCnt - 1].iText)}">
-  ${_pageData.sections[sectionCnt - 1].iText} 
-  <button 
-    class='wrapTextaudio playing' 
-    id='wrapTextaudio_1' 
-    data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}" 
-    onClick="replayLastAudio(this)">
-  </button>
-</p>
-  </div>
-`);
+          <div class="inst">
+            <p tabindex="0" aria-label="${removeTags(_pageData.sections[sectionCnt - 1].iText)}">
+              ${_pageData.sections[sectionCnt - 1].iText}
+              <button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
+            </p>
+          </div>
+        `);
 
+      // ---- Store questions ----
+      quizQuestions = _pageData.sections[sectionCnt - 1].content.questions;
+      quizCurrentIndex = 0;
 
+      // ---- Header content ---- (UNCHANGED)
+      let headerContent = `<div class="confetti" id="confettiContainer"></div>`;
 
-      /* $('#section-' + sectionCnt).find('.content-holder').find('.col-left').find('.content').find('.content-bg').find('.content-style').append(_pageData.sections[sectionCnt - 1].headerTitle);*/
-
-      /*let titletext = $('#section-' + sectionCnt).find('.content-holder').find('.col-left').find('.content').find('.content-bg').find('.content-style').text()
-            $('#section-' + sectionCnt).find('.content-holder').find('.col-left').find('.content').find('.content-bg').find('.content-style').find('h1').attr('aria-label', titletext)*/
-
-      // $('#section-' + sectionCnt).find('.content-holder').find('.col-left').find('.content').find('.content-bg').find('.content-style')
-
-      //    let textObject = '', listObject = '';
-
-
-      // console.log(_pageData.sections[sectionCnt - 1].content.numberObjects, _pageData.sections[sectionCnt - 1].content.numberObjects.length, "lneght")
-
-      const numberObjects =
-        _pageData.sections[sectionCnt - 1].content.numberObjects;
-      patterns = _pageData.sections[sectionCnt - 1].content.numberObjects;
-
-      // pick ONE random pattern
-      const pattern = getRandomPattern(numberObjects);
-
-      let htmlContent = "";
-      htmlContent += `<div class="game-area">`;
-      htmlContent += `<div class="shelf">${getShelfHTML(pattern)}</div>`;
-      htmlContent += `<div class="cups">${getCupHTML(pattern)}</div>`;
-      htmlContent += `</div>`;
-
-
-
-      let headerConent = "";
+      // ---- Popup HTML ---- (UNCHANGED — identical to original)
       let popupDiv = "";
+      popupDiv += `<div class="popup"><div class="popup-wrap"><div class="popBtns">`;
+      popupDiv += `<button id="refresh" data-tooltip="Replay"></button>`;
+      popupDiv += `<button id="homeBack" data-tooltip="Back"></button>`;
+      popupDiv += `</div></div></div>`;
+      popupDiv += `<div class="greetingsPop"><div class="popup-wrap"></div></div>`;
+      popupDiv += `
+        <div id="introPopup-7">
+          <div class="popup-content">
+            <button class="introPopAudio mute" onclick="togglePopAudio(this, '${_pageData.sections[sectionCnt - 1].infoAudio}')"></button>
+            <button class="introPopclose" data-tooltip="Close" onClick="closeIntroPop('introPopup-7')"></button>
+            <img src="${_pageData.sections[sectionCnt - 1].infoImg}" alt="">
+          </div>
+        </div>`;
+      popupDiv += `
+        <div id="home-popup" class="popup-home" role="dialog" aria-label="Exit confirmation" aria-hidden="false">
+          <div class="popup-content modal-box">
+            <h2 class="modal-title">Oops!</h2>
+            <div class="modal-message">
+              <p>If you leave the fun game then you have to start from beginning.</p>
+              <p class="modal-question">Are you sure you want to leave?</p>
+            </div>
+            <div class="modal-buttons">
+              <button id="stay-btn" class="modal-btn" onClick="stayPage()">Stay</button>
+              <button id="leave-btn" class="modal-btn" onClick="leavePage()">Leave</button>
+            </div>
+          </div>
+        </div>`;
 
-      headerConent += `<div class="confetti"></div>`;
-      popupDiv += '<div class="popup">';
-      popupDiv += '<div class="popup-wrap">';
+      // ---- Quiz area HTML (REPLACES card grid) ----
+      let quizAreaHtml = `
+        <div class="quiz-area">
+          <div class="clock-panel">
+            <img id="clockFace" src="" alt="clock" />
+          </div>
+          <div class="options-panel" id="optionsPanel"></div>
+        </div>`;
 
-      popupDiv += '<div class="popBtns">';
-      popupDiv += '<button id="refresh" data-tooltip="Replay"></button>';
-      popupDiv += '<button id="homeBack" data-tooltip="Back"></button>';
-      popupDiv += "</div>";
-      popupDiv += "</div>";
-      popupDiv += "</div>";
-      popupDiv += '<div class="greetingsPop">';
-      popupDiv += '<div class="popup-wrap">';
-      popupDiv += "</div>";
-      popupDiv += "</div>";
-      popupDiv += `<div id="introPopup-8"><div class="popup-content">
-                    <button class="introPopAudio mute" onclick="togglePopAudio(this, '${_pageData.sections[sectionCnt - 1].infoAudio}')"></button>
-                    <button class="introPopclose" data-tooltip="Close" onClick="closeIntroPop('introPopup-8')"></button>
-                    <img src="${_pageData.sections[sectionCnt - 1].infoImg}" alt="">
-                </div>
-            </div>`;
-
-      popupDiv += `<div id="home-popup" class="popup-home" role="dialog" aria-label="Exit confirmation" aria-hidden="false">
-    <div class="popup-content modal-box">
-      <h2 class="modal-title">Oops!</h2>
-      <div class="modal-message">
-        <p>If you leave the pattern game then you have to start from beginning.</p>     
-        <p class="modal-question">Are you sure you want to leave?</p>   
-      </div>      
-      <div class="modal-buttons">
-        <button id="stay-btn" class="modal-btn" onClick="stayPage()">Stay</button>
-        <button id="leave-btn" class="modal-btn" onClick="leavePage()">Leave</button>
-      </div>
-    </div>
-  </div>`;
-
+      // ---- Append everything ---- (structure UNCHANGED)
       $("#section-" + sectionCnt)
         .find(".content-holder")
         .find(".col-left")
@@ -189,67 +181,173 @@ function addSectionData() {
         .find(".content-style")
         .append(
           popupDiv +
-          headerConent +
-          '<div class="body"><div class="animat-container"> <div class="dummy-patch"></div>' +
-          htmlContent +
-          "</div> </div>"
+          headerContent +
+          `<div class="body">
+            <div class="animat-container">
+              <div class="dummy-patch"></div>
+              ${quizAreaHtml}
+            </div>
+          </div>`
         );
 
+      // ---- Bind popup buttons ---- (UNCHANGED)
+      $(".intro-audio").off("click").on("click", onClickAudioHandler);
+      $("#refresh").on("click", function () { playClickThen(); jumtoPage(_controller.pageCnt); });
+      $("#homeBack").on("click", function () { playClickThen(); jumtoPage(5); });
 
-      totalPatterns = _pageData.sections[sectionCnt - 1].content.numberObjects.length;
-      allPatterns = _pageData.sections[sectionCnt - 1].content.numberObjects;
+      // ---- Load first question ----
+      quizLoadQuestion(0);
+
+    } // end sectionCnt == 1
+  } // end for
+} // end addSectionData
 
 
-      const gameArea = document.querySelector(".game-area");
-      gameArea.classList.add("is-fading");
+// ============================================================
+// QUIZ GAME — FUNCTIONS
+// ============================================================
 
-      loadPattern(0);
+function quizLoadQuestion(index) {
+  var q = quizQuestions[index];
+  quizAnswered = false;
 
-      requestAnimationFrame(() => {
-        gameArea.classList.remove("is-fading");
-      });
+  // Set clock face image
+  $("#clockFace").attr("src", q.watchFaceImage).attr("alt", q.options.find(o => o.id === q.correctOption)?.text || "clock");
 
-      $("#refresh").on("click", function () {
-        jumtoPage(_controller.pageCnt);
-      });
-      $("#homeBack").on("click", function () {
-        jumtoPage(5)
-      });
+  // Render options
+  quizRenderOptions(q);
+}
 
-      // $("#home").on("click", function () {
-      //   playClickThen();
-      //   $("#home-popup").css('display', 'flex');
-      //   AudioController.pause();
-      // });
-      // $(".music").on("click", function (event) {
-      //   playClickThen();
-      //   let el = event.currentTarget;
-      //     toggleAudio(el);
-      // });
-      // _currentAudio = _pageData.sections[sectionCnt - 1].content.flipObjects[0].instAudio;
+function quizRenderOptions(question) {
+  var html = "";
+  question.options.forEach(function (opt) {
+    html += `
+      <div class="option-btn" data-id="${opt.id}" tabindex="0" role="button" aria-label="${opt.text}">
+        <span>${opt.text}</span>
+      </div>`;
+  });
+  $("#optionsPanel").html(html);
 
-      // $(".flipTextAudio").on("click", replayLastAudio);
+  // Bind click
+  $("#optionsPanel").off("click", ".option-btn").on("click", ".option-btn", function () {
+    quizOnOptionClick($(this), question);
+  });
+}
 
-      // document.querySelector("#info").addEventListener("click", function (event) {
-      //   playClickThen();
-      //   AudioController.pause();
-      //   const el = event.currentTarget;
-      //   // console.log("its wokring")
-      //   $("#introPopup-1").css('display', 'flex')
-      //   $("#introPopup-1").css('opacity', '1')
-      //   $(".introPopAudio").removeClass('playing');
-      //   $(".introPopAudio").addClass('mute');
+function quizOnOptionClick($btn, question) {
+  if (quizAnswered) return;
+  quizAnswered = true;
 
-      //   // $(".introPopAudio").on("click",function(){  
-      //   //     console.log("its working");
+  var selected = $btn.data("id");
+  var isCorrect = (selected === question.correctOption);
 
-      //   // })       
-      // });
 
-      // setCSS(sectionCnt);
-    }
+  if (isCorrect) {
+    $btn.addClass("correct");
+    playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
+
+    audioEnd(function () {
+
+      quizCurrentIndex++;
+
+      if (quizCurrentIndex >= quizQuestions.length && !isEnd) {
+
+        isEnd = true; // 🔒 lock permanently
+
+        setTimeout(function () {
+
+          // 🎉 SHOW CONFETTI + GREAT JOB IMMEDIATELY
+          pageVisited();
+          $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+          $(".confetti").addClass("show");
+
+          // 🔊 PLAY FINAL AUDIO
+          playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
+
+          // 🎯 WHEN AUDIO ENDS → SHOW COMPLETION POPUP
+          audioEnd(function () {
+
+            const audio = document.getElementById("simulationAudio");
+            audio.onended = null; // 🚫 prevent repeat
+
+            setTimeout(function () {
+              $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+              $(".popup").css({ visibility: "visible", opacity: "1" });
+            }, 500);
+
+            setTimeout(function () {
+              $(".confetti").removeClass("show");
+            }, 800);
+
+          });
+
+        }, 400);
+      } else if (!isEnd) {
+
+        setTimeout(function () {
+          quizLoadQuestion(quizCurrentIndex);
+        }, 800);
+
+      }
+    });
   }
 }
+
+function quizRestart() {
+  quizCurrentIndex = 0;
+  quizAnswered = false;
+  quizLoadQuestion(0);
+}
+
+// Override restartActivity to use quiz restart
+function restartActivity() {
+  $(".popup").css({ opacity: "0" });
+  setTimeout(function () {
+    $(".popup").css({ visibility: "hidden", opacity: "0" });
+  }, 500);
+  _globalCicked = 0;
+  quizRestart();
+}
+
+
+/* ---------- showEndAnimations — overrides shared version ---------- */
+// function showEndAnimations() {
+//   var $audio = $("#simulationAudio");
+//   // closePopup("introPopup-7");
+//   pageVisited();
+
+//   $audio.on("timeupdate", function () {
+//     var currentTime = this.currentTime;
+//     $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+
+//     if (currentTime >= 1) {
+//       $(".confetti").addClass("show");
+
+//       setTimeout(function () {
+//         $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+//         $(".popup").css({ visibility: "visible", opacity: "1" });
+//       }, 1500);
+
+//       setTimeout(function () {
+//         $(".confetti").removeClass("show");
+//       }, 2000);
+
+//       $audio.off("timeupdate");
+//     }
+//   });
+// }
+
+
+/* ---------- restartActivity — overrides shared version ---------- */
+// function restartActivity() {
+//   $(".popup").css("opacity", "0");
+//   setTimeout(function () {
+//     $(".popup").css({ visibility: "hidden", opacity: "0" });
+//   }, 500);
+
+//   _globalCicked = 0;
+//   memRerenderGrid();
+// }
 
 function playFeedbackAudio(_audio) {
   $(".dummy-patch").show();
@@ -259,6 +357,86 @@ function playFeedbackAudio(_audio) {
   })
 }
 
+
+function onClickAudioHandler(e) {
+
+  $("#simulationAudio")[0].pause();
+  playClickThen();
+  $('.dummy-box').show();
+  e.stopPropagation();
+  const audioSrc = $(this).data('audio');
+  if (!audioSrc) {
+    console.log('No audio src found');
+    return;
+  }
+
+  const audio = document.getElementById('simulationAudio');
+  if (!audio) {
+    console.log('Audio element not found');
+    return;
+  }
+
+  audio.src = audioSrc;
+  audio.currentTime = 0;
+
+  audio.play().catch(err => {
+    console.error('Audio play failed:', err);
+  });
+
+  audio.addEventListener('ended', function () {
+    console.log('Audio finished playing');
+    $("dummy-patch").hide();
+    resetSimulationAudio();
+
+    $('.dummy-box').hide();
+
+  });
+}
+
+
+function stayPage() {
+  playClickThen();
+  // AudioController.play();
+
+  // Resume simulation audio if it was playing before popup
+  if (typeof resumeSimulationAudio === 'function') {
+    resumeSimulationAudio();
+  }
+
+  $("#home-popup").hide();
+}
+
+function leavePage() {
+  playClickThen();
+
+
+  var audio = document.getElementById("simulationAudio");
+  if (audio) {
+    // Stop audio whether it's playing or paused
+    audio.pause();
+    audio.currentTime = 0;
+  }
+
+  // Clear the manual pause flag since we're leaving
+  if (typeof isManuallyPaused !== 'undefined') {
+    isManuallyPaused = false;
+  }
+  if (typeof simulationWasPlaying !== 'undefined') {
+    simulationWasPlaying = false;
+  }
+
+  jumtoPage(5);
+}
+
+function jumtoPage(pageNo) {
+  playClickThen();
+
+  _controller.pageCnt = pageNo;
+
+  _controller.updateViewNow();
+}
+
+
 var activeAudio = null;
 
 function playBtnSounds(soundFile) {
@@ -267,11 +445,14 @@ function playBtnSounds(soundFile) {
     return;
   }
 
+  console.log("calling audios");
+
   const audio = document.getElementById("simulationAudio");
 
   // Stop previous audio if it exists
   if (activeAudio && !activeAudio.paused) {
     activeAudio.pause();
+    // Do NOT reset src yet, let it finish
   }
 
   audio.loop = false;
@@ -280,15 +461,126 @@ function playBtnSounds(soundFile) {
 
   activeAudio = audio;
 
-  // Ensure we start with sound
-  audio.muted = false;
-
   audio.play().catch((err) => {
     console.warn("Audio play error:", err);
   });
+
 }
 
+
+
+function resetSimulationAudio() {
+
+  $("dummy-patch").hide();
+
+  const audioElement = document.getElementById("simulationAudio");
+  if (!audioElement) return;
+
+  audioElement.pause();
+
+  audioElement.src = "";
+  audioElement.removeAttribute("src");
+
+  const source = audioElement.querySelector("source");
+  if (source) source.src = "";
+
+  audioElement.load();
+  audioElement.onended = null;
+  // ✅ ensure button enabled
+
+}
+
+
+function audioEnd(callback) {
+  const audio = document.getElementById("simulationAudio");
+  audio.onended = null;
+  audio.onended = () => {
+    if (typeof callback === "function") callback();
+  };
+}
+
+
+function toggleAudio(el) {
+  playClickThen();
+  // console.log(event, "current e")
+  // const el = event.currentTarget; 
+  const audio = document.getElementById("audio_src");
+
+  // console.log(el, "Target class");
+
+  if (audio.paused) {
+    audio.muted = false;
+    audio.play();
+    el.classList.remove("mute");
+    el.classList.add("playing");
+    _controller._globalMusicPlaying = true;
+  } else {
+    audio.pause();
+    el.classList.remove("playing");
+    el.classList.add("mute");
+    _controller._globalMusicPlaying = false;
+  }
+}
+
+var AudioController = (() => {
+  const audio = document.getElementById("simulationAudio");
+
+  const hasAudio = () => audio && audio.src;
+
+  return {
+    play() {
+      if (hasAudio()) audio.play();
+    },
+    pause() {
+      if (hasAudio()) audio.pause();
+    }
+  };
+})();
+
+
+
+
+
+
+function restartActivity() {
+  $(".popup").css("opacity", "0");
+  setTimeout(function () {
+    $(".popup").css("display", "none");
+  }, 500);
+  _globalCicked = 0;
+  restartPage();
+}
+
+function showEndAnimations() {
+  pageVisited();
+
+  $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+  $(".confetti").addClass("show");
+
+  setTimeout(function () {
+    $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+    $(".popup").css({ visibility: "visible", opacity: "1" });
+  }, 1500);
+
+  setTimeout(function () {
+    $(".confetti").removeClass("show");
+  }, 2000);
+}
+
+function closeIntroPop(ldx) {
+  playClickThen();
+  // AudioController.play();
+  document.getElementById(ldx).style.display = 'none';
+  let audio = document.getElementById("popupAudio");
+  if (audio.src) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+}
+
+
 // --- UPDATED REPLAY FUNCTION ---
+
 function replayLastAudio(btn) {
   const audio = document.getElementById("simulationAudio");
   const audioSource = btn.getAttribute('data-src') || window.replayBtnAudio;
@@ -349,812 +641,28 @@ function setButtonState(btn, state) {
 }
 
 // Handle the end event
-function audioEnd(callback) {
-  const audio = document.getElementById("simulationAudio");
-  audio.onended = null;
-  audio.onended = () => {
-    if (typeof callback === "function") callback();
-  };
-}
-
-
-function getRandomPattern(patterns) {
-  if (!Array.isArray(patterns) || patterns.length === 0) return null;
-
-  const lastId = getLastPatternId();
-
-  let availablePatterns = patterns;
-
-  if (!isNaN(lastId) && patterns.length > 1) {
-    availablePatterns = patterns.filter(
-      p => p.patternId !== lastId
-    );
-  }
-
-  const selected =
-    availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
-
-  saveLastPatternId(selected.patternId);
-
-  return selected;
-}
-
-
-
-
-function loadPattern(index) {
-  const pattern = allPatterns[index];
-  if (!pattern) return;
-
-  $(".dummy-patch").show();
-
-  const cupsEl = document.querySelector(".cups");
-  const shelfEl = document.querySelector(".shelf");
-
-  cupsEl.innerHTML = getCupHTML(pattern);
-  shelfEl.innerHTML = getShelfHTML(pattern);
-
-  // ⬅️ MUST be after DOM update
-  initPageAnimations();
-  enableDragAndDrop({
-    cupsSelector: ".cups .cup",
-    slotsSelector: ".shelf .slot",
-
-    onCorrectDrop: (cup, slot) => {
-      cup.classList.remove("success");
-      void cup.offsetWidth;
-      cup.classList.add("success");
-      playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
-    },
-
-    onWrongDrop: (cup) => {
-      playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
-    },
-
-    onGameCompleted: () => {
-      setTimeout(function () {
-        handlePatternCompleted();
-      }, 500)
-    }
-  });
-
-}
-
-
-function handlePatternCompleted() {
-  const gameArea = document.querySelector(".game-area");
-  console.log("Pattern completed! Loading next pattern...");
-
-  gameArea.classList.add("is-fading");
-  setTimeout(() => {
-    currentPatternIndex++;
-
-    if (currentPatternIndex < allPatterns.length) {
-      loadPattern(currentPatternIndex);
-
-      requestAnimationFrame(() => {
-        gameArea.classList.remove("is-fading");
-      });
-    } else {
-      setTimeout(function () {
-        showEndAnimations();
-        playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
-      }, 500)
-    }
-  }, 1000);
-  // setTimeout(function(){
-  //   $(".dummy-patch").hide();
-  // })
-}
-
-
-
-function shuffleArray(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
-}
-
-function getCupHTML(pattern) {
-  let html = "";
-
-  if (!pattern || !Array.isArray(pattern.items)) return html;
-
-  // shuffle but NEVER allow correct order
-  const shuffledItems = shuffleItemsAvoidCorrect(
-    pattern.items,
-    pattern.sequence
-  );
-
-  for (let i = 0; i < shuffledItems.length; i++) {
-    const item = shuffledItems[i];
-
-    html += `
-    <div class="cupContain" id="cupContain-${i + 1}">
-      <div class="cup" draggable="true" data-value="${item.value}">
-        <img src="${item.img}" />
-      </div>
-      </div>
-    `;
-  }
-
-  return html;
-}
-
-function getShelfHTML(pattern) {
-  let html = "";
-
-  for (let i = 0; i < pattern.sequence.length; i++) {
-    html += `
-      <div class="slot" data-value="${pattern.sequence[i]}"></div>
-    `;
-  }
-
-  return html;
-}
-
-
-function isSameOrder(items, sequence) {
-  if (items.length !== sequence.length) return false;
-
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].value !== sequence[i]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function shuffleItemsAvoidCorrect(items, sequence) {
-  let shuffled;
-  let attempts = 0;
-
-  do {
-    shuffled = shuffleArray(items);
-    attempts++;
-  } while (isSameOrder(shuffled, sequence) && attempts < 10);
-
-  return shuffled;
-}
-
-
-
-function saveLastPatternId(id) {
-  localStorage.setItem("lastPatternId", id);
-}
-
-function getLastPatternId() {
-  return Number(localStorage.getItem("lastPatternId"));
-}
-
-
-
-function resetCupPosition(cup) {
-  cup.style.left = `${cup.dataset.startX}px`;
-  cup.style.top = `${cup.dataset.startY}px`;
-}
-
-
-
-// function enableDragAndDrop({ cupsSelector, slotsSelector, onCorrectDrop, onWrongDrop, onGameCompleted }) {
-//   const cups = document.querySelectorAll(cupsSelector);
-//   const slots = document.querySelectorAll(slotsSelector);
-
-//   let activeCup = null;
-//   let dragImg = null;
-//   let offsetX = 0;
-//   let offsetY = 0;
-
-//   // Store original positions for all cups
-//   cups.forEach(cup => {
-//     cup._originalParent = cup.parentElement;
-//     const rect = cup.getBoundingClientRect();
-//     cup.dataset.startX = rect.left + window.scrollX;
-//     cup.dataset.startY = rect.top + window.scrollY;
-
-//     cup.addEventListener("pointerdown", startDrag);
-//   });
-
-//   // Global variable to store the scale
-//   let currentScale = 1;
-
-//   function startDrag(e) {
-//     if (activeCup) return;
-//     e.preventDefault();
-
-//     activeCup = e.currentTarget;
-//     const img = activeCup.querySelector("img");
-//     const rect = img.getBoundingClientRect();
-
-//     // 1. Detect the scale of the game automatically
-//     const wrapper = document.getElementById('f_wrapper') || document.body;
-//     currentScale = wrapper.getBoundingClientRect().width / wrapper.offsetWidth;
-
-//     // 2. Calculate the offset
-//     offsetX = (e.clientX - rect.left) / currentScale;
-//     offsetY = (e.clientY - rect.top) / currentScale;
-
-//     // 3. Create the ghost
-//     dragImg = img.cloneNode(true);
-
-//     // 4. Force Reset styles
-//     Object.assign(dragImg.style, {
-//       position: "absolute",
-//       width: img.offsetWidth + "px",
-//       height: img.offsetHeight + "px",
-//       margin: "0",
-//       transform: "none",
-//       bottom: "auto",
-//       right: "auto",
-//       pointerEvents: "none",
-//       zIndex: "99999"
-//     });
-
-//     // 5. Append to the SAME container as the cup
-//     activeCup.parentElement.appendChild(dragImg);
-//     activeCup.style.opacity = "0";
-
-//     // Initial position
-//     moveAt(e.clientX, e.clientY);
-
-//     document.addEventListener("pointermove", onMove);
-//     document.addEventListener("pointerup", endDrag);
-//   }
-
-//   function moveAt(x, y) {
-//     if (!dragImg || !activeCup) return;
-
-//     const parentRect = activeCup.parentElement.getBoundingClientRect();
-//     const posX = (x - parentRect.left) / currentScale - offsetX;
-//     const posY = (y - parentRect.top) / currentScale - offsetY;
-
-//     dragImg.style.left = posX + "px";
-//     dragImg.style.top = posY + "px";
-//   }
-
-//   function onMove(e) {
-//     moveAt(e.clientX, e.clientY);
-//   }
-
-//   function endDrag(e) {
-//     document.body.classList.remove("dragging-active");
-//     document.removeEventListener("pointermove", onMove);
-//     document.removeEventListener("pointerup", endDrag);
-
-//     // Remove drag image visually
-//     if (dragImg) {
-//       dragImg.remove();
-//       dragImg = null;
-//     }
-
-//     // Make the original visible again
-//     if (activeCup) {
-//       activeCup.style.opacity = "1";
-//     }
-
-//     let droppedOnSlot = false;
-
-//     slots.forEach(slot => {
-//       const rect = slot.getBoundingClientRect();
-//       if (e.clientX > rect.left && e.clientX < rect.right && e.clientY > rect.top && e.clientY < rect.bottom) {
-//         droppedOnSlot = true;
-//         handleDrop(slot);
-//       }
-//     });
-
-//     if (!droppedOnSlot) {
-//       activeCup = null;
-//     }
-//   }
-
-//   function handleDrop(slot) {
-//     if (!activeCup) return;
-
-//     // STOP if slot already has a cup
-//     if (slot.children.length > 0) {
-//       activeCup = null;
-//       return;
-//     }
-
-//     const cupValue = activeCup.dataset.value;
-//     const slotValue = slot.dataset.value;
-
-//     if (cupValue === slotValue) {
-//       // CORRECT DROP - actually append to slot
-//       slot.appendChild(activeCup);
-      
-//       // Disable dragging while cup is in slot
-//       activeCup.style.pointerEvents = "none";
-//       activeCup.style.touchAction = "none";
-//       activeCup.removeEventListener("pointerdown", startDrag);
-      
-//       onCorrectDrop?.(activeCup, slot);
-//       activeCup = null;
-//       if (isGameCompleted(slots)) {
-//         onGameCompleted?.();
-//       }
-//     } else {
-//       // WRONG DROP - DON'T append to slot, keep it where it is temporarily
-//       const cupRef = activeCup;
-      
-//       // Capture current position (where user dropped it)
-//       const wrongPositionRect = cupRef.getBoundingClientRect();
-      
-//       // Store this for animation
-//       cupRef._wrongDropRect = wrongPositionRect;
-      
-//       // Disable dragging temporarily
-//       cupRef.style.pointerEvents = "none";
-//       cupRef.style.touchAction = "none";
-//       cupRef.removeEventListener("pointerdown", startDrag);
-      
-//       onWrongDrop?.(cupRef);
-//       activeCup = null;
-
-//       shakeCup(cupRef, () => {
-//         setTimeout(() => {
-//           animateBack(cupRef);
-//         }, 500);
-//       });
-//     }
-//   }
-
-//   function shakeCup(cup, onComplete) {
-//     if (!cup) return;
-
-//     cup.style.transition = "transform 0.08s ease";
-//     cup.style.transform = "translateX(-5px)";
-
-//     setTimeout(() => { cup.style.transform = "translateX(5px)"; }, 80);
-//     setTimeout(() => { cup.style.transform = "translateX(0)"; }, 160);
-//     setTimeout(() => {
-//       cup.style.transition = "";
-//       onComplete && onComplete();
-//     }, 200);
-//   }
-
-//   function animateBack(cup) {
-//     if (!cup || !cup._originalParent) return;
-
-//     const originalParent = cup._originalParent;
-//     const DURATION = 1000;
-
-//     // Use the stored wrong drop position if available, otherwise get current position
-//     const startRect = cup._wrongDropRect || cup.getBoundingClientRect();
-    
-//     // Move back to original parent
-//     originalParent.appendChild(cup);
-    
-//     // Get final position
-//     const endRect = cup.getBoundingClientRect();
-
-//     // Calculate delta
-//     const deltaX = startRect.left - endRect.left;
-//     const deltaY = startRect.top - endRect.top;
-
-//     // Clean up stored position
-//     delete cup._wrongDropRect;
-
-//     // Setup animation
-//     cup.style.pointerEvents = "none";
-//     cup.style.transition = "none";
-//     cup.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-
-//     // Force reflow
-//     cup.getBoundingClientRect();
-
-//     // Animate
-//     requestAnimationFrame(() => {
-//       cup.style.transition = `transform ${DURATION}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-//       cup.style.transform = "translate(0, 0)";
-//     });
-
-//     setTimeout(() => {
-//       cup.style.transition = "";
-//       cup.style.transform = "";
-//       cup.style.pointerEvents = "";
-//       cup.addEventListener("pointerdown", startDrag);
-//     }, DURATION);
-//   }
-
-//   function isGameCompleted(slots) {
-//     return [...slots].every(slot => {
-//       const cup = slot.querySelector(".cup");
-//       return cup && cup.dataset.value === slot.dataset.value;
-//     });
-//   }
+// function audioEnd(callback) {
+//   const audio = document.getElementById("simulationAudio");
+//   audio.onended = null;
+//   audio.onended = () => {
+//     if (typeof callback === "function") callback();
+//   };
 // }
 
 
-function enableDragAndDrop({ cupsSelector, slotsSelector, onCorrectDrop, onWrongDrop, onGameCompleted }) {
-  const cups = document.querySelectorAll(cupsSelector);
-  const slots = document.querySelectorAll(slotsSelector);
-
-  let activeCup = null;
-  let dragImg = null;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  // Store original positions for all cups
-  cups.forEach(cup => {
-    cup._originalParent = cup.parentElement;
-    const rect = cup.getBoundingClientRect();
-    cup.dataset.startX = rect.left + window.scrollX;
-    cup.dataset.startY = rect.top + window.scrollY;
-
-    cup.addEventListener("pointerdown", startDrag);
-  });
-
-  // Global variable to store the scale
-  let currentScale = 1;
-
-  function startDrag(e) {
-    if (activeCup) return;
-    e.preventDefault();
-
-    // NO AUDIO SHOULD PLAY HERE - just starting the drag
-    activeCup = e.currentTarget;
-    const img = activeCup.querySelector("img");
-    const rect = img.getBoundingClientRect();
-
-    // 1. Detect the scale of the game automatically
-    const wrapper = document.getElementById('f_wrapper') || document.body;
-    currentScale = wrapper.getBoundingClientRect().width / wrapper.offsetWidth;
-
-    // 2. Calculate the offset
-    offsetX = (e.clientX - rect.left) / currentScale;
-    offsetY = (e.clientY - rect.top) / currentScale;
-
-    // 3. Create the ghost
-    dragImg = img.cloneNode(true);
-
-    // 4. Force Reset styles
-    Object.assign(dragImg.style, {
-      position: "absolute",
-      width: img.offsetWidth + "px",
-      height: img.offsetHeight + "px",
-      margin: "0",
-      transform: "none",
-      bottom: "auto",
-      right: "auto",
-      pointerEvents: "none",
-      zIndex: "99999"
-    });
-
-    // 5. Append to the SAME container as the cup
-    activeCup.parentElement.appendChild(dragImg);
-    activeCup.style.opacity = "0";
-
-    // Initial position
-    moveAt(e.clientX, e.clientY);
-
-    document.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerup", endDrag);
-  }
-
-  function moveAt(x, y) {
-    if (!dragImg || !activeCup) return;
-
-    const parentRect = activeCup.parentElement.getBoundingClientRect();
-    const posX = (x - parentRect.left) / currentScale - offsetX;
-    const posY = (y - parentRect.top) / currentScale - offsetY;
-
-    dragImg.style.left = posX + "px";
-    dragImg.style.top = posY + "px";
-  }
-
-  function onMove(e) {
-    // NO AUDIO SHOULD PLAY HERE - just moving
-    moveAt(e.clientX, e.clientY);
-  }
-
-  function endDrag(e) {
-    document.body.classList.remove("dragging-active");
-    document.removeEventListener("pointermove", onMove);
-    document.removeEventListener("pointerup", endDrag);
-
-    // Remove drag image visually
-    if (dragImg) {
-      dragImg.remove();
-      dragImg = null;
-    }
-
-    // Make the original visible again
-    if (activeCup) {
-      activeCup.style.opacity = "1";
-    }
-
-    let droppedOnSlot = false;
-
-    slots.forEach(slot => {
-      const rect = slot.getBoundingClientRect();
-      if (e.clientX > rect.left && e.clientX < rect.right && e.clientY > rect.top && e.clientY < rect.bottom) {
-        droppedOnSlot = true;
-        handleDrop(slot);
-      }
-    });
-
-    if (!droppedOnSlot) {
-      // Just releasing without dropping on a slot - no audio needed
-      activeCup = null;
-    }
-  }
-
-  function handleDrop(slot) {
-    if (!activeCup) return;
-
-    // STOP if slot already has a cup
-    if (slot.children.length > 0) {
-      activeCup = null;
-      return;
-    }
-
-    const cupValue = activeCup.dataset.value;
-    const slotValue = slot.dataset.value;
-
-    // Append cup to slot visually first
-    slot.appendChild(activeCup);
-
-    // Disable dragging while cup is in slot
-    activeCup.style.pointerEvents = "none";
-    activeCup.style.touchAction = "none";
-    activeCup.removeEventListener("pointerdown", startDrag);
-
-    if (cupValue === slotValue) {
-      // CORRECT DROP - play success audio here
-      onCorrectDrop?.(activeCup, slot);
-      activeCup = null;
-      if (isGameCompleted(slots)) {
-        onGameCompleted?.();
-      }
-    } else {
-      // WRONG DROP - THIS IS THE ONLY PLACE onWrongDrop SHOULD BE CALLED
-      // This will play the wrong audio
-      onWrongDrop?.(activeCup);
-
-      const cupRef = activeCup;
-      activeCup = null;
-
-      shakeCup(cupRef, () => {
-        setTimeout(() => {
-          animateBack(cupRef);
-        }, 500);
-      });
-    }
-  }
-
-  function shakeCup(cup, onComplete) {
-    if (!cup) return;
-
-    cup.style.transition = "transform 0.08s ease";
-    cup.style.transform = "translateX(-5px)";
-
-    setTimeout(() => { cup.style.transform = "translateX(5px)"; }, 80);
-    setTimeout(() => { cup.style.transform = "translateX(0)"; }, 160);
-    setTimeout(() => {
-      cup.style.transition = "";
-      onComplete && onComplete();
-    }, 200);
-  }
-
-  function animateBack(cup) {
-    if (!cup || !cup._originalParent) return;
-
-    const originalParent = cup._originalParent;
-    const DURATION = 800;
-
-    const firstRect = cup.getBoundingClientRect();
-    originalParent.appendChild(cup);
-    const lastRect = cup.getBoundingClientRect();
-
-    const deltaX = firstRect.left - lastRect.left;
-    const deltaY = firstRect.top - lastRect.top;
-
-    cup.style.pointerEvents = "none";
-    cup.style.transition = "none";
-    cup.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-
-    cup.getBoundingClientRect();
-
-    requestAnimationFrame(() => {
-      cup.style.transition = `transform ${DURATION}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-      cup.style.transform = "translate(0, 0)";
-    });
-
-    setTimeout(() => {
-      cup.style.transition = "";
-      cup.style.transform = "";
-      cup.style.pointerEvents = "";
-      cup.style.touchAction = "";
-      cup.addEventListener("pointerdown", startDrag);
-    }, DURATION);
-  }
-
-  function isGameCompleted(slots) {
-    return [...slots].every(slot => {
-      const cup = slot.querySelector(".cup");
-      return cup && cup.dataset.value === slot.dataset.value;
-    });
-  }
-}
-
-
-
-function stayPage() {
-    playClickThen();
-    // AudioController.play();
-    
-    // Resume simulation audio if it was playing before popup
-    if (typeof resumeSimulationAudio === 'function') {
-        resumeSimulationAudio();
-    }
-    
-    $("#home-popup").hide();
-}
-
-function leavePage() {
-    playClickThen();    
-    var audio = document.getElementById("simulationAudio");
-    if (audio) {
-        // Stop audio whether it's playing or paused
-        audio.pause();
-        audio.currentTime = 0;
-    }
-    
-    // Clear the manual pause flag since we're leaving
-    if (typeof isManuallyPaused !== 'undefined') {
-        isManuallyPaused = false;
-    }
-    if (typeof simulationWasPlaying !== 'undefined') {
-        simulationWasPlaying = false;
-    }
-    
-    jumtoPage(5);
-}
-
-function jumtoPage(pageNo) {
-  playClickThen();
-
-  _controller.pageCnt = pageNo;
-
-  _controller.updateViewNow();
-}
-
-
-
-
-
-function resetSimulationAudio() {
-  console.log("Balajia");
-  $("dummy-patch").hide();
-
-  const audioElement = document.getElementById("simulationAudio");
-  if (!audioElement) return;
-
-  audioElement.pause();
-
-  audioElement.src = "";
-  audioElement.removeAttribute("src");
-
-  const source = audioElement.querySelector("source");
-  if (source) source.src = "";
-
-  audioElement.load();
-  audioElement.onended = null;
-}
-
-
-
-
-
-function toggleAudio(el) {
-  playClickThen();
-  // console.log(event, "current e")
-  // const el = event.currentTarget; 
-  const audio = document.getElementById("audio_src");
-
-  // console.log(el, "Target class");
-
-  if (audio.paused) {
-    audio.muted = false;
-    audio.play();
-    el.classList.remove("mute");
-    el.classList.add("playing");
-    _controller._globalMusicPlaying = true;
-  } else {
-    audio.pause();
-    el.classList.remove("playing");
-    el.classList.add("mute");
-    _controller._globalMusicPlaying = false;
-  }
-}
-
-var AudioController = (() => {
-  const audio = document.getElementById("simulationAudio");
-
-  const hasAudio = () => audio && audio.src;
-
-  return {
-    play() {
-      if (hasAudio()) audio.play();
-    },
-    pause() {
-      if (hasAudio()) audio.pause();
-    }
-  };
-})();
-
-
-
-
-
-
-function restartActivity() {
-  $(".popup").css("opacity", "0");
-  setTimeout(function () {
-    $(".popup").css("display", "none");
-  }, 500);
-  _globalCicked = 0;
-  restartPage();
-}
-
-function showEndAnimations() {
-  var $audio = $("#simulationAudio");
-  closePopup('introPopup-1');
-  console.log("Audio ending");
-  pageVisited();
-
-  $audio.on("timeupdate", function () {
-    var currentTime = this.currentTime;
-    $(".greetingsPop").css("visibility", "visible");
-    $(".greetingsPop").css("opacity", "1");
-
-    if (currentTime >= 1) {
-      $(".confetti").addClass("show");
-      // $(".confetti").show();
-      setTimeout(function () {
-        $(".greetingsPop").css("visibility", "hidden");
-        $(".greetingsPop").css("opacity", "0");
-        $(".popup").css("visibility", "visible");
-        $(".popup").css("opacity", "1");
-      }, 1500)
-      setTimeout(function () {
-        $(".confetti").removeClass("show");
-        // $(".confetti").hide();                
-      }, 2000);
-
-      $audio.off("timeupdate");
-    }
-
-  });
-}
-
-// function closeIntroPop(ldx) {
-//   playClickThen();
-//   // AudioController.play();
-//   document.getElementById(ldx).style.display = 'none';
-//   let audio = document.getElementById("popupAudio");
-//   if (audio.src) {
-//     audio.pause();
-//     audio.currentTime = 0;
-//   }
+// function enableButtons() {
+//   $(".flip-card").prop("disabled", false);
+//   $(".flipTextAudio").prop("disabled", false);
 // }
 
+// function disableButtons() {
+//   $(".flip-card").prop("disabled", true);
+//   $(".flipTextAudio").prop("disabled", true);
+// }
 
-
-
-
-function enableButtons() {
-  $(".flip-card").prop("disabled", false);
-  $(".flipTextAudio").prop("disabled", false);
-}
-
-function disableButtons() {
-  $(".flip-card").prop("disabled", true);
-  $(".flipTextAudio").prop("disabled", true);
-}
-
-function resetToggle() {
-  $(".flip-card").removeClass('flipped');
-}
+// function resetToggle() {
+//   $(".flip-card").removeClass('flipped');
+// }
 
 // -------- update CSS ------------
 function setCSS(sectionCnt) {
@@ -1238,13 +746,8 @@ function withAudioSync() {
 
   _tweenTimeline.add(animateFadeIn($(".ost"), 0.5).play(), 0.1);
   _tweenTimeline.add(animateFadeOut($(".ost"), 0.5).play(), 4.5);
-  _tweenTimeline.add(animateFadeOut($(".dummy-patch"), 0.5).play(), 5);
+  _tweenTimeline.add(animateFadeOut($(".dummy-patch"), 0.5).play(), 3);
   // _tweenTimeline.add(animateFadeIn($(".inst"), 0.5).play(), 5);
-
-  var box = [1, 2, 3];
-  for (let k = 0; k < box.length; k++) {
-    _tweenTimeline.add(animateFadeIn($(".cupContain").eq(k), 0.5, 0).play(), box[k]);
-  }
 
   _tweenTimeline.add(
     animateFadeIn($(".animat-container"), 0.5, 0).play(),
