@@ -9,7 +9,7 @@
 	left: 0;
 	top: 0;
 	text-align: left;
-	color: $white;
+	color: #819da7;
 }
 
 .dark {
@@ -72,11 +72,55 @@
 
 							p {
 								font-size: 7vh;
-								color: #000;
+								color: #819da7;
 								justify-content: center;
 								text-align: center;
 								margin-bottom: 20px;
 								line-height: 70px;
+							}
+
+							.wrapTextaudio {
+								position: relative;
+								width: 25px;
+								height: 25px;
+								min-width: 25px;
+								max-width: 25px;
+								cursor: pointer;
+								top: 3px;
+								margin-left: 5px;
+								background-position: center !important;
+								background-size: contain !important;
+								background-repeat: no-repeat !important;
+
+								@include mobile-landscape {
+									width: 15px;
+									height: 15px;
+									min-width: 15px;
+									max-width: 15px;
+									top: 0px;
+								}
+
+								&:disabled {
+									pointer-events: none;
+								}
+
+								&.playing {
+									background: url(../images/music.png) no-repeat;
+									background-size: contain;
+
+									&:disabled {
+										// background: url("../images/audio_disabled.png");
+									}
+								}
+
+								&.paused {
+									background: url(../images/pause.png) no-repeat;
+									background-size: contain;
+
+									&:disabled {
+										// background: url("../images/audio_mute_disabled.png");
+									}
+								}
 							}
 						}
 
@@ -174,17 +218,151 @@
 									align-items: center;
 									color: #000;
 									overflow: visible; // ← ADD
+
+									.wrapTextaudio {
+										position: relative;
+										width: 25px;
+										height: 25px;
+										min-width: 25px;
+										max-width: 25px;
+										cursor: pointer;
+										top: 3px;
+										margin-left: 5px;
+										background-position: center !important;
+										background-size: contain !important;
+										background-repeat: no-repeat !important;
+
+										@include mobile-landscape {
+											width: 15px;
+											height: 15px;
+											min-width: 15px;
+											max-width: 15px;
+											top: 0px;
+										}
+
+										&:disabled {
+											pointer-events: none;
+										}
+
+										&.playing {
+											background: url(../images/music.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_disabled.png");
+											}
+										}
+
+										&.paused {
+											background: url(../images/pause.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_mute_disabled.png");
+											}
+										}
+									}
 								}
 
 								.clock-title {
 									font-size: 2rem;
 									font-weight: bold;
 									margin-bottom: 15px;
+									color: #819da7;
+
+									.wrapTextaudio {
+										position: relative;
+										width: 25px;
+										height: 25px;
+										min-width: 25px;
+										max-width: 25px;
+										cursor: pointer;
+										top: 3px;
+										margin-left: 5px;
+										background-position: center !important;
+										background-size: contain !important;
+										background-repeat: no-repeat !important;
+
+										@include mobile-landscape {
+											width: 15px;
+											height: 15px;
+											min-width: 15px;
+											max-width: 15px;
+											top: 0px;
+										}
+
+										&:disabled {
+											pointer-events: none;
+										}
+
+										&.playing {
+											background: url(../images/music.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_disabled.png");
+											}
+										}
+
+										&.paused {
+											background: url(../images/pause.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_mute_disabled.png");
+											}
+										}
+									}
 								}
 
 								.clock-message {
+									color: #819da7;
 									font-size: 1.6rem;
 									line-height: 1.4;
+
+									.wrapTextaudio {
+										position: relative;
+										width: 25px;
+										height: 25px;
+										min-width: 25px;
+										max-width: 25px;
+										cursor: pointer;
+										top: 3px;
+										margin-left: 5px;
+										background-position: center !important;
+										background-size: contain !important;
+										background-repeat: no-repeat !important;
+
+										@include mobile-landscape {
+											width: 15px;
+											height: 15px;
+											min-width: 15px;
+											max-width: 15px;
+											top: 0px;
+										}
+
+										&:disabled {
+											pointer-events: none;
+										}
+
+										&.playing {
+											background: url(../images/music.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_disabled.png");
+											}
+										}
+
+										&.paused {
+											background: url(../images/pause.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_mute_disabled.png");
+											}
+										}
+									}
 								}
 
 
@@ -301,16 +479,16 @@
 
 								.hour-guide-img {
 									width: 24%;
-									height: 27px;
-									margin-left: -112px;
+									height: 36px;
+									margin-left: -102px;
 									z-index: 8;
 									margin-bottom: -13px;
 								}
 
 								.minute-guide-img {
-									width: 20px;
-									height: 28%;
-									margin-left: -11px;
+									width: 27px;
+									height: 27%;
+									margin-left: -14px;
 									z-index: 7;
 								}
 
@@ -354,14 +532,14 @@
 
 								.placed {
 									border: none;
-									background: transparent;
+									// background: transparent;
 								}
 
 								.drop-slot {
 									position: absolute;
 									width: 60px;
 									height: 60px;
-									border: 2px dashed #ff6b6b;
+									// border: 2px dashed #ff6b6b;
 									border-radius: 50%;
 								}
 
@@ -404,17 +582,18 @@
 								}
 
 								.hour-hand-img {
-									width: 28px; // adjust to match your image width
-									height: 24%; // short hand
-									margin-left: -14px; // center it (half of width)
+									width: 35px; // adjust to match your image width
+									height: 22%; // short hand
+									margin-left: -19px; // center it (half of width)
+									margin-bottom: 5px;
 									z-index: 11;
 									transform: rotate(270deg);
 								}
 
 								.minute-hand-img {
-									width: 20px; // adjust to match your image width
-									height: 28%; // long hand
-									margin-left: -10px; // center it
+									width: 30px; // adjust to match your image width
+									height: 27%; // long hand
+									margin-left: -15px; // center it
 									z-index: 10;
 									transform: rotate(0deg);
 								}
@@ -423,11 +602,11 @@
 									position: absolute;
 									width: 18px;
 									height: 18px;
-									background: #f0a800;
+									background: #000;
 									border: 3px solid #333;
 									border-radius: 50%;
-									left: 50%;
-									top: 50%;
+									left: 49.7%;
+									top: 49%;
 									transform: translate(-50%, -50%);
 									z-index: 20; // above both hands
 								}
@@ -546,7 +725,7 @@
 								.clock-left--wide {
 									width: 100%;
 									flex-direction: column;
-									margin-top: 60px;
+									margin-top: 30px;
 								}
 
 								.celebration-title {
@@ -555,11 +734,55 @@
 									color: #444;
 									text-align: center;
 									margin-bottom: 16px;
+
+									.wrapTextaudio {
+										position: relative;
+										width: 25px;
+										height: 25px;
+										min-width: 25px;
+										max-width: 25px;
+										cursor: pointer;
+										top: 3px;
+										margin-left: 5px;
+										background-position: center !important;
+										background-size: contain !important;
+										background-repeat: no-repeat !important;
+
+										@include mobile-landscape {
+											width: 15px;
+											height: 15px;
+											min-width: 15px;
+											max-width: 15px;
+											top: 0px;
+										}
+
+										&:disabled {
+											pointer-events: none;
+										}
+
+										&.playing {
+											background: url(../images/music.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_disabled.png");
+											}
+										}
+
+										&.paused {
+											background: url(../images/pause.png) no-repeat;
+											background-size: contain;
+
+											&:disabled {
+												// background: url("../images/audio_mute_disabled.png");
+											}
+										}
+									}
 								}
 
 								.clock-wrapper--large {
-									width: 380px;
-									height: 380px;
+									width: 350px;
+									height: 350px;
 									position: relative;
 								}
 

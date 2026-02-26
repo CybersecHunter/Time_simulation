@@ -56,7 +56,7 @@ function _pageLoaded() {
   $(".playPause").show();
   addSectionData();
   appState.pageCount = _controller.pageCnt - 1;
-  $('.introInfo').attr('data-popup', 'introPopup-9');
+  $('.introInfo').attr('data-popup', 'introPopup-7');
   $("#f_header").css({ backgroundImage: `url(${_pageData.sections[0].headerImg})` });
   $("#f_header").find("#f_courseTitle").css({ backgroundImage: `url(${_pageData.sections[0].headerText})` });
   $(".home_btn").css({ backgroundImage: `url(${_pageData.sections[0].backBtnSrc})` });
@@ -84,36 +84,26 @@ function _pageLoaded() {
 // =============================
 
 function addSectionData() {
-
   totalSection = _pageData.sections.length;
-
   for (let n = 0; n < _pageData.sections.length; n++) {
-
     sectionCnt = n + 1;
-
     if (sectionCnt == 1) {
-
       const sec = _pageData.sections[sectionCnt - 1];
-
-      /* ================= INSTRUCTION TEXT (ONLY SCENE 1) ================= */
 
       let instText = '';
 
-      for (let k = 0; k < 2; k++) {   // ✅ ONLY FIRST 2 TEXTS
-
-        instText += `
-        <p tabindex="0" id="inst_${k + 1}" 
-        aria-label="${removeTags(sec.iText[k])}">
-        ${sec.iText[k]}
-        <button class="wrapTextaudio playing" id="wrapTextaudio_${k}"
-        onclick="replayLastAudio(this, '${sec.content.replayAudios[k]}')">
+      instText += `
+        <p tabindex="0" id="inst_1" 
+        aria-label="${removeTags(sec.iText[1])}">
+        ${sec.iText[1]}
+        <button class="wrapTextaudio playing" id="wrapTextaudio_${1}"
+        onclick="replayLastAudio(this, '${sec.content.replayAudios[1]}')">
         </button>
         </p>`;
-      }
+      // }
 
       // ---- Header content ---- (UNCHANGED)
       let headerContent = `<div class="confetti" id="confettiContainer"></div>`;
-
 
       /* ================= POPUP ================= */
 
@@ -136,7 +126,7 @@ function addSectionData() {
     <div class="popup-content modal-box">
       <h2 class="modal-title">Oops!</h2>
       <div class="modal-message">
-        <p>If you leave the fun game then you have to start from beginning.</p>     
+        <p>If you leave the time simulation then you have to start from beginning.</p>     
         <p class="modal-question">Are you sure you want to leave?</p>   
       </div>      
       <div class="modal-buttons">
@@ -180,7 +170,12 @@ function addSectionData() {
           // AFTER FIRST AUDIO → CHANGE TEXT
           $("#sceneText").fadeOut(250, function () {
 
-            $(this).html(sec.iText[3] || "").fadeIn(250);
+            $(this).html((sec.iText[3] || "") + `<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>`).fadeIn(250);
 
             // SECOND LINE AUDIO
             playBtnSounds(sec.content.replayAudios[19], function () {
@@ -289,9 +284,69 @@ window.startClockGame = function () {
 //   `;
 // }
 
+function replayLastAudio(btn) {
+  const audio = document.getElementById("simulationAudio");
+  const audioSource = btn.getAttribute('data-src') || window.replayBtnAudio;
+
+  console.log("Replay/Toggle triggered");
+
+  // 1. RESTART: If audio has finished or isn't loaded
+  if (audio.ended || !audio.src || audio.src === "") {
+    console.log("Starting Audio Fresh");
+
+    // Reset Mute to False (Play with sound)
+    audio.muted = false;
+
+    // SHOW patch on start
+    $(".dummy-patch").show();
+
+    playBtnSounds(audioSource);
+    setButtonState(btn, "playing");
+
+    // Attach completion listener
+    audioEnd(() => {
+      setButtonState(btn, "paused");
+      $(".dummy-patch").hide(); // Always hide when done
+      console.log("Audio completed");
+    });
+    return;
+  }
+
+  // 2. TOGGLE Logic (While Playing)
+  if (audio.muted) {
+    // --- RESUME (UNMUTE) ---
+    console.log("Resuming Sound");
+    audio.muted = false;
+    setButtonState(btn, "playing");
+
+    // SHOW patch because audio is audible now
+    $(".dummy-patch").show();
+  } else {
+    // --- MUTE (SILENT PLAY) ---
+    console.log("Muting Sound");
+    audio.muted = true;
+    setButtonState(btn, "paused");
+
+    // HIDE patch because audio is silent (user wants to interact)
+    $(".dummy-patch").hide();
+  }
+}
+
 function initClockScene(mountEl, sec) {
 
   const clockImg = sec.content.clockImg || "";
+
+  // BUILD fixed numbers HTML
+  const fixedNums = [3, 6, 9, 12];
+  let fixedHTML = '';
+  fixedNums.forEach(n => {
+    const pos = NUM_POSITIONS[n];
+    fixedHTML += `
+    <div class="clock-num-fixed clock-num-preset"
+         style="left:${pos.left}%;top:${pos.top}%;transform:translate(-50%,-50%);">
+         ${n}
+    </div>`;
+  });
 
   mountEl.innerHTML = `
   
@@ -302,6 +357,7 @@ function initClockScene(mountEl, sec) {
               <div class="clock-face"
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
+                   ${fixedHTML}
               </div>
           </div>
       </div>
@@ -309,7 +365,12 @@ function initClockScene(mountEl, sec) {
       <div class="clock-right">
 
           <div class="clock-title" id="sceneText">
-              ${sec.iText[2] || ""}
+              ${sec.iText[2] || ""}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
 
       </div>
@@ -324,6 +385,17 @@ function initClockOverlayScene(mountEl, sec) {
   const clockImg = sec.content.clockImg || "";
   const overlay = sec.content.overlay || "";
 
+  const fixedNums = [3, 6, 9, 12];
+  let fixedHTML = '';
+  fixedNums.forEach(n => {
+    const pos = NUM_POSITIONS[n];
+    fixedHTML += `
+    <div class="clock-num-fixed clock-num-preset"
+         style="left:${pos.left}%;top:${pos.top}%;transform:translate(-50%,-50%);">
+         ${n}
+    </div>`;
+  });
+
   mountEl.innerHTML = `
   
   <div class="clock-layout">
@@ -334,6 +406,10 @@ function initClockOverlayScene(mountEl, sec) {
               <div class="clock-img-wrap">
                   <img class="clock-img-base" src="${clockImg}" alt="clock"/>
                   <img class="clock-img-overlay" src="${overlay}" alt="overlay"/>
+                  <!-- fixed numbers go on top of overlay -->
+                  <div style="position:absolute;inset:0;">
+                      ${fixedHTML}
+                  </div>
               </div>
 
           </div>
@@ -346,7 +422,12 @@ function initClockOverlayScene(mountEl, sec) {
           </div>
 
           <div class="clock-message">
-              ${sec.iText[5] || ""}
+              ${sec.iText[5] || ""}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
 
       </div>
@@ -359,6 +440,17 @@ function initClockScene4(mountEl, sec) {
 
   const clockImg = sec.content.clockImg || "";
 
+  const fixedNums = [3, 6, 9, 12];
+  let fixedHTML = '';
+  fixedNums.forEach(n => {
+    const pos = NUM_POSITIONS[n];
+    fixedHTML += `
+    <div class="clock-num-fixed clock-num-preset"
+         style="left:${pos.left}%;top:${pos.top}%;transform:translate(-50%,-50%);">
+         ${n}
+    </div>`;
+  });
+
   mountEl.innerHTML = `
 
   <div class="clock-layout">
@@ -368,6 +460,7 @@ function initClockScene4(mountEl, sec) {
               <div class="clock-face"
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
+                    ${fixedHTML}
               </div>
           </div>
       </div>
@@ -375,12 +468,17 @@ function initClockScene4(mountEl, sec) {
       <div class="clock-right">
 
           <div class="clock-title">
-              ${sec.iText[6] || ""}
+              ${sec.iText[6] || ""}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
 
-          <div class="clock-message">
+          <!-- <div class="clock-message">
               ${sec.iText[7] || ""}
-          </div>
+          </div> -->
 
       </div>
 
@@ -537,7 +635,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
       offsetY = (clientY - rect.top) / currentScale;
 
       // Hide original
-      dragEl.style.opacity = '0';
+      dragEl.style.color = 'transparent';
       dragEl.style.pointerEvents = 'none';
 
       // Build ghost
@@ -549,7 +647,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         z-index: 99999;
         pointer-events: none;
         border-radius: 50%;
-        background: url('pages/module_1/page_9/images/number_outline.png') no-repeat center / contain;
+        background: transparent;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -638,18 +736,26 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         _placedNumbers[n] = true;
         _placedCount++;
 
-        const numItem = dragEl.closest('.num-item');
-        if (numItem) numItem.style.visibility = 'hidden';
+        // const numItem = dragEl.closest('.num-item');
+        // if (numItem) numItem.style.visibility = 'hidden';
+        dragEl.style.color = 'transparent';
+        dragEl.style.pointerEvents = 'none';
+        dragEl.style.cursor = 'default';
 
-        if (_placedCount === draggableNums.length) {
-          const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
-          const sec = _pageData.sections[sectionCnt - 1];
-          initNumbersFixedScene(mountEl, sec);
-        }
+        // ✅ Play correct audio
+        playBtnSounds(sec.correctAudio || "", function () {
+          if (_placedCount === draggableNums.length) {
+            const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
+            const sec = _pageData.sections[sectionCnt - 1];
+            initNumbersFixedScene(mountEl, sec);
+          }
+        });
 
       } else {
         dragEl.style.opacity = '1';
         dragEl.style.pointerEvents = 'auto';
+        dragEl.style.color = '#000';
+        playBtnSounds(sec.wrongAudio || "");
       }
     }
 
@@ -706,7 +812,12 @@ function initNumbersFixedScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[8] || "Yay! The Numbers are fixed"}
+              ${sec.iText[8] || "Yay! The Numbers are fixed"}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
       </div>
 
@@ -744,7 +855,12 @@ function initHandIntroScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[10] || "Now let's add the clock hands."}
+              ${sec.iText[10] || "Now let's add the clock hands."}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
           <div class="hands-panel">
               <div class="hand-display">
@@ -792,7 +908,12 @@ function initHourHandDragScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[12] || "This is the <span class='red'>short hand.</span>"}
+              ${sec.iText[12] || "This is the <span class='red'>short hand.</span>"}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="hourHandContainer">
@@ -818,10 +939,16 @@ function initHourHandDragScene(mountEl, sec) {
   });
 
   _initHandDropDrag('hourHandDrag', 'clockFaceHour', function () {
-    // ✅ Show second text
-    const secondText = document.getElementById("hourSecondText");
-    if (secondText) {
-      secondText.style.visibility = "visible";
+    // Replace title text with second text
+    const titleEl = document.querySelector(".clock-title");
+    if (titleEl) {
+      const text = sec.iText[13] || "The <span class='red'>short hand</span> shows the hour."
+      titleEl.innerHTML = text + `<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>`;
     }
 
     playBtnSounds(sec.content.replayAudios[20], function () {
@@ -861,7 +988,12 @@ function initMinuteHandDragScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[14] || "The <span class='red'>long hand</span> shows the minutes."}
+              ${sec.iText[14] || "The <span class='red'>long hand</span> shows the minutes."}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="minuteHandContainer">
@@ -887,10 +1019,16 @@ function initMinuteHandDragScene(mountEl, sec) {
   });
 
   _initHandDropDrag('minuteHandDrag', 'clockFaceMinute', function () {
-    // ✅ Show second text
-    const secondText = document.getElementById("hourMinuteText");
-    if (secondText) {
-      secondText.style.visibility = "visible";
+    // Replace title text with second text
+    const titleEl = document.querySelector(".clock-title");
+    if (titleEl) {
+      const text = sec.iText[15] || "The <span class='red'>long hand</span> shows the minutes."
+      titleEl.innerHTML = text + `<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>`;
     }
     // Both hands placed → now go to HAND_TASKS (3 o'clock etc.)
     playBtnSounds(sec.content.replayAudios[21], function () {
@@ -1092,7 +1230,12 @@ function initHandScene(mountEl, sec, taskIdx) {
 
       <div class="clock-right">
           <div class="clock-title" id="handInstruction">
-              ${sec.iText[task.instructionIdx] || ""}
+              ${sec.iText[task.instructionIdx] || ""}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
       </div>
 
@@ -1108,40 +1251,7 @@ function initHandScene(mountEl, sec, taskIdx) {
       startAngle,
       20,
       function onHourSuccess() {
-
-        // Hour placed — now activate minute hand
-        const minuteHand = document.getElementById('minuteHandImg');
-        if (minuteHand) {
-          minuteHand.style.opacity = '1';
-          minuteHand.style.pointerEvents = 'auto';
-          minuteHand.style.cursor = 'grab';
-        }
-
-        // Update instruction text
-        const instrEl = document.getElementById('handInstruction');
-        if (instrEl) {
-          instrEl.innerHTML = `Now drag the <span class='red'>long hand</span> to the correct position!`;
-        }
-
-        // Minute hand target: 0deg = 12 (for o'clock), 180deg = 6 (for :30)
-        const minuteTarget = task.minuteAngle;
-        const minuteStart = task.minuteAngle === 0 ? 180 : 0; // start opposite
-
-        // Reset minute hand to wrong start
-        minuteHand.style.transform = `rotate(${minuteStart}deg)`;
-
-        // Step 2: drag minute hand
-        _initImgHandDrag(
-          'minuteHandImg',
-          minuteTarget,
-          minuteStart,
-          25,  // slightly more tolerance for minute hand
-          function onMinuteSuccess() {
-            _onHandSuccess(mountEl, sec, task);
-          },
-          true,  // isMinute flag
-          sec
-        );
+        _onHandSuccess(mountEl, sec, task);
       },
       false,  // ← isMinute = false for hour hand
       sec
@@ -1217,9 +1327,17 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
 
     if (diff <= tolerance) {
 
-      // ✅ Snap to correct position
+      // Calculate full 360 based on current direction
+      let finalAngle = targetAngle;
+
+      // Keep rotation direction same (no reverse snap)
+      let base = Math.floor(currentAngle / 360) * 360;
+      finalAngle = base + targetAngle;
+
       hand.style.transition = 'transform 0.3s ease';
-      hand.style.transform = `rotate(${targetAngle}deg)`;
+      hand.style.transform = `rotate(${finalAngle}deg)`;
+      currentAngle = finalAngle;
+
       setTimeout(() => { hand.style.transition = ''; }, 350);
 
       // Lock it — no more dragging
@@ -1233,9 +1351,13 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
       }
 
       // Play correct sound then callback
-      playBtnSounds(sec.content.correctAudio || "", function () {
+      // playBtnSounds(sec.content.correctAudio || "", function () {
+      //   if (typeof onSuccess === 'function') onSuccess();
+      // });
+      // Directly call success — no correct audio
+      setTimeout(() => {
         if (typeof onSuccess === 'function') onSuccess();
-      });
+      }, 350);
 
     } else {
 
@@ -1347,7 +1469,13 @@ function _onHandSuccess(mountEl, sec, task) {
   // Update text
   const instrEl = document.getElementById('handInstruction');
   if (instrEl) {
-    instrEl.innerHTML = sec.iText[task.successIdx] || "";
+    const text = sec.iText[task.successIdx] || "";
+    instrEl.innerHTML = text + `<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>`
   }
 
   // Remove target ring pulse
@@ -1380,6 +1508,8 @@ function _onHandSuccess(mountEl, sec, task) {
 function initCelebrationScene(mountEl, sec) {
 
   const clockImg = sec.content.clockCompleteImg || "";
+  const hourImg = sec.content.hands.hour || "";
+  const minuteHandImg = sec.content.hands.minute || "";
 
   mountEl.innerHTML = `
 
@@ -1387,15 +1517,26 @@ function initCelebrationScene(mountEl, sec) {
 
       <div class="clock-left clock-left--wide">
           <div class="clock-title celebration-title">
-              ${sec.iText[24] || ""}
+              ${sec.iText[24] || ""}<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
           </div>
           <div class="clock-wrapper clock-wrapper--large">
               <div class="clock-face"
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
-                   ${_buildClockNumbersHTML()}   <!-- ← ADD -->
-                   <div class="clock-hand minute-hand" style="transform:rotate(0deg);"></div>
-                   <div class="clock-hand hour-hand"   style="transform:rotate(0deg);"></div>
+                   ${_buildClockNumbersHTML()}  
+                   <img class="clock-hand-img hour-hand-img"
+                        src="${hourImg}"
+                        style="transform:rotate(270deg); pointer-events:none;"
+                        alt="hour hand placed"/>
+                   <img class="clock-hand-img minute-hand-img" id="minuteHandImg"
+                        src="${minuteHandImg}"
+                        style="transform:rotate(0deg); pointer-events:none;"
+                        alt="minute hand"/>
               </div>
               <div class="sparkle-wrap">
                   <span class="sparkle-star">✦</span>
@@ -1443,9 +1584,9 @@ function _showCompletedPopup() {
     $(".popup").css({ visibility: "visible", opacity: "1" });
   }, 1500);
   setTimeout(function () {
-        $(".confetti").removeClass("show");
-        // $(".confetti").hide();                
-      }, 2000);
+    $(".confetti").removeClass("show");
+    // $(".confetti").hide();                
+  }, 2000);
 
   // Re-bind buttons since innerHTML was replaced
   $("#refresh").on("click", function () {
@@ -1637,7 +1778,7 @@ function leavePage() {
   if (typeof simulationWasPlaying !== 'undefined') {
     simulationWasPlaying = false;
   }
-
+  $(".playPause").hide();
   jumtoPage(0);
 }
 

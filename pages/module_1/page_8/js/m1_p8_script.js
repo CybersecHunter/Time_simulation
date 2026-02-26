@@ -39,7 +39,7 @@ var memCards = [];
 var memFlipped = [];
 var memMatched = 0;
 var memLock = false;
-var isEnd = false;
+
 
 // ------------------ common function start ------------------------------------------------------------------------
 $(document).ready(function () {
@@ -233,6 +233,7 @@ function quizRenderOptions(question) {
     quizOnOptionClick($(this), question);
   });
 }
+// let isEnd = false;
 
 function quizOnOptionClick($btn, question) {
   if (quizAnswered) return;
@@ -244,51 +245,66 @@ function quizOnOptionClick($btn, question) {
 
   if (isCorrect) {
     $btn.addClass("correct");
+
+    const starImg = `
+    <img src="${_pageData.sections[sectionCnt - 1].star}" class="option-star">
+  `;
+    $btn.append(starImg);
+
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
+    audioEnd(function () {
+      // Remove star after audio
+      setTimeout(function () {
+        $btn.find(".option-star").remove();
+        quizCurrentIndex++;
+        if (quizCurrentIndex >= quizQuestions.length) {
+          // isEnd = true;
+          setTimeout(function () {
+
+            // 🎉 SHOW CONFETTI + GREAT JOB IMMEDIATELY
+            pageVisited();
+            $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+            $(".confetti").addClass("show");
+
+            // 🔊 PLAY FINAL AUDIO
+            playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
+
+            // 🎯 WHEN AUDIO ENDS → SHOW COMPLETION POPUP
+            audioEnd(function () {
+
+              const audio = document.getElementById("simulationAudio");
+              audio.onended = null; // 🚫 prevent repeat
+
+              setTimeout(function () {
+                $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+                $(".popup").css({ visibility: "visible", opacity: "1" });
+              }, 500);
+
+              setTimeout(function () {
+                $(".confetti").removeClass("show");
+              }, 800);
+
+            });
+
+          }, 400);
+
+        } else {
+          setTimeout(function () {
+            quizLoadQuestion(quizCurrentIndex);
+          }, 800);
+        }
+      },4000)
+    });
+
+  } else {
+    $btn.addClass("wrong");
+    playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
 
     audioEnd(function () {
-
-      quizCurrentIndex++;
-
-      if (quizCurrentIndex >= quizQuestions.length && !isEnd) {
-
-        isEnd = true; // 🔒 lock permanently
-
-        setTimeout(function () {
-
-          // 🎉 SHOW CONFETTI + GREAT JOB IMMEDIATELY
-          pageVisited();
-          $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
-          $(".confetti").addClass("show");
-
-          // 🔊 PLAY FINAL AUDIO
-          playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
-
-          // 🎯 WHEN AUDIO ENDS → SHOW COMPLETION POPUP
-          audioEnd(function () {
-
-            const audio = document.getElementById("simulationAudio");
-            audio.onended = null; // 🚫 prevent repeat
-
-            setTimeout(function () {
-              $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
-              $(".popup").css({ visibility: "visible", opacity: "1" });
-            }, 500);
-
-            setTimeout(function () {
-              $(".confetti").removeClass("show");
-            }, 800);
-
-          });
-
-        }, 400);
-      } else if (!isEnd) {
-
-        setTimeout(function () {
-          quizLoadQuestion(quizCurrentIndex);
-        }, 800);
-
-      }
+      setTimeout(function () {
+        $btn.removeClass("wrong");
+        quizAnswered = false;
+      }, 600);
     });
   }
 }

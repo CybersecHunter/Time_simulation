@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Simulations</title>
+    <title>Time</title>
     <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
     <link rel="stylesheet" type="text/css" href="css/line-awesome.css" />
     <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
@@ -18,11 +18,18 @@
     <!--div id="splashContainer" class="ShellOverlay"> <div class="comonTable"> <div class="comonTableCell"> <div class="Intro_button" id="initLaunchBtn"> <img src="./images/shell/launch_btn.png" alt="launch"> </div> <p class="intro_txt" id="intro_txt">
 			Click the icon to launch the course. </p> </div> </div> </div-->
     <!--//initialLaunch -->
+<div class="deviceChange">   
+<div class="rotate-message-content">
+    <div class="rotate-icon">📱</div>
+    <h2>Please Rotate Your Phone</h2>
+    <p>This page works best in landscape mode.<br>Please rotate your device to continue.</p>
+</div>
+</div> 
     <div id="f_wrapper">
         <!-- preloader start -->
         <div id="f_preloader_wrapper">
            <div class="f_loaderImage" id="f_pageLoaderImg">
-                        <div class='loading'>
+                        <!-- <div class='loading'>
                             <div class='ball'></div>
                             <div class='ball'></div>
                             <div class='ball'></div>
@@ -37,7 +44,9 @@
                                     </textPath>
                                 </text>
                             </svg>
-                        </div>
+                        </div> -->
+
+                        <span class="loader"></span>
                     </div>
         </div>
         <!-- preloader end -->
@@ -55,41 +64,53 @@
                     <p>Copyright © 2026 Macmillan Education India Private Limited. All rights reserved.</p>
                 </div> -->
                   <div id="f_companyLogo_main">
-                <img tabindex="-1" alt="e y logo" src="./assets/images/logo.png" />
+               <a href="https://macmillaneducation.in/" target="_blank"><img tabindex="-1" alt="e y logo" src="./assets/images/logo.png" /></a> 
             </div> 
+            <button id="full-screen" class="full-screen fullScreen" onclick="toggleFullscreen(this)" data-tooltip="Fullscreen"></button>
             </div>
             <div id="intro">
+                  <video autoplay muted loop playsinline src="assets/video/video_1.mp4"></video>
                 <div id="intro-text">
+                    <div id="intro-btns">
+                        <button data-tooltip="Music" class="music mute"></button>
+                        <button data-tooltip="Information" data-popup="introPopup-1" class="introInfo"></button>
+                    </div>
                     <div id="intro-header">
-                        <div class="left-char"></div>
-                        <div class="intro-text-content">
-                      
-								 <h1 tabindex="-1" aria-label="Course Title goes here">
-                                <span class="shape-1">MATHS</span> <span class="shape-2">SIMULATION</span>
+                        <!-- <div class="left-char"></div> -->
+                        <div class="intro-text-content">                      
+								 <h1 class="intro-header-container" tabindex="-1" aria-label="Course Title goes here">
+                                Numeracy<br/><span>Simulation</span>
                             </h1>
-                        <div id="Ip1">
-                            <p tabindex="0"> Area & Perimeter </p>
-                        </div>
-                        <!--  <div id="Ip2">
-								<p tabindex='-1' class="i-text">This course contains audio. To optimize your learning
-								    experience, adjust the volume to a suitable level now.</p>
-								    <p aria-label="Select Start to begin." tabindex='-1'>Select Start to begin.</p>
-								</div> -->
+                       <div class='instruction'></div>
+
                         <div id="intro-button">
-                            <button type="button" id="f_launchBtn"></button>
+                            <button type="button" id="f_launchBtn" data-tooltip="Play"></button>
                         </div>
                         </div>
                         <!--<p  tabindex='0' id="p2"></p>-->
-                        <div class="right-char"></div>
+                        <!-- <div class="right-char"></div> -->
                     </div>
                 </div>
             </div>
-              <audio id='audio_src' loop>
-					<!-- <source src="./assets/audios/BG.mp3" type='audio/mpeg'> -->
-					</audio>
+
+           <!--  <div id="introPopup">                
+                <div class="popup-content">
+                    <button class="introPopAudio mute" onclick="togglePopAudio(this, 'assets/audios/info_audio.mp3')"></button>
+                    <button class="introPopclose" data-tooltip="Close" onClick="closePopup('introPopup')"></button>
+                    <img src="assets/images/home_info.png" alt="">
+                </div>
+            </div> -->
+
+              <audio id='audio_src' autoplay loop>
+					<source  src="./assets/audios/BG.mp3" type='audio/mpeg'>
+					    </audio>
                     <audio id="simulationAudio">
                         <source src="" type="audio/mpeg">
                     </audio>
+                    <audio id="popupAudio">
+                        <source src="" type="audio/mpeg">
+                    </audio>
+                    
             <!--  <div class='btn_container'>
 					<button aria-label='Please click the arrow button to launch the course.' class='playButton'>
 					    <label class='play-inst' aria-label='Please click the arrow button to launch the course.'>Please click the arrow button to <br>launch the course.
@@ -123,17 +144,36 @@
 				   </div>
 				</div>
 				-->
+                <div id="introPopup-1">                
+                <div class="popup-content">
+                    <button class="introPopAudio mute" onclick="togglePopAudio(this, 'assets/audios/info_audio.mp3')"></button>
+                    <button class="introPopclose" data-tooltip="Close" onClick="closePopup('introPopup-1')"></button>
+                    <img src="assets/images/home_info.png" alt="">
+                </div>
+            </div>
         <div class="hideMain">
+             
             <!-- header start -->
             <div id="f_header">
-                <div id="f_companyLogo">
-                    <div class="logo-bg-patch">
-                        <img tabindex="0" alt="e y logo" src="./assets/images/logo.png" />
-                    </div>
+                <div class="header-container">
+                 <div class="nav_btns">
+                <button onClick="goHome(appState.pageCount)" class="home_btn" data-tooltip="Home"></button>
+                <button class="music playing" data-tooltip="Music"></button>
+                <button class="introInfo" data-tooltip="Information"></button>
+                <button class="playPause" data-tooltip="Pause" onClick="playPauseSimulation(this)"></button>
                 </div>
-                <div id="f_courseTitle">
+                 <div id="f_courseTitle">
                     <p tabindex="0"></p>
                 </div>
+                <div class="right-nav">
+                <div id="f_companyLogo">
+                    <div class="logo-bg-patch">
+                        <a href="https://macmillaneducation.in/" target="_blank"><img tabindex="0" alt="e y logo" src="./assets/images/logo.png" /></a>
+                    </div>
+                </div>
+                <button id="full-screen" class="full-screen fScreen fullScreen" onclick="toggleFullscreen(this)" data-tooltip="Fullscreen"></button>
+                </div>
+               </div>
             </div>
             <!-- header end -->
             <!-- content start -->
@@ -153,7 +193,8 @@
                 <!-- preloader start -->
                 <div id="f_preloader_page">
                     <div class="f_loaderImage" id="f_pageLoaderImg">
-                        <div class='loading'>
+                        <span class="loader"></span>
+                        <!-- <div class='loading'>
                             <div class='ball'></div>
                             <div class='ball'></div>
                             <div class='ball'></div>
@@ -168,7 +209,7 @@
                                     </textPath>
                                 </text>
                             </svg>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- menu end -->
@@ -442,6 +483,7 @@
                 </div>
 
             </div>
+         
             <!-- footer end-->
             <!--div id="path">module/ page</div-->
             <div id="f_dummyVideoHolder" aria-hidden="true">
@@ -462,6 +504,9 @@
             <audio id="customeAudio" aria-hidden="true"></audio>
             <audio id="landingPageAudio" aria-hidden="true"></audio>
         </div>
+           <footer>
+                <p>Copyright @2026 Macmillan Education India Private Limited. All rights reserved.</p>
+            </footer> 
       
         <!-- <div id="resumePlayBlock">
 				<div class="outer">
@@ -474,6 +519,9 @@
     </div>
     <!-- wrapper end -->
     <!-- js file -->
+     <script>
+        window.appState = {pageCount: 0};
+     </script>
     <script type="text/javascript" src="./libs/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="./libs/jquery-ui.js"></script>
     <script type="text/javascript" src="./libs/jquery.ui.touch-punch.min.js"></script>
@@ -502,6 +550,15 @@
     <script src="./js/templates/js/jquery-asAccordion.js"></script>
     <!-- SCORM Init-->
     <script type="text/javascript">
+                window.addEventListener("load", () => {
+            const audio = document.getElementById("audio_src");
+
+            if (sessionStorage.getItem("stopAudio")) {
+                audio.pause();
+                audio.currentTime = 0;
+                sessionStorage.removeItem("stopAudio");
+            }
+        });
         var isScorm = true;
         			var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
         			if (isScorm) {
@@ -512,48 +569,247 @@
         			  document.getElementById("f_wrapper").style.transformOrigin = "top left";
         			}
         			// ----------------- Resize Functionality ------------------------
-        			/*	window.onload = function () {
-        			          setTimeout(fnResize, 150);
-        			      }
-        			      window.onresize = function () {
-        			          setTimeout(fnResize, 150);
-        			      }
+        				// window.onload = function () {
+        			    //       setTimeout(fnResize, 150);
+        			    //   }
+        			    //   window.onresize = function () {
+        			    //       setTimeout(fnResize, 150);
+        			    //   }
         			
-        			      function fnResize() {
-        			          activityScaleFn();
-        			          document.getElementById("f_wrapper").style.transform = "scale( "+activityScaleX+")";
-        			          if(isIE11) {
-        			              $('body').css({'display':'block'})
-        			              document.getElementById("f_wrapper").style.transformOrigin = "top left";
-        			          }
-        			          //document.getElementById("f_wrapper").style.transformOrigin = "top left";
-        			      }
+        			    //   function fnResize() {
+        			    //       activityScaleFn();
+        			    //       document.getElementById("f_wrapper").style.transform = "scale( "+activityScaleX+")";
+        			    //       if(isIE11) {
+        			    //           $('body').css({'display':'block'})
+        			    //           document.getElementById("f_wrapper").style.transformOrigin = "top left";
+        			    //       }
+        			    //       //document.getElementById("f_wrapper").style.transformOrigin = "top left";
+        			    //   }
         			
-        			      function activityScaleFn() {
-        			          var winWidth = $(window).outerWidth(); //document.getElementById('f_wrapper').offsetWidth;
-        			          var winHight = $(window).outerHeight();
-        			          var pageWidth = 1366
-        			          var pageHeight = 768
+        			    //   function activityScaleFn() {
+        			    //       var winWidth = $(window).outerWidth(); //document.getElementById('f_wrapper').offsetWidth;
+        			    //       var winHight = $(window).outerHeight();
+        			    //       var pageWidth = 1366
+        			    //       var pageHeight = 768
         			
-        			          activityScaleX = Math.min(winWidth / pageWidth);
-        			          activityScaleY = Math.min(winHight / pageHeight);
-        			          if (activityScaleX > 1) {
-        			              activityScaleX = 1;
-        			          }
-        			          if (activityScaleY > 1) {
-        			              activityScaleY = 1;
-        			          }
-        			          scaleTo = (winWidth == pageWidth) ? activityScaleY : activityScaleX;
-        			          scaleTo = (winWidth < pageWidth) ? activityScaleX : activityScaleY;
-        			          scaleTo = (winWidth > pageHeight) ? activityScaleY : activityScaleX;
-        			          //console.log("winWidth::: ", winWidth, $("#f_wrapper").outerWidth());
+        			    //       activityScaleX = Math.min(winWidth / pageWidth);
+        			    //       activityScaleY = Math.min(winHight / pageHeight);
+        			    //       if (activityScaleX > 1) {
+        			    //           activityScaleX = 1;
+        			    //       }
+        			    //       if (activityScaleY > 1) {
+        			    //           activityScaleY = 1;
+        			    //       }
+        			    //       scaleTo = (winWidth == pageWidth) ? activityScaleY : activityScaleX;
+        			    //       scaleTo = (winWidth < pageWidth) ? activityScaleX : activityScaleY;
+        			    //       scaleTo = (winWidth > pageHeight) ? activityScaleY : activityScaleX;
+        			    //       //console.log("winWidth::: ", winWidth, $("#f_wrapper").outerWidth());
         			          //console.log(' >>>  	',activityScaleY, scaleTo)
-        			      }*/
+        			    //   }
         			//-----------------
+    </script>
+    <script>
+        
+
+// Wait until DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+
+//simulation audio part
+
+
+
+    $('.introInfo').attr('data-popup', 'introPopup-1');
+    
+    document.querySelectorAll(".introInfo").forEach(btn => {
+        btn.addEventListener("click", function (event) {
+            const el = event.currentTarget;
+            console.log(el, "working fine");
+            //-------global info audio mute--------       
+            
+
+            pauseSimulationAudio();
+
+        
+            //--------------------------
+            // Get popup ID from button
+            const popupId = el.getAttribute('data-popup');
+            console.log(popupId, "dis;")
+
+            // Hide all other popups
+            document.querySelectorAll('.introPopup').forEach(p => {
+                p.style.display = 'none';
+                p.style.opacity = '0';
+            });
+
+            // Show the popup
+            const popupEl = document.getElementById(popupId);
+            if (popupEl) {
+                popupEl.style.display = 'flex';
+                popupEl.style.opacity = '1';
+            }
+
+            // Reset audio buttons
+            $(".introPopAudio").removeClass('playing').addClass('mute');
+
+            // Optional click sound
+            if (typeof playClickThen === 'function') playClickThen();
+        });
+    });
+});
+
+//simulation Audio part
+ 
+
+
+function closePopup(ldx){
+    // console.log("its ");
+
+    playClickThen();
+    document.getElementById(ldx).style.display = 'none';
+    let audio = document.getElementById("popupAudio");
+    if(audio.src){
+    audio.pause();
+    audio.currentTime = 0;
+    }    
+    resumeSimulationAudio();
+    
+}
+
+
+
+var clickSound = new Audio("assets/audios/click.mp3");
+
+let clickLocked = false;
+
+
+/* document.querySelectorAll(".music").addEventListener("click", function (event) {
+    const el = event.currentTarget;
+    playClickThen();
+    toggleAudio(el);
+}); */
+document.querySelectorAll(".music").forEach(btn => {
+    btn.addEventListener("click", function (event) {
+        const el = event.currentTarget;
+        playClickThen();
+        toggleAudio(el);
+    });
+});
+
+function togglePopAudio(el, src) {
+    const audio = document.getElementById("popupAudio");
+    playClickThen();
+
+    function setState(state) {
+        el.classList.remove("mute", "playing");
+        el.classList.add(state);
+    }
+
+    if (!audio.src || audio.src !== new URL(src, document.baseURI).href) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.onended = null;
+
+        audio.src = src;
+        audio.load();
+        audio.muted = false;
+        audio.currentTime = 0;
+        audio.play();
+        setState("playing");
+
+        audio.onended = () => setState("mute");
+        return;
+    }
+
+    if (audio.paused) {
+        audio.play();
+        setState("playing");
+
+        audio.onended = () => setState("mute");
+    } else {
+        audio.pause();
+        audio.currentTime = 0;
+        setState("mute");
+
+        audio.onended = null;
+    }
+}
+
+function playClickThen() {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+}
+const audio = document.getElementById("audio_src");
+audio.pause(); 
+function toggleAudio(el) {
+    const audio = document.getElementById("audio_src");
+    audio.volume = 0.6;
+
+    if (audio.paused) {
+        audio.muted = false;
+        audio.play();
+        el.classList.replace("mute", "playing");
+         _controller._globalMusicPlaying = true;
+    } else {
+        audio.pause();        
+        el.classList.replace("playing", "mute");
+         _controller._globalMusicPlaying = false;
+        
+    }
+}
+
+// function closeIntroPop(selector) {
+//     console.log(selector, "slector")
+//     if (!selector.startsWith('#') && !selector.startsWith('.')) {
+//         selector = '#' + selector;
+//     }
+
+//     const audio = document.getElementById('popupAudio');
+//     if (audio) {
+//         audio.pause();
+//         audio.currentTime = 0;
+//     }
+//     resumeSimulationAudio();
+//     $(selector).hide();
+// }
+
+
+/* 
+function  globalAudioPlay(ldx){
+    // console.log("its ");
+    const el = event.currentTarget;
+    console.log(el, "working fine");
+     
+    const globalAudio = document.getElementById("audio_src");
+    globalAudio.volume = 0.6;
+    if (globalAudio) {
+        globalAudio.muted = false;
+        globalAudio.play();
+        el.classList.replace("mute", "playing");  
+        
+    }
+
+}
+    function globalAudioPause(ldx) {
+        // console.log("its ");
+        const el = event.currentTarget;
+        console.log(el, "working fine");
+
+        const globalAudio = document.getElementById("audio_src");
+        globalAudio.volume = 0.6;
+        if (globalAudio) {
+            globalAudio.muted = true;
+            globalAudio.pause();
+            el.classList.replace("playing", "mute");
+
+
+        }
+    } */
+
     </script>
     <script type="text/javascript" src="./js/templates/js/page_plugin.js"></script>
     <script type="text/javascript" src="./js/templates/js/popup.js"></script>
     <script type="text/javascript" src="./js/Main.js"></script>
 </body>
+
 
 </html>

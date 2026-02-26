@@ -164,7 +164,7 @@ function addSectionData() {
           <div class="popup-content modal-box">
             <h2 class="modal-title">Oops!</h2>
             <div class="modal-message">
-              <p>If you leave the fun game then you have to start from beginning.</p>
+              <p>If you leave the Memory game then you have to start from beginning.</p>
               <p class="modal-question">Are you sure you want to leave?</p>
             </div>
             <div class="modal-buttons">
@@ -223,17 +223,33 @@ function addSectionData() {
 
 /* ---------- Build & shuffle deck ---------- */
 function memBuildDeck(clockItems) {
-  var deck = [];
+  var topRow = [];
+  var bottomRow = [];
+  // var deck = [];
   clockItems.forEach(function (item, idx) {
-    deck.push($.extend({}, item, { uid: "a-" + idx }));
-    deck.push($.extend({}, item, { uid: "b-" + idx }));
+    topRow.push($.extend({}, item, {
+      uid: "top-" + idx,
+      row: "top"
+    }));
   });
-  // Fisher-Yates shuffle
-  for (var i = deck.length - 1; i > 0; i--) {
+  // Bottom row = copy then shuffle
+  bottomRow = clockItems.map(function (item, idx) {
+    return $.extend({}, item, {
+      uid: "bottom-" + idx,
+      row: "bottom"
+    });
+  });
+
+  // Shuffle only bottom row
+  for (var i = bottomRow.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
-    var t = deck[i]; deck[i] = deck[j]; deck[j] = t;
+    var t = bottomRow[i];
+    bottomRow[i] = bottomRow[j];
+    bottomRow[j] = t;
   }
-  memCards = deck;
+
+  // Combine rows (top first, bottom next)
+  memCards = topRow.concat(bottomRow);
   memFlipped = [];
   memMatched = 0;
   memLock = false;
@@ -242,14 +258,17 @@ function memBuildDeck(clockItems) {
 
 /* ---------- Generate all card HTML ---------- */
 function memGetGridHTML() {
-  return memCards.map(function (card) {
+  return memCards.map(function (card, index) {
+
+    // First 5 = top row, next 5 = bottom row
+    const rowType = index < 5 ? "top" : "bottom";
+
     return `
-      <div class="mem-card" data-uid="${card.uid}" data-id="${card.id}">
+      <div class="mem-card" data-uid="${card.uid}" data-id="${card.id}" data-row="${rowType}">
         <div class="card-inner">
           <div class="card-face card-back">${memMakeSwirl()}</div>
           <div class="card-face card-front">
             <img src="${card.img}" alt="${card.label}" class="clock-img">
-            <div class="time-label">${card.label}</div>
           </div>
         </div>
       </div>`;
@@ -276,24 +295,45 @@ function memOnCardClick($card) {
   }
 }
 
+function addMatchStars($card) {
+
+  const starHTML = `
+    <img src="${_pageData.sections[sectionCnt - 1].star}" class="star star-top">
+    <img src="${_pageData.sections[sectionCnt - 1].star}" class="star star-bottom">
+  `;
+
+  $card.append(starHTML);
+
+  // Remove stars after gif duration
+  setTimeout(function () {
+    $card.find(".star").remove();
+  }, 8000);
+}
+
 
 /* ---------- Match check ---------- */
 function memCheckMatch() {
   var $a = memFlipped[0];
   var $b = memFlipped[1];
 
-  if ($a.data("id") === $b.data("id")) {
+  var sameId = $a.data("id") === $b.data("id");
+  var differentRows = $a.data("row") !== $b.data("row");
+
+  if (sameId && differentRows) {
     // Correct match
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
 
     setTimeout(function () {
       $a.addClass("matched").removeClass("flipped");
       $b.addClass("matched").removeClass("flipped");
+
+      addMatchStars($a);
+      addMatchStars($b);
       memMatched++;
       memFlipped = [];
       memLock = false;
 
-      if (memMatched === _pageData.sections[sectionCnt - 1].content.numberObjects.length) {
+      if (memMatched === 5) {
         setTimeout(function () {
           playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
           showEndAnimations();
@@ -328,18 +368,7 @@ function memRerenderGrid() {
 /* ---------- Card back swirl SVG ---------- */
 function memMakeSwirl() {
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" class="swirl-svg">
-      <g opacity="0.5">
-        <path d="M50,65 C30,50 20,25 50,15 C80,25 70,50 50,65Z" fill="#a8d87c"/>
-        <path d="M50,65 C70,50 95,60 85,90 C70,110 50,90 50,65Z" fill="#a8d87c"/>
-        <path d="M50,65 C30,80 5,70 15,40 C30,20 50,40 50,65Z" fill="#a8d87c"/>
-        <path d="M50,65 C50,90 30,110 15,90 C5,60 30,50 50,65Z" fill="#b4e086"/>
-        <path d="M50,65 C70,80 95,90 85,110 C70,130 50,100 50,65Z" fill="#b4e086"/>
-        <path d="M50,65 C60,40 85,30 90,55 C95,80 70,80 50,65Z" fill="#b4e086"/>
-        <path d="M50,65 C40,40 15,30 10,55 C5,80 30,80 50,65Z" fill="#a8d87c"/>
-      </g>
-      <circle cx="50" cy="65" r="8" fill="#c8eea0" opacity="0.65"/>
-    </svg>`;
+    <img src="${_pageData.sections[sectionCnt - 1].card_front}" alt="card front" />`;
 }
 
 

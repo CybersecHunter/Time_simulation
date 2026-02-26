@@ -25,7 +25,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   left: 0;
   top: 0;
   text-align: left;
-  color: #FFF;
+  color: #819da7;
 }
 
 .dark {
@@ -86,11 +86,44 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
   font-size: 7vh;
-  color: #000;
+  color: #819da7;
   justify-content: center;
   text-align: center;
   margin-bottom: 20px;
   line-height: 70px;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  top: 3px;
+  margin-left: 5px;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    top: 0px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio:disabled {
+  pointer-events: none;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio.playing {
+  background: url(../images/music.png) no-repeat;
+  background-size: contain;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio.paused {
+  background: url(../images/pause.png) no-repeat;
+  background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .confetti {
   position: fixed;
@@ -181,14 +214,115 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   color: #000;
   overflow: visible;
 }
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  top: 3px;
+  margin-left: 5px;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    top: 0px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio:disabled {
+  pointer-events: none;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio.playing {
+  background: url(../images/music.png) no-repeat;
+  background-size: contain;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio.paused {
+  background: url(../images/pause.png) no-repeat;
+  background-size: contain;
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 15px;
+  color: #819da7;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  top: 3px;
+  margin-left: 5px;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    top: 0px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio:disabled {
+  pointer-events: none;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio.playing {
+  background: url(../images/music.png) no-repeat;
+  background-size: contain;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio.paused {
+  background: url(../images/pause.png) no-repeat;
+  background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message {
+  color: #819da7;
   font-size: 1.6rem;
   line-height: 1.4;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  top: 3px;
+  margin-left: 5px;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    top: 0px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio:disabled {
+  pointer-events: none;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio.playing {
+  background: url(../images/music.png) no-repeat;
+  background-size: contain;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio.paused {
+  background: url(../images/pause.png) no-repeat;
+  background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
   /* CLOCK */
@@ -293,15 +427,15 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
   width: 24%;
-  height: 27px;
-  margin-left: -112px;
+  height: 36px;
+  margin-left: -102px;
   z-index: 8;
   margin-bottom: -13px;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-guide-img {
-  width: 20px;
-  height: 28%;
-  margin-left: -11px;
+  width: 27px;
+  height: 27%;
+  margin-left: -14px;
   z-index: 7;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-guide {
@@ -342,13 +476,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .placed {
   border: none;
-  background: transparent;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .drop-slot {
   position: absolute;
   width: 60px;
   height: 60px;
-  border: 2px dashed #ff6b6b;
   border-radius: 50%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
@@ -392,16 +524,17 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   cursor: grabbing;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-hand-img {
-  width: 28px;
-  height: 24%;
-  margin-left: -14px;
+  width: 35px;
+  height: 22%;
+  margin-left: -19px;
+  margin-bottom: 5px;
   z-index: 11;
   transform: rotate(270deg);
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-hand-img {
-  width: 20px;
-  height: 28%;
-  margin-left: -10px;
+  width: 30px;
+  height: 27%;
+  margin-left: -15px;
   z-index: 10;
   transform: rotate(0deg);
 }
@@ -409,11 +542,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   position: absolute;
   width: 18px;
   height: 18px;
-  background: #f0a800;
+  background: #000;
   border: 3px solid #333;
   border-radius: 50%;
-  left: 50%;
-  top: 50%;
+  left: 49.7%;
+  top: 49%;
   transform: translate(-50%, -50%);
   z-index: 20;
 }
@@ -523,7 +656,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left--wide {
   width: 100%;
   flex-direction: column;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title {
   font-size: 2.2rem;
@@ -532,9 +665,42 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   text-align: center;
   margin-bottom: 16px;
 }
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  top: 3px;
+  margin-left: 5px;
+  background-position: center !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    max-width: 15px;
+    top: 0px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio:disabled {
+  pointer-events: none;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio.playing {
+  background: url(../images/music.png) no-repeat;
+  background-size: contain;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio.paused {
+  background: url(../images/pause.png) no-repeat;
+  background-size: contain;
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper--large {
-  width: 380px;
-  height: 380px;
+  width: 350px;
+  height: 350px;
   position: relative;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .sparkle-wrap {
