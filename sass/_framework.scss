@@ -1573,11 +1573,16 @@ footer {
                cursor: pointer;
                transition: transform 0.5s ease-in-out;
 
+               @include tablet-landscape {
+                    top: 30px;
+                    left: 75px;
+               }
+
                @include mobile-landscape {
+                    top: 30px;
                     width: 20px;
                     height: 20px;
-                    top: 20px;
-                    left: 45px;
+                    left: 60px;
                }
 
                &:hover {
@@ -1585,12 +1590,12 @@ footer {
                }
 
                &.playing {
-                    background: url(../assets/images/sound.png) no-repeat;
+                    background: url(../images/music.png) no-repeat;
                     background-size: contain;
                }
 
                &.mute {
-                    background: url(../assets/images/sound_pause.png) no-repeat;
+                    background: url(../images/pause.png) no-repeat;
                     background-size: contain;
                }
           }

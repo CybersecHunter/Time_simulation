@@ -488,7 +488,7 @@
 							height: 25vh;
 							// aspect-ratio: 1 / 1.3; // 🔥 This makes it responsive & square
 							perspective: 1000px;
-							cursor: url("../images/hand.png"), pointer;
+							cursor: pointer;
 							position: relative;
 
 							.card-inner {

@@ -93,13 +93,12 @@ function addSectionData() {
       let instText = '';
 
       instText += `
-        <p tabindex="0" id="inst_1" 
-        aria-label="${removeTags(sec.iText[1])}">
-        ${sec.iText[1]}
         <button class="wrapTextaudio playing" id="wrapTextaudio_${1}"
         onclick="replayLastAudio(this, '${sec.content.replayAudios[1]}')">
         </button>
-        </p>`;
+        <p tabindex="0" id="inst_1" 
+        aria-label="${removeTags(sec.iText[1])}">
+        ${sec.iText[1]}</p>`;
       // }
 
       // ---- Header content ---- (UNCHANGED)
@@ -188,9 +187,20 @@ function addSectionData() {
                 initClockScene4(mountEl, sec);
                 playBtnSounds(sec.content.replayAudios[3], function () {
 
-                  // ✅ Scene 5 Numbers
-                  initNumberArrangeScene(mountEl, sec);
+                  $("#scenetext6").fadeOut(250, function () {
 
+                    $(this).html((sec.iText[7] || "") + `<button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>`).fadeIn(250);
+                    // SECOND LINE AUDIO
+                    playBtnSounds(sec.content.replayAudios[22], function () {
+                      // ✅ Scene 5 Numbers
+                      initNumberArrangeScene(mountEl, sec);
+                    });
+                  });
                 });
 
               });
@@ -467,7 +477,7 @@ function initClockScene4(mountEl, sec) {
 
       <div class="clock-right">
 
-          <div class="clock-title">
+          <div class="clock-title" id="scenetext6">
               ${sec.iText[6] || ""}<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
@@ -476,7 +486,7 @@ function initClockScene4(mountEl, sec) {
               </button>
           </div>
 
-          <!-- <div class="clock-message">
+          <!-- <div class="clock-message" id="scenetext7">
               ${sec.iText[7] || ""}
           </div> -->
 
@@ -854,7 +864,7 @@ function initHandIntroScene(mountEl, sec) {
       </div>
 
       <div class="clock-right">
-          <div class="clock-title">
+          <div class="clock-title" id="handIntroText">
               ${sec.iText[10] || "Now let's add the clock hands."}<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
@@ -870,16 +880,29 @@ function initHandIntroScene(mountEl, sec) {
                   <img class="hand-preview minute-preview" src="${minuteImg}" alt="minute hand"/>
               </div>
           </div>
-          <div class="clock-message">
-              ${sec.iText[11] || "Drag them onto the clock!"}
-          </div>
       </div>
 
   </div>
   `;
 
+
   playBtnSounds(sec.content.replayAudios[6], function () {
-    initHourHandDragScene(mountEl, sec);
+
+    $("#handIntroText").fadeOut(250, function () {
+
+      $(this).html((sec.iText[11] || "Drag them onto the clock!") + `<button
+        class='wrapTextaudio playing'
+        id='wrapTextaudio_2'
+        data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+        onClick="replayLastAudio(this)">
+      </button>`).fadeIn(250);
+
+      // SECOND TEXT AUDIO
+      playBtnSounds(sec.content.replayAudios[23], function () {
+        initHourHandDragScene(mountEl, sec);
+      });
+
+    });
   });
 }
 
@@ -1209,7 +1232,7 @@ function initHandScene(mountEl, sec, taskIdx) {
                    <!-- Minute hand image (fixed first, draggable after hour placed) -->
                    <img class="clock-hand-img minute-hand-img" id="minuteHandImg"
                         src="${minuteHandImg}"
-                        style="transform:rotate(${task.minuteAngle}deg); opacity:0.3; pointer-events:none;"
+                        style="transform:rotate(${task.minuteAngle}deg); pointer-events:none;"
                         alt="minute hand"/>
 
                    <!-- Hour hand image (draggable first) -->
@@ -1507,9 +1530,9 @@ function _onHandSuccess(mountEl, sec, task) {
 
 function initCelebrationScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockCompleteImg || "";
-  const hourImg = sec.content.hands.hour || "";
-  const minuteHandImg = sec.content.hands.minute || "";
+  // const endClockImg = sec.content.endClock || "";
+  // const hourImg = sec.content.hands.hour || "";
+  // const minuteHandImg = sec.content.hands.minute || "";
 
   mountEl.innerHTML = `
 
@@ -1525,19 +1548,7 @@ function initCelebrationScene(mountEl, sec) {
               </button>
           </div>
           <div class="clock-wrapper clock-wrapper--large">
-              <div class="clock-face"
-                   style="background-image:url('${clockImg}')">
-                   <div class="clock-center"></div>
-                   ${_buildClockNumbersHTML()}  
-                   <img class="clock-hand-img hour-hand-img"
-                        src="${hourImg}"
-                        style="transform:rotate(270deg); pointer-events:none;"
-                        alt="hour hand placed"/>
-                   <img class="clock-hand-img minute-hand-img" id="minuteHandImg"
-                        src="${minuteHandImg}"
-                        style="transform:rotate(0deg); pointer-events:none;"
-                        alt="minute hand"/>
-              </div>
+              <img class="end-clock-img" src="${_pageData.sections[sectionCnt - 1].endClock}" alt="completed clock"/>
               <div class="sparkle-wrap">
                   <span class="sparkle-star">✦</span>
                   <span class="sparkle-star">✦</span>
@@ -1639,7 +1650,7 @@ function enableAll() {
   playClickThen();
   window.enableClockControls();
   // window.enableIdleStart();
-  $(".home_btn, .music,.introInfo,#full-screen, .wrapTextaudio").prop("disabled", false);
+  $(".home_btn, .music,.introInfo, .wrapTextaudio").prop("disabled", false);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
     audio.muted = false;
@@ -1654,7 +1665,7 @@ function disableAll() {
   playClickThen();
   window.disableClockControls();
   // window.disableIdleStart();
-  $(".home_btn, .music,.introInfo,#full-screen,.wrapTextaudio").prop("disabled", true);
+  $(".home_btn, .music,.introInfo,.wrapTextaudio").prop("disabled", true);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
     audio.pause();

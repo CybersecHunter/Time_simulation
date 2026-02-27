@@ -293,7 +293,7 @@ function quizOnOptionClick($btn, question) {
             quizLoadQuestion(quizCurrentIndex);
           }, 800);
         }
-      },4000)
+      },2000)
     });
 
   } else {

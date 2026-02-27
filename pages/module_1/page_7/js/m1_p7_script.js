@@ -307,7 +307,7 @@ function addMatchStars($card) {
   // Remove stars after gif duration
   setTimeout(function () {
     $card.find(".star").remove();
-  }, 8000);
+  }, 3000);
 }
 
 
@@ -331,13 +331,18 @@ function memCheckMatch() {
       addMatchStars($b);
       memMatched++;
       memFlipped = [];
-      memLock = false;
+      memLock = true;
 
       if (memMatched === 5) {
         setTimeout(function () {
           playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
           showEndAnimations();
         }, 500);
+         } else {
+        // 🔓 Unlock after 3 seconds
+        setTimeout(function () {
+          memLock = false;
+        }, 3000);
       }
     }, 400);
 

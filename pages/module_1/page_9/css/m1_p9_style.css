@@ -25,7 +25,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   left: 0;
   top: 0;
   text-align: left;
-  color: #819da7;
+  color: #000;
 }
 
 .dark {
@@ -86,7 +86,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
   font-size: 7vh;
-  color: #819da7;
+  color: #000;
   justify-content: center;
   text-align: center;
   margin-bottom: 20px;
@@ -153,11 +153,10 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   font-size: 1rem;
   padding-bottom: 1%;
-  height: 450px;
   width: 100%;
   padding-left: 2%;
   padding-right: 2%;
-  max-height: 450px;
+  max-height: calc(100% - 40px);
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animations {
   position: absolute;
@@ -249,9 +248,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: normal;
   margin-bottom: 15px;
-  color: #819da7;
+  color: #000;
+  text-align: center;
+  width: 80%;
+  line-height: 6vh;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
   position: relative;
@@ -287,7 +289,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message {
-  color: #819da7;
+  color: #000;
   font-size: 1.6rem;
   line-height: 1.4;
 }
@@ -407,7 +409,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-circle {
   font-size: 48px;
-  font-weight: bold;
+  font-weight: normal;
   color: #000;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
@@ -458,7 +460,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   justify-content: center;
   align-items: center;
   font-size: 3vw;
-  font-weight: bold;
+  font-weight: normal;
   cursor: grab;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -660,7 +662,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title {
   font-size: 2.2rem;
-  font-weight: bold;
+  font-weight: normal;
   color: #444;
   text-align: center;
   margin-bottom: 16px;
@@ -699,9 +701,13 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper--large {
-  width: 350px;
-  height: 350px;
+  width: auto;
+  height: 50vh;
   position: relative;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper--large img {
+  height: 100%;
+  width: 100%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .sparkle-wrap {
   position: absolute;
@@ -830,7 +836,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.85);
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
   box-shadow: 0 2px 19px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -863,7 +869,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.85);
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
   box-shadow: 0 2px 19px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -904,7 +910,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .popup .popup-wrap .popup-text p {
   font-size: 28px;
-  font-weight: bold;
+  font-weight: normal;
   color: #fff;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .greetingsPop {
@@ -949,7 +955,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .greetingsPop .popup-wrap .popup-text p {
   font-size: 28px;
-  font-weight: bold;
+  font-weight: normal;
   color: #fff;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style #introPopup-7 {
@@ -1021,7 +1027,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.85);
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
   box-shadow: 0 2px 19px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.3);

@@ -33,8 +33,8 @@
         "A <span class='red'>clock</span> tells us the time.",
         "<span class='red'>Oh no!</span>",
         "The numbers on the clock are missing!",
-        "Can you help the <span class='red'>clock</span> arrange the <span class='red'>numbers?</span> <br/> Drag the numbers and place them in the correct position on the clock.",
-        " ",
+        "Can you help the <span class='red'>clock</span> arrange the <span class='red'>numbers?</span>",
+        "Drag the <span class='red'>numbers</span> and place them in the correct position on the <span class='red'>clock.</span>",
         "Yay! The clock looks perfect now!",
         "",
         "Now let's add the <span class='red'>clock hands.</span>",
@@ -51,7 +51,7 @@
         "Yay! This is <span class='red'>9 o'clock</span>",
         "Let's try <span class='red'>12 o'clock</span>",
         "Great job! This is <span class='red'>12 o'clock</span>",
-        "Amazing! You built the <span class='red'>clock!</span><br/>You are a time star! "
+        "Amazing! You built the <span class='red'>clock!</span> You are a time star! "
       ],
       "endAudio": "",
       "infoImg": "pages/module_1/page_9/images/info_box.png",
@@ -63,6 +63,7 @@
       "wrongAudio": "pages/module_1/page_9/audios/wrong.mp3",
       "greatJob": "pages/module_1/page_9/audios/great_job.mp3",
       "finalAudio": "pages/module_1/page_9/audios/final.mp3",
+      "endClock":"pages/module_1/page_9/images/end_clock.png",
       "content": {
         "correctFeedback": {
           "text": "Great job!",
@@ -97,7 +98,9 @@
           "pages/module_1/page_9/audios/Scene19.mp3",
           "pages/module_1/page_9/audios/Scene2-3.mp3",
           "pages/module_1/page_9/audios/Scene8-2.mp3",
-          "pages/module_1/page_9/audios/Scene9-2.mp3"
+          "pages/module_1/page_9/audios/Scene9-2.mp3",
+          "pages/module_1/page_9/audios/Scene4-2.mp3",
+          "pages/module_1/page_9/audios/Scene7-2.mp3"
         ],
         "correctAudio": "pages/module_1/page_9/audios/correct.mp3",
         "clockImg": "pages/module_1/page_9/images/clock_bg.png",

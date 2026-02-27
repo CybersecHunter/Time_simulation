@@ -128,7 +128,7 @@
       "defaultPng": "pages/module_1/page_8/images/option_default.png",
       "correctPng": "pages/module_1/page_8/images/option_correct.png",
       "wrongPng": "pages/module_1/page_8/images/option_wrong.png",
-      "star": "pages/module_1/page_7/images/stars.gif",
+      "star": "pages/module_1/page_7/images/star.png",
       "cursor":"pages/module_1/page_7/images/hand.png",
       "content": {
         "questions": [

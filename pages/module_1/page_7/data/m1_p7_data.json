@@ -126,7 +126,7 @@
       "wrongAudio": "pages/module_1/page_7/audios/try_again.mp3",
       "finalAudio": "pages/module_1/page_7/audios/final_audio.mp3",
       "card_front" : "pages/module_1/page_7/images/car_front.png",
-      "star": "pages/module_1/page_7/images/stars.gif",
+      "star": "pages/module_1/page_7/images/star.png",
       "cursor":"pages/module_1/page_7/images/hand.png",
       "content": {
         "numberObjects": [
