@@ -12,6 +12,9 @@
     },
     {
       "src": "assets/images/main_logo.png"
+    },
+    {
+      "src": "pages/module_1/page_9/images/clock_bg.png"
     }
   ],
   "audios": [

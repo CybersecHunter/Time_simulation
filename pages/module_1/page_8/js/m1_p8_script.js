@@ -247,9 +247,9 @@ function quizOnOptionClick($btn, question) {
     $btn.addClass("correct");
 
     const starImg = `
-    <img src="${_pageData.sections[sectionCnt - 1].star}" class="option-star">
-  `;
+    <img src="${_pageData.sections[sectionCnt - 1].star}" class="option-star">`;
     $btn.append(starImg);
+    $(".option-btn").css({"cursor":"auto", "pointer-events":"none"})
 
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
     audioEnd(function () {
@@ -290,6 +290,7 @@ function quizOnOptionClick($btn, question) {
 
         } else {
           setTimeout(function () {
+            $(".option-btn").css({"cursor":"pointer", "pointer-events":"auto"})
             quizLoadQuestion(quizCurrentIndex);
           }, 800);
         }
@@ -299,7 +300,7 @@ function quizOnOptionClick($btn, question) {
   } else {
     $btn.addClass("wrong");
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
-
+    
     audioEnd(function () {
       setTimeout(function () {
         $btn.removeClass("wrong");

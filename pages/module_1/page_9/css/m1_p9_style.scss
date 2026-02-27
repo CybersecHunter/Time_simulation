@@ -16,6 +16,10 @@
 	background-color: $background-patch-color;
 }
 
+.red{
+	font-weight: normal !important;
+}
+
 #section-1 {
 	position: relative;
 	width: 100%;
@@ -71,7 +75,7 @@
 							width: 75%;
 
 							p {
-								font-size: 7vh;
+								font-size: 3rem;
 								color: #000;
 								justify-content: center;
 								text-align: center;
@@ -81,10 +85,10 @@
 
 							.wrapTextaudio {
 								position: relative;
-								width: 25px;
-								height: 25px;
-								min-width: 25px;
-								max-width: 25px;
+								width: 40px;
+								height: 40px;
+								min-width: 40px;
+								max-width: 40px;
 								cursor: pointer;
 								top: 3px;
 								margin-left: 5px;
@@ -145,8 +149,8 @@
 						/* ================= BODY ================= */
 
 						&>.body {
-							margin: 0px auto;
-							margin-top: 20px;
+							// margin: 0px auto;
+							// margin-top: 20px;
 							position: relative;
 							display: flex;
 							// flex-direction: row;
@@ -158,7 +162,7 @@
 							width: 100%;
 							padding-left: 2%;
 							padding-right: 2%;
-							max-height: calc(100% - 40px);
+							height: 100%;
 
 							.animations {
 								position: absolute;
@@ -167,7 +171,7 @@
 								&.show {
 									background: url('../images/stars.gif') no-repeat center;
 									background-size: contain;
-									z-index: 11111111;
+									z-index: 1111;
 								}
 							}
 
@@ -219,15 +223,19 @@
 									color: #000;
 									overflow: visible; // ← ADD
 
+									p{
+										text-align: center !important;
+									}
+
 									.wrapTextaudio {
 										position: relative;
-										width: 25px;
-										height: 25px;
-										min-width: 25px;
-										max-width: 25px;
+										width: 40px;
+										height: 40px;
+										min-width: 40px;
+										max-width: 40px;
 										cursor: pointer;
-										top: 3px;
-										margin-left: 5px;
+										// top: 3px;
+										// margin-left: 5px;
 										background-position: center !important;
 										background-size: contain !important;
 										background-repeat: no-repeat !important;
@@ -265,7 +273,7 @@
 								}
 
 								.clock-title {
-									font-size: 2rem;
+									font-size: 3rem;
 									font-weight: normal;
 									margin-bottom: 15px;
 									color: #000;
@@ -276,10 +284,10 @@
 
 									.wrapTextaudio {
 										position: relative;
-										width: 25px;
-										height: 25px;
-										min-width: 25px;
-										max-width: 25px;
+										width: 40px;
+										height: 40px;
+										min-width: 40px;
+										max-width: 40px;
 										cursor: pointer;
 										top: 3px;
 										margin-left: 5px;
@@ -321,15 +329,15 @@
 
 								.clock-message {
 									color: #000;
-									font-size: 1.6rem;
-									line-height: 1.4;
+									font-size: 3rem;
+									line-height: 60px;
 
 									.wrapTextaudio {
 										position: relative;
-										width: 25px;
-										height: 25px;
-										min-width: 25px;
-										max-width: 25px;
+										width: 40px;
+										height: 40px;
+										min-width: 40px;
+										max-width: 40px;
 										cursor: pointer;
 										top: 3px;
 										margin-left: 5px;
@@ -550,9 +558,9 @@
 								/* ── Clock number fixed labels (Scene 5) ── */
 								.clock-num-fixed {
 									position: absolute;
-									font-size: 3vw;
+									font-size: 3rem;
 									// font-weight: bold;
-									color: #222;
+									color: #000;
 									pointer-events: none;
 									transform: translate(-50%, -50%);
 								}
@@ -668,6 +676,7 @@
 									cursor: grab;
 									user-select: none;
 									-webkit-user-drag: none;
+									margin-bottom: 50px;
 
 									&:active {
 										cursor: grabbing;
@@ -735,16 +744,16 @@
 								.celebration-title {
 									font-size: 2.2rem;
 									font-weight: normal;
-									color: #444;
+									color: #000;
 									text-align: center;
 									margin-bottom: 16px;
 
 									.wrapTextaudio {
 										position: relative;
-										width: 25px;
-										height: 25px;
-										min-width: 25px;
-										max-width: 25px;
+										width: 40px;
+										height: 40px;
+										min-width: 40px;
+										max-width: 40px;
 										cursor: pointer;
 										top: 3px;
 										margin-left: 5px;

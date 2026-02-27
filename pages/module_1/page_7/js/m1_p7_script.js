@@ -164,7 +164,7 @@ function addSectionData() {
           <div class="popup-content modal-box">
             <h2 class="modal-title">Oops!</h2>
             <div class="modal-message">
-              <p>If you leave the Memory game then you have to start from beginning.</p>
+              <p>If you leave the memory game then you have to start from beginning.</p>
               <p class="modal-question">Are you sure you want to leave?</p>
             </div>
             <div class="modal-buttons">
@@ -324,6 +324,7 @@ function memCheckMatch() {
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
 
     setTimeout(function () {
+      $(".mem-card").css("cursor","auto");
       $a.addClass("matched").removeClass("flipped");
       $b.addClass("matched").removeClass("flipped");
 
@@ -334,6 +335,7 @@ function memCheckMatch() {
       memLock = true;
 
       if (memMatched === 5) {
+
         setTimeout(function () {
           playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
           showEndAnimations();
@@ -341,6 +343,7 @@ function memCheckMatch() {
          } else {
         // 🔓 Unlock after 3 seconds
         setTimeout(function () {
+          $(".mem-card").css("cursor","pointer");
           memLock = false;
         }, 3000);
       }
@@ -460,98 +463,6 @@ function onClickAudioHandler(e) {
   });
 }
 
-// function getRandomPattern(patterns) {
-//   if (!Array.isArray(patterns) || patterns.length === 0) return null;
-
-//   //const lastId = getLastPatternId();
-
-//   let availablePatterns = patterns;
-
-//   /* if (!isNaN(lastId) && patterns.length > 1) {
-//     availablePatterns = patterns.filter(
-//       p => p.patternId !== lastId
-//     );
-//   } */
-
-//   const selected =
-//     availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
-
-//   //saveLastPatternId(selected.patternId);
-
-//   return selected;
-// }
-
-
-
-/* ---------------- Correct Next Value ---------------- */
-// function updateCorrectNextValue() {
-//   if (!currentPattern || !currentPattern.sequence) return;
-
-//   // Get the repeating pattern (first 2 values from the sequence)
-//   const repeatingPattern = currentPattern.sequence.slice(0, 2); // ["apple", "banana"]
-
-//   // The last value filled is the last entry in dataValue
-//   const lastFilledValue = dataValue[dataValue.length - 1];  // e.g., "apple" or "banana"
-
-//   // Determine the next value based on the last filled value
-//   const nextIndex = repeatingPattern.indexOf(lastFilledValue) === 0 ? 1 : 0; // Alternate between apple and banana
-
-//   // Set the correct next value
-//   currentPattern.correctNextValue = repeatingPattern[nextIndex];
-// }
-
-
-/* ---------------- Shelf ---------------- */
-// function getShelfHTML(pattern) {
-//   let html = "";
-
-//   pattern.sequence.slice(0, 3).forEach(value => {
-//     const item = pattern.items.find(i => i.value === value);
-//     if (!item) return;
-
-//     dataValue.push(value); // Track the initial sequence (first 3 slots)
-//     html += `
-//       <div class="slot filled" data-value="${value}">
-//         <img src="${item.img}" alt="${item.value}">
-//       </div>
-//     `;
-//   });
-
-//   // Add 3 empty slots
-//   for (let i = 0; i < 3; i++) {
-//     html += `<div class="slot empty"></div>`;
-//   }
-
-//   return html;
-// }
-
-/* ---------------- Cups ---------------- */
-/* ---------------- Cups ---------------- */
-// function getCupHTML(pattern) {
-//   if (!pattern) return "";
-
-//   // clone items so original isn't modified
-//   const shuffled = [...pattern.items];
-
-//   // Fisher–Yates shuffle (true random)
-//   for (let i = shuffled.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-//   }
-
-//   // render all cups (correct + wrong mixed)
-//   return shuffled.map(item => `
-//     <div class="cupContain">
-//       <div class="round_bg">
-//         <div class="cup" data-value="${item.value}">
-//           <img src="${item.img}" alt="${item.value}">
-//         </div>
-//       </div>
-//     </div>
-//   `).join("");
-// }
-
-
 /* ---------------- Interaction ---------------- */
 $(document).on("pointerdown", ".cup", function (e) {
   e.preventDefault();
@@ -569,302 +480,6 @@ $(document).on("pointerdown", ".cup", function (e) {
   correctFeedback(this);
   fillNextSlot(selectedValue);
 });
-
-/* ---------------- Fill Logic ---------------- */
-// function fillNextSlot(value) {
-//   const $slot = $(".slot.empty").first();
-//   const item = currentPattern.items.find(i => i.value === value);
-//   const $cup = $(`.cup[data-value="${value}"]`);
-
-//   if (!$slot.length || !item || !$cup.length) return;
-
-//   $(".cup").css("pointer-events", "none");
-
-//   const wrapper = document.getElementById("f_wrapper") || document.body;
-//   const wrapperRect = wrapper.getBoundingClientRect();
-//   const scale = wrapperRect.width / wrapper.offsetWidth;
-
-//   const cupRect = $cup[0].getBoundingClientRect();
-//   const slotRect = $slot[0].getBoundingClientRect();
-
-//   // relative positions inside wrapper
-//   const startX = (cupRect.left - wrapperRect.left) / scale;
-//   const startY = (cupRect.top - wrapperRect.top) / scale;
-
-//   const endX = (slotRect.left - wrapperRect.left) / scale;
-//   const endY = (slotRect.top - wrapperRect.top) / scale;
-
-//   const $anim = $cup.find("img").clone().css({
-//     position: "absolute",
-//     left: startX,
-//     top: startY,
-//     width: cupRect.width / scale,
-//     height: cupRect.height / scale,
-//     zIndex: 9999,
-//     pointerEvents: "none"
-//   }).appendTo(wrapper);
-
-//   // animate
-//   $anim.animate({
-//     left: endX,
-//     top: endY,
-//     width: slotRect.width / scale,
-//     height: slotRect.height / scale
-//   }, 400, "swing", function () {
-
-//     $slot
-//       .removeClass("empty")
-//       .addClass("filled sparkle")
-//       .attr("data-value", value)
-//       .html(`<img src="${item.img}" alt="${item.value}">`);
-
-//     $anim.remove();
-//     setTimeout(() => $slot.removeClass("sparkle"), 600);
-
-//     dataValue.push(value);
-//     updateCorrectNextValue();
-
-//     if ($(".slot.empty").length === 0) {
-//       setTimeout(() => {
-//         showEndAnimations();
-//         playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
-//       }, 500);
-//       $(".cup").css("pointer-events", "none");
-//     } else {
-//       renderCups();
-//       $(".cup").css("pointer-events", "auto");
-//     }
-//   });
-// }
-
-
-
-/* ---------------- Feedback ---------------- */
-// function correctFeedback(cup) {
-//   cup.classList.remove("success");
-//   void cup.offsetWidth;
-//   cup.classList.add("success");
-//   playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
-// }
-
-// function wrongFeedback(cup) {
-//   cup.classList.remove("shake");   // remove first
-//   void cup.offsetWidth;            // force reflow (reset animation)
-//   cup.classList.add("shake");      // add again
-
-//   playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
-// }
-
-// function playVoice(type) {
-//   if (type === "instruction") {
-//     console.log("Look at the pattern. Tap the correct bead.");
-//   } else {
-//     console.log(type === "good-job" ? "Good job!" : "Try again!");
-//   }
-// }
-
-
-/* ---------------- Pattern Load ---------------- */
-// function loadNewPattern() {
-//   if (!patterns || !patterns.length) {
-//     console.warn("Patterns not available");
-//     return;
-//   }
-
-//   currentIndex = 0;
-//   dataValue = []; // reset instead of redeclare
-
-//   currentPattern = patterns[Math.floor(Math.random() * patterns.length)];
-
-//   $(".shelf").html(getShelfHTML(currentPattern));
-
-//   updateCorrectNextValue(); // first missing value
-//   renderCups();
-
-//   playVoice("instruction");
-
-//   setTimeout(() => {
-//     if ($(".slot.empty").length > 0) playVoice("instruction");
-//   }, 5000);
-// }
-
-
-/* ---------------- Render ---------------- */
-// function renderCups() {
-//   $(".cups").html(getCupHTML(currentPattern));
-// }
-
-
-//----------------------------------------------------------
-/* function isSameOrder(items, sequence) {
-  if (items.length !== sequence.length) return false;
-
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].value !== sequence[i]) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function shuffleItemsAvoidCorrect(items, sequence) {
-  let shuffled;
-  let attempts = 0;
-
-  do {
-    shuffled = shuffleArray(items);
-    attempts++;
-  } while (isSameOrder(shuffled, sequence) && attempts < 10);
-
-  return shuffled;
-} */
-
-
-
-// function saveLastPatternId(id) {
-//   localStorage.setItem("lastPatternId", id);
-// }
-
-// function getLastPatternId() {
-//   return Number(localStorage.getItem("lastPatternId"));
-// }
-
-
-
-// function resetCupPosition(cup) {
-//   cup.style.left = `${cup.dataset.startX}px`;
-//   cup.style.top = `${cup.dataset.startY}px`;
-// }
-
-// function enableDragAndDrop({
-//   cupsSelector,
-//   slotsSelector,
-//   onCorrectDrop,
-//   onWrongDrop,
-//   onGameCompleted
-// }) {
-//   const cups = document.querySelectorAll(cupsSelector);
-//   const slots = document.querySelectorAll(slotsSelector);
-
-//   let activeCup = null;
-//   let dragImg = null;
-//   let offsetX = 0;
-//   let offsetY = 0;
-
-//   cups.forEach(cup => {
-//     cup.addEventListener("pointerdown", startDrag);
-//   });
-
-//   function startDrag(e) {
-//     if (activeCup) return;
-//     e.preventDefault();
-//     playClickThen();
-
-//     activeCup = e.currentTarget;
-//     const img = activeCup.querySelector("img");
-
-//     // clone image
-//     dragImg = img.cloneNode(true);
-//     dragImg.style.position = "fixed";
-//     dragImg.style.width = img.offsetWidth + "px";
-//     dragImg.style.height = img.offsetHeight + "px";
-//     dragImg.style.pointerEvents = "none";
-//     dragImg.style.zIndex = "9999";
-
-//     document.body.appendChild(dragImg);
-
-//     const rect = img.getBoundingClientRect();
-//     offsetX = e.clientX - rect.left;
-//     offsetY = e.clientY - rect.top;
-
-//     moveAt(e.clientX, e.clientY);
-
-//     document.addEventListener("pointermove", onMove);
-//     document.addEventListener("pointerup", endDrag);
-//   }
-
-//   function moveAt(x, y) {
-//     dragImg.style.left = x - offsetX + "px";
-//     dragImg.style.top = y - offsetY + "px";
-//   }
-
-//   function onMove(e) {
-//     moveAt(e.clientX, e.clientY);
-//   }
-
-//   function endDrag(e) {
-//     document.removeEventListener("pointermove", onMove);
-//     document.removeEventListener("pointerup", endDrag);
-
-//     let dropped = false;
-
-//     slots.forEach(slot => {
-//       const rect = slot.getBoundingClientRect();
-
-//       if (
-//         e.clientX > rect.left &&
-//         e.clientX < rect.right &&
-//         e.clientY > rect.top &&
-//         e.clientY < rect.bottom
-//       ) {
-//         dropped = true;
-//         handleDrop(slot);
-//       }
-//     });
-
-//     const cupRef = activeCup;
-
-//     dragImg.remove();
-//     dragImg = null;
-//     activeCup = null;
-
-//     // if (!dropped && cupRef) {
-//     //   onWrongDrop?.(cupRef);
-//     // }
-//   }
-
-//   function handleDrop(slot) {
-//     if (!activeCup || slot.children.length > 0) {
-//       onWrongDrop?.(activeCup);
-//       return;
-//     }
-
-//     const cupValue = activeCup.dataset.value;
-//     const slotValue = slot.dataset.value;
-
-//     if (cupValue === slotValue) {
-//       slot.appendChild(activeCup);
-
-//       // 🔒 FULLY DISABLE FUTURE DRAG
-//       activeCup.style.pointerEvents = "none";
-//       activeCup.style.touchAction = "none";
-//       activeCup.removeEventListener("pointerdown", startDrag);
-
-//       onCorrectDrop?.(activeCup, slot);
-
-//       if (isGameCompleted(slots)) {
-//         onGameCompleted?.();
-//       }
-//     }
-
-//     else {
-//       onWrongDrop?.(activeCup);
-//     }
-//   }
-// }
-
-
-// function isGameCompleted(slots) {
-//   return [...slots].every(slot =>
-//     slot.children.length === 1 &&
-//     slot.children[0].dataset.value === slot.dataset.value
-//   );
-// }
-
-
-
-
-
 
 function stayPage() {
   playClickThen();

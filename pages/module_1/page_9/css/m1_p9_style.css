@@ -32,6 +32,10 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-color: #2e2e38;
 }
 
+.red {
+  font-weight: normal !important;
+}
+
 #section-1 {
   position: relative;
   width: 100%;
@@ -85,7 +89,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   width: 75%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
-  font-size: 7vh;
+  font-size: 3rem;
   color: #000;
   justify-content: center;
   text-align: center;
@@ -94,10 +98,10 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
   position: relative;
-  width: 25px;
-  height: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
   cursor: pointer;
   top: 3px;
   margin-left: 5px;
@@ -145,8 +149,6 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   /* ================= BODY ================= */
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body {
-  margin: 0px auto;
-  margin-top: 20px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -156,7 +158,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   width: 100%;
   padding-left: 2%;
   padding-right: 2%;
-  max-height: calc(100% - 40px);
+  height: 100%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animations {
   position: absolute;
@@ -165,7 +167,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animations.show {
   background: url("../images/stars.gif") no-repeat center;
   background-size: contain;
-  z-index: 11111111;
+  z-index: 1111;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body {
   /* ================= MAIN CONTAINER ================= */
@@ -213,15 +215,16 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   color: #000;
   overflow: visible;
 }
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right p {
+  text-align: center !important;
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
   position: relative;
-  width: 25px;
-  height: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
   cursor: pointer;
-  top: 3px;
-  margin-left: 5px;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
@@ -247,7 +250,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: normal;
   margin-bottom: 15px;
   color: #000;
@@ -257,10 +260,10 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
   position: relative;
-  width: 25px;
-  height: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
   cursor: pointer;
   top: 3px;
   margin-left: 5px;
@@ -290,15 +293,15 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message {
   color: #000;
-  font-size: 1.6rem;
-  line-height: 1.4;
+  font-size: 3rem;
+  line-height: 60px;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
   position: relative;
-  width: 25px;
-  height: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
   cursor: pointer;
   top: 3px;
   margin-left: 5px;
@@ -490,8 +493,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-num-fixed {
   position: absolute;
-  font-size: 3vw;
-  color: #222;
+  font-size: 3rem;
+  color: #000;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
@@ -603,6 +606,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
      -moz-user-select: none;
           user-select: none;
   -webkit-user-drag: none;
+  margin-bottom: 50px;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-preview:active {
   cursor: grabbing;
@@ -663,16 +667,16 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title {
   font-size: 2.2rem;
   font-weight: normal;
-  color: #444;
+  color: #000;
   text-align: center;
   margin-bottom: 16px;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
   position: relative;
-  width: 25px;
-  height: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
   cursor: pointer;
   top: 3px;
   margin-left: 5px;

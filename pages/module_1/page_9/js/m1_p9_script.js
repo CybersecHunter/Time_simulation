@@ -169,12 +169,12 @@ function addSectionData() {
           // AFTER FIRST AUDIO → CHANGE TEXT
           $("#sceneText").fadeOut(250, function () {
 
-            $(this).html((sec.iText[3] || "") + `<button
+            $(this).html(`<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>`).fadeIn(250);
+              </button><p>`+ (sec.iText[3] + `</p>` || "")).fadeIn(250);
 
             // SECOND LINE AUDIO
             playBtnSounds(sec.content.replayAudios[19], function () {
@@ -189,12 +189,12 @@ function addSectionData() {
 
                   $("#scenetext6").fadeOut(250, function () {
 
-                    $(this).html((sec.iText[7] || "") + `<button
+                    $(this).html(`<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>`).fadeIn(250);
+              </button><p>`+ (sec.iText[7] + `</p>` || "")).fadeIn(250);
                     // SECOND LINE AUDIO
                     playBtnSounds(sec.content.replayAudios[22], function () {
                       // ✅ Scene 5 Numbers
@@ -373,14 +373,14 @@ function initClockScene(mountEl, sec) {
       </div>
 
       <div class="clock-right">
-
           <div class="clock-title" id="sceneText">
-              ${sec.iText[2] || ""}<button
+          <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[2] || ""}</p>
           </div>
 
       </div>
@@ -428,16 +428,17 @@ function initClockOverlayScene(mountEl, sec) {
       <div class="clock-right">
 
           <div class="clock-title">
-              ${sec.iText[4] || ""}
-          </div>
-
-          <div class="clock-message">
-              ${sec.iText[5] || ""}<button
+              <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[5] || ""}</p>
+          </div>
+
+          <div class="clock-message">
+          
           </div>
 
       </div>
@@ -478,17 +479,13 @@ function initClockScene4(mountEl, sec) {
       <div class="clock-right">
 
           <div class="clock-title" id="scenetext6">
-              ${sec.iText[6] || ""}<button
+              <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>
+              </button><p>${sec.iText[6] || ""}</p>
           </div>
-
-          <!-- <div class="clock-message" id="scenetext7">
-              ${sec.iText[7] || ""}
-          </div> -->
 
       </div>
 
@@ -505,16 +502,16 @@ var _placedCount = 0;
 var NUM_POSITIONS = {
   1: { left: 66, top: 22 },
   2: { left: 78, top: 31 },
-  3: { left: 84, top: 47 },
+  3: { left: 84.5, top: 47.5 },
   4: { left: 78, top: 60 },
   5: { left: 66, top: 71 },
-  6: { left: 50, top: 78 },
+  6: { left: 50, top: 77 },
   7: { left: 32, top: 72 },
   8: { left: 20, top: 62 },
   9: { left: 16, top: 48 },
-  10: { left: 22, top: 33 },
+  10: { left: 22.5, top: 33 },
   11: { left: 35, top: 23 },
-  12: { left: 49, top: 19 }
+  12: { left: 49.5, top: 19 }
 };
 
 function initNumberArrangeScene(mountEl, sec) {
@@ -822,12 +819,13 @@ function initNumbersFixedScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[8] || "Yay! The Numbers are fixed"}<button
+          <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>
+              </button>    
+          <p>${sec.iText[8] || "Yay! The Numbers are fixed"}</p>
           </div>
       </div>
 
@@ -865,12 +863,13 @@ function initHandIntroScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title" id="handIntroText">
-              ${sec.iText[10] || "Now let's add the clock hands."}<button
+<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[10] || "Now let's add the clock hands."}</p>
           </div>
           <div class="hands-panel">
               <div class="hand-display">
@@ -890,12 +889,12 @@ function initHandIntroScene(mountEl, sec) {
 
     $("#handIntroText").fadeOut(250, function () {
 
-      $(this).html((sec.iText[11] || "Drag them onto the clock!") + `<button
+      $(this).html(`<button
         class='wrapTextaudio playing'
         id='wrapTextaudio_2'
         data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
         onClick="replayLastAudio(this)">
-      </button>`).fadeIn(250);
+      </button><p>` + (sec.iText[11] || "Drag them onto the clock!") + `</p>`).fadeIn(250);
 
       // SECOND TEXT AUDIO
       playBtnSounds(sec.content.replayAudios[23], function () {
@@ -931,21 +930,19 @@ function initHourHandDragScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[12] || "This is the <span class='red'>short hand.</span>"}<button
+          <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[12] || "This is the <span class='red'>short hand.</span>"}</p>
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="hourHandContainer">
                   <img class="hand-preview draggable-hand" id="hourHandDrag"
                        src="${hourImg}" alt="hour hand" style="transform:rotate(270deg)"/>
               </div>
-          </div>
-          <div class="clock-message" id="hourSecondText" style="visibility:hidden;">
-              ${sec.iText[13] || "The <span class='red'> short hand </span> shows the hour."}
           </div>
       </div>
 
@@ -965,13 +962,13 @@ function initHourHandDragScene(mountEl, sec) {
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
-      const text = sec.iText[13] || "The <span class='red'>short hand</span> shows the hour."
-      titleEl.innerHTML = text + `<button
+      const text = `<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>`;
+              </button><p>`
+      titleEl.innerHTML = text + (sec.iText[13] || "The <span class='red'>short hand</span> shows the hour.") + `</p>`;
     }
 
     playBtnSounds(sec.content.replayAudios[20], function () {
@@ -1011,21 +1008,19 @@ function initMinuteHandDragScene(mountEl, sec) {
 
       <div class="clock-right">
           <div class="clock-title">
-              ${sec.iText[14] || "The <span class='red'>long hand</span> shows the minutes."}<button
+          <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[14] || "The <span class='red'>long hand</span> shows the minutes."}</p>
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="minuteHandContainer">
                   <img class="hand-preview draggable-hand" id="minuteHandDrag"
                        src="${minuteImg}" alt="minute hand"/>
               </div>
-          </div>
-          <div class="clock-message" id="hourMinuteText" style="visibility:hidden;">
-              ${sec.iText[15] || "This is the <span class='red'>long hand.</span>"}
           </div>
       </div>
 
@@ -1045,13 +1040,13 @@ function initMinuteHandDragScene(mountEl, sec) {
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
-      const text = sec.iText[15] || "The <span class='red'>long hand</span> shows the minutes."
-      titleEl.innerHTML = text + `<button
+      const text = `<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>`;
+              </button><p>`
+      titleEl.innerHTML = text + (sec.iText[15] || "The <span class='red'>long hand</span> shows the minutes.") + `</p>`;
     }
     // Both hands placed → now go to HAND_TASKS (3 o'clock etc.)
     playBtnSounds(sec.content.replayAudios[21], function () {
@@ -1253,12 +1248,13 @@ function initHandScene(mountEl, sec, taskIdx) {
 
       <div class="clock-right">
           <div class="clock-title" id="handInstruction">
-              ${sec.iText[task.instructionIdx] || ""}<button
+          <button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
               </button>
+              <p>${sec.iText[task.instructionIdx] || ""}</p>
           </div>
       </div>
 
@@ -1297,6 +1293,7 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
   let isDragging = false;
   let currentAngle = startAngle;
   let lastAngle = 0;
+  let angleBeforeDrag = startAngle;  // ← ADD THIS
 
   function getAngle(clientX, clientY) {
     const rect = face.getBoundingClientRect();
@@ -1357,6 +1354,10 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
       let base = Math.floor(currentAngle / 360) * 360;
       finalAngle = base + targetAngle;
 
+      if (targetAngle === 0 && currentAngle > 0 && finalAngle < currentAngle) {
+        finalAngle += 360;
+      }
+
       hand.style.transition = 'transform 0.3s ease';
       hand.style.transform = `rotate(${finalAngle}deg)`;
       currentAngle = finalAngle;
@@ -1384,15 +1385,23 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
 
     } else {
 
-      // ❌ Shake and snap back to start
-      hand.classList.add('hand-shake');
+      // ❌ Snap back to where drag started, shake in-place without CSS class
+      const snapBack = angleBeforeDrag;
+      currentAngle = snapBack;
+
+      hand.style.transition = 'transform 0.15s ease';
+      hand.style.transform = `rotate(${snapBack + 8}deg)`;
+
       setTimeout(() => {
-        hand.classList.remove('hand-shake');
-        hand.style.transition = 'transform 0.3s ease';
-        hand.style.transform = `rotate(${startAngle}deg)`;
-        currentAngle = startAngle;
-        setTimeout(() => { hand.style.transition = ''; }, 350);
-      }, 500);
+        hand.style.transform = `rotate(${snapBack - 8}deg)`;
+        setTimeout(() => {
+          hand.style.transform = `rotate(${snapBack + 5}deg)`;
+          setTimeout(() => {
+            hand.style.transform = `rotate(${snapBack}deg)`;
+            setTimeout(() => { hand.style.transition = ''; }, 150);
+          }, 100);
+        }, 100);
+      }, 100);
 
       // Play wrong sound
       playBtnSounds(sec.content.wrongAudio || "");
@@ -1492,13 +1501,13 @@ function _onHandSuccess(mountEl, sec, task) {
   // Update text
   const instrEl = document.getElementById('handInstruction');
   if (instrEl) {
-    const text = sec.iText[task.successIdx] || "";
-    instrEl.innerHTML = text + `<button
+    const text = `<button
                 class='wrapTextaudio playing'
                 id='wrapTextaudio_1'
                 data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
                 onClick="replayLastAudio(this)">
-              </button>`
+              </button><p>`
+    instrEl.innerHTML = text + (sec.iText[task.successIdx] || "") + `</p>`;
   }
 
   // Remove target ring pulse
