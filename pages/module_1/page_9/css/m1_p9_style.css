@@ -658,6 +658,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-layout--celebration {
   flex-direction: column;
   gap: 10px;
+  margin-top: 0px !important;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left--wide {
   width: 100%;
@@ -710,7 +711,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   position: relative;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper--large img {
-  height: 100%;
+  height: auto;
   width: 100%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .sparkle-wrap {

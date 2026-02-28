@@ -1354,8 +1354,14 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
       let base = Math.floor(currentAngle / 360) * 360;
       finalAngle = base + targetAngle;
 
-      if (targetAngle === 0 && currentAngle > 0 && finalAngle < currentAngle) {
-        finalAngle += 360;
+      if (targetAngle === 0) {
+        // Pick the multiple of 360 closest to currentAngle
+        let candidate1 = base + 0;
+        let candidate2 = base + 360;
+        let candidate3 = base - 360;
+        let distances = [candidate1, candidate2, candidate3].map(c => ({ c, d: Math.abs(c - currentAngle) }));
+        distances.sort((a, b) => a.d - b.d);
+        finalAngle = distances[0].c;
       }
 
       hand.style.transition = 'transform 0.3s ease';

@@ -733,6 +733,7 @@
 								.clock-layout--celebration {
 									flex-direction: column;
 									gap: 10px;
+									margin-top: 0px !important;
 								}
 
 								.clock-left--wide {
@@ -799,7 +800,7 @@
 									position: relative;
 
 									img {
-										height: 100%;
+										height: auto;
 										width: 100%;
 									}
 								}
