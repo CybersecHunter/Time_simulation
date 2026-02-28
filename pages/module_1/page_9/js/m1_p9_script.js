@@ -504,7 +504,7 @@ var NUM_POSITIONS = {
   2: { left: 78, top: 31 },
   3: { left: 84.5, top: 47.5 },
   4: { left: 78, top: 60 },
-  5: { left: 66, top: 71 },
+  5: { left: 67, top: 71 },
   6: { left: 50, top: 77 },
   7: { left: 32, top: 72 },
   8: { left: 20, top: 62 },
@@ -1665,7 +1665,7 @@ function enableAll() {
   playClickThen();
   window.enableClockControls();
   // window.enableIdleStart();
-  $(".home_btn, .music,.introInfo, .wrapTextaudio").prop("disabled", false);
+  $(".home_btn, .music,.introInfo,#full-screen, .wrapTextaudio").prop("disabled", false);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
     audio.muted = false;
@@ -1680,7 +1680,7 @@ function disableAll() {
   playClickThen();
   window.disableClockControls();
   // window.disableIdleStart();
-  $(".home_btn, .music,.introInfo,.wrapTextaudio").prop("disabled", true);
+  $(".home_btn, .music,.introInfo,#full-screen,.wrapTextaudio").prop("disabled", true);
   const audio = document.getElementById("audio_src");
   if (_controller._globalMusicPlaying) {
     audio.pause();

@@ -1089,7 +1089,8 @@ html {
 }
 @media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
   #f_wrapper #f_header {
-    justify-content: flex-end;
+    justify-content: center;
+    background-size: 100% 100% !important;
   }
 }
 #f_wrapper #f_header .header-container {
@@ -1632,11 +1633,9 @@ footer p {
 }
 @media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
   #f_header {
-    width: 130px !important;
+    width: 100% !important;
     height: 50px !important;
-    top: 5px !important;
-    right: 5px !important;
-    justify-content: flex-end;
+    justify-content: center;
   }
 }
 
@@ -1844,21 +1843,21 @@ footer p {
 }
 @media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
   #introPopup-1 .popup-content .introPopAudio {
+    top: 30px;
     width: 20px;
     height: 20px;
-    top: 20px;
-    left: 45px;
+    left: 60px;
   }
 }
 #introPopup-1 .popup-content .introPopAudio:hover {
   transform: scale(1.125);
 }
 #introPopup-1 .popup-content .introPopAudio.playing {
-  background: url(../assets/images/sound.png) no-repeat;
+  background: url(../images/music.png) no-repeat;
   background-size: contain;
 }
 #introPopup-1 .popup-content .introPopAudio.mute {
-  background: url(../assets/images/sound_pause.png) no-repeat;
+  background: url(../images/pause.png) no-repeat;
   background-size: contain;
 }
 #introPopup-1 .popup-content img {
@@ -2071,6 +2070,12 @@ footer p {
   background-repeat: no-repeat;
   cursor: pointer;
 }
+@media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
+  #f_header .nav_btns .introInfo {
+    width: 35px;
+    height: 35px;
+  }
+}
 #f_header .nav_btns .introInfo:disabled {
   background: url(../assets/images/nav/info_disabled.png) no-repeat;
   background-size: contain;
@@ -2085,6 +2090,12 @@ footer p {
   background-repeat: no-repeat;
   cursor: pointer;
   display: none;
+}
+@media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
+  #f_header .nav_btns .playPause {
+    width: 35px;
+    height: 35px;
+  }
 }
 #f_header .nav_btns .playPause::after {
   content: attr(data-tooltip);
@@ -2134,6 +2145,12 @@ footer p {
   background-size: contain;
   background-repeat: no-repeat;
   cursor: pointer;
+}
+@media (min-width: 320px) and (max-width: 950px) and (orientation: landscape) {
+  #f_header .nav_btns .home_btn {
+    width: 35px;
+    height: 35px;
+  }
 }
 #f_header .nav_btns .home_btn:disabled {
   background: url(../assets/images/nav/back_disabled.png) !important;

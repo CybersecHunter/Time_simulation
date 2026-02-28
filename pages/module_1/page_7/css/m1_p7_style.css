@@ -131,6 +131,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   gap: 10px;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style .inst {
+    margin-top: 8px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
   position: relative;
   width: 25px;
@@ -170,8 +175,18 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   font-size: 2rem;
   margin-bottom: 0px;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
+    font-size: 1.5rem;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst p span {
   color: red;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style .inst p span {
+    font-size: 1.5rem;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .instruction-bubble {
   position: relative;
@@ -411,6 +426,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2.5vw;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container #memCardGrid {
+    margin-top: 30px;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .star-top {
   top: -20px;

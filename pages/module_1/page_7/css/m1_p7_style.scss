@@ -122,6 +122,10 @@
 							align-items: center;
 							gap: 10px;
 
+							@include mobile-landscape {
+								margin-top: 8px;
+							}
+
 							.wrapTextaudio {
 								position: relative;
 								width: 25px;
@@ -172,8 +176,16 @@
 								font-size: 2rem;
 								margin-bottom: 0px;
 
+								@include mobile-landscape {
+									font-size: 1.5rem;
+								}
+
 								span {
 									color: red;
+
+									@include mobile-landscape {
+										font-size: 1.5rem;
+									}
 								}
 							}
 						}
@@ -442,6 +454,10 @@
 									display: grid;
 									grid-template-columns: repeat(5, 1fr);
 									gap: 2.5vw;
+
+									@include mobile-landscape {
+										margin-top: 30px;
+									}
 								}
 							}
 						}

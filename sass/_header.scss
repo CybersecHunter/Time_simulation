@@ -230,6 +230,11 @@
       background-repeat: no-repeat;
       cursor: pointer;
 
+      @include mobile-landscape {
+        width: 35px;
+        height: 35px;
+      }
+
       &:disabled {
         background: url(../assets/images/nav/info_disabled.png) no-repeat;
         background-size: contain;
@@ -246,6 +251,11 @@
       background-repeat: no-repeat;
       cursor: pointer;
       display: none;
+
+      @include mobile-landscape {
+        width: 35px;
+        height: 35px;
+      }
 
       &::after {
         content: attr(data-tooltip);
@@ -305,6 +315,11 @@
       // margin: 15px;
       background-repeat: no-repeat;
       cursor: pointer;
+
+      @include mobile-landscape {
+        width: 35px;
+        height: 35px;
+      }
 
       &:disabled {
         background: url(../assets/images/nav/back_disabled.png) !important;

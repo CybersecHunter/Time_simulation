@@ -173,6 +173,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: start;
   justify-content: end;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg > .body > .image-container .btn_holder {
+    height: 90px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg > .body > .image-container .btn_holder .box {
   width: 100%;
   height: 100%;
@@ -208,6 +213,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg > .body > .image-container .btn_holder .btn_info {
+    height: 35px;
+    width: 35px;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg > .body > .image-container .btn_holder .i-txt-toolTip {
   position: absolute;
