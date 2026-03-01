@@ -212,10 +212,11 @@
 									margin-top: 30px;
 									justify-content: center; // ← CHANGE from space-evenly
 									align-items: center;
-									gap: 40px; // ← ADD gap instead
+									gap: clamp(10px, 3vw, 40px); // ← fluid gap, was fixed 40px
 
 									@include mobile-landscape {
 										margin-top: 0px;
+										gap: clamp(6px, 2vw, 20px);
 									}
 
 								}
@@ -226,6 +227,10 @@
 									justify-content: center;
 									align-items: center;
 									flex-shrink: 0;
+
+									@include mobile-landscape {
+										width: 48%;
+									}
 								}
 
 								.clock-right {
@@ -236,6 +241,13 @@
 									align-items: center;
 									color: #000;
 									overflow: visible; // ← ADD
+									margin: 50px 0px;
+
+									// ← ADD: shrink right panel on very small screens
+									@include mobile-landscape {
+										width: 48%;
+										margin: 10px 0;
+									}
 
 									p {
 										text-align: center !important;
@@ -292,13 +304,13 @@
 								}
 
 								.clock-title {
-									font-size: 3rem;
+									font-size: clamp(1rem, 3vw, 3rem);
 									font-weight: normal;
 									margin-bottom: 15px;
 									color: #000;
 									text-align: center;
 									width: 80%;
-									line-height: 6vh;
+									line-height: clamp(1.3em, 2vw, 1.8em);
 
 
 									.wrapTextaudio {
@@ -348,8 +360,8 @@
 
 								.clock-message {
 									color: #000;
-									font-size: 3rem;
-									line-height: 60px;
+									font-size: clamp(1rem, 2.5vw, 3rem); // ← fluid, was fixed 3rem
+									line-height: clamp(1.3em, 2.5vw, 60px); // ← fluid, was fixed 60px
 
 									.wrapTextaudio {
 										position: relative;
@@ -402,16 +414,16 @@
 
 								.clock-wrapper {
 									position: relative;
-									width: min(450px, 95%); // ← slightly smaller
-									height: min(450px, 95%);
+									width: min(clamp(220px, 35vw, 450px), 95%);
+									height: min(clamp(220px, 35vw, 450px), 95%);
 									aspect-ratio: 1;
 									display: flex;
 									justify-content: center;
 									align-items: center;
 
 									@include mobile-landscape {
-										width: min(33vw, 95%);
-										height: min(35vh, 95%);
+										width: min(clamp(150px, 30vw, 300px), 95%);
+										height: min(clamp(150px, 28vh, 300px), 95%);
 									}
 								}
 
@@ -427,8 +439,8 @@
 
 								.clock-img-wrap {
 									position: relative;
-									width: 450px;
-									height: 450px;
+									width: 100%;
+									height: 100%;
 									background: transparent;
 
 									@include mobile-landscape {
@@ -447,8 +459,8 @@
 										inset: 0;
 										width: 108%;
 										height: 107%;
-										left: -18px;
-										top: -16px;
+										left: -4%;
+										top: -3.5%;
 										-o-object-fit: contain;
 										object-fit: contain;
 										// mix-blend-mode: lighten; // hides black, shows orange glow only
@@ -458,8 +470,8 @@
 											inset: 0;
 											width: 108%;
 											height: 110%;
-											left: -13px;
-											top: -16px;
+											left: -3%;
+											top: -3.5%;
 											-o-object-fit: contain;
 											object-fit: contain;
 										}
@@ -493,21 +505,24 @@
 
 								.numbers-grid {
 									display: grid;
-									grid-template-columns: repeat(2, 110px);
-									gap: 12px;
+									grid-template-columns: repeat(2, minmax(0, 1fr));
+									gap: clamp(6px, 1.5vw, 12px);
 									justify-content: center;
+									justify-items: center;
 									overflow: visible; // ← ADD
+									width: 100%;
+									max-width: 260px;
 
 									@include mobile-landscape {
-										gap: 0px;
-										grid-template-columns: repeat(2, 90px);
+										gap: clamp(4px, 1vw, 8px);
+										max-width: 180px;
 
 									}
 								}
 
 								.num-item {
-									width: 75px; // ← match draggable exactly
-									height: 75px;
+									width: clamp(40px, 6vw, 75px); // ← fluid, was fixed 75px
+									height: clamp(40px, 6vw, 75px);
 									// border: 3px dashed #f5a3a3;
 									border-radius: 50%;
 									display: flex;
@@ -517,7 +532,7 @@
 								}
 
 								.num-circle {
-									font-size: 48px;
+									font-size: clamp(1.4rem, 3.5vw, 48px); // ← fluid, was fixed 48px
 									font-weight: normal;
 									color: #000;
 								}
@@ -568,8 +583,8 @@
 								}
 
 								.draggable {
-									width: 70px; // ← slightly smaller than num-item
-									height: 70px;
+									width: clamp(36px, 5.5vw, 70px); // ← fluid, was fixed 70px
+									height: clamp(36px, 5.5vw, 70px);
 									// border: 3px dashed #f5a3a3;
 									background: url(../images/number_outline.png);
 									background-repeat: no-repeat;
@@ -578,7 +593,7 @@
 									display: flex;
 									justify-content: center;
 									align-items: center;
-									font-size: 3rem;
+									font-size: clamp(1.2rem, 3vw, 3rem); // ← fluid font
 									font-weight: normal;
 									// background: #fff;
 									cursor: grab;
@@ -588,9 +603,9 @@
 
 									/* ⭐ IMPORTANT */
 									@include mobile-landscape {
-										font-size: 2rem !important;
-										width: 50px; // ← slightly smaller than num-item
-										height: 50px;
+										font-size: clamp(1rem, 2.5vw, 2rem) !important;
+										width: clamp(30px, 5vw, 50px) !important;
+										height: clamp(30px, 5vw, 50px) !important;
 									}
 								}
 
@@ -603,7 +618,7 @@
 									display: flex;
 									justify-content: center;
 									align-items: center;
-									font-size: 3rem;
+									font-size: clamp(1.2rem, 3vw, 3rem); // ← was fixed 3rem
 									// font-weight: bold;
 									color: #000;
 									font-family: inherit;
@@ -613,15 +628,15 @@
 									left: 0;
 
 									@include mobile-landscape {
-										font-size: 2rem;
+										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 								}
 
 								.slot {
-									font-size: 3rem;
+									font-size: clamp(1.2rem, 3vw, 3rem); // ← was fixed 3rem
 
 									@include mobile-landscape {
-										font-size: 2rem;
+										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 								}
 
@@ -639,8 +654,8 @@
 
 								.drop-slot {
 									position: absolute;
-									width: 60px;
-									height: 60px;
+									width: clamp(30px, 4.5vw, 60px); // ← fluid, was fixed 60px
+									height: clamp(30px, 4.5vw, 60px);
 									// border: 2px dashed #ff6b6b;
 									border-radius: 50%;
 								}
@@ -648,14 +663,15 @@
 								/* ── Clock number fixed labels (Scene 5) ── */
 								.clock-num-fixed {
 									position: absolute;
-									font-size: 3rem;
+									font-size: clamp(0.8rem, 3vw, 3rem);
 									// font-weight: bold;
 									color: #000;
 									pointer-events: none;
 									transform: translate(-50%, -50%);
 
 									@include mobile-landscape {
-										font-size: 2rem;
+										// font-size: clamp(0.65rem, 1.8vw, 2rem);
+										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 
 								}
@@ -722,8 +738,8 @@
 
 								.clock-center {
 									position: absolute;
-									width: 18px;
-									height: 18px;
+									width: clamp(8px, 1.2vw, 18px); // ← fluid, was fixed 18px
+									height: clamp(8px, 1.2vw, 18px);
 									background: #000;
 									border: 3px solid #333;
 									border-radius: 50%;
@@ -733,8 +749,8 @@
 									z-index: 20; // above both hands
 
 									@include mobile-landscape {
-										width: 14px;
-										height: 14px;
+										width: clamp(6px, 1vw, 14px);
+										height: clamp(6px, 1vw, 14px);
 									}
 								}
 

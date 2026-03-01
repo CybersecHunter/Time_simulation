@@ -208,11 +208,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   margin-top: 30px;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: clamp(10px, 3vw, 40px);
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-layout {
     margin-top: 0px;
+    gap: clamp(6px, 2vw, 20px);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left {
@@ -222,6 +223,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   flex-shrink: 0;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left {
+    width: 48%;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right {
   width: 45%;
   display: flex;
@@ -230,6 +236,13 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   color: #000;
   overflow: visible;
+  margin: 50px 0px;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right {
+    width: 48%;
+    margin: 10px 0;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right p {
   text-align: center !important;
@@ -272,13 +285,13 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
-  font-size: 3rem;
+  font-size: clamp(1rem, 3vw, 3rem);
   font-weight: normal;
   margin-bottom: 15px;
   color: #000;
   text-align: center;
   width: 80%;
-  line-height: 6vh;
+  line-height: clamp(1.3em, 2vw, 1.8em);
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
   position: relative;
@@ -315,8 +328,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message {
   color: #000;
-  font-size: 3rem;
-  line-height: 60px;
+  font-size: clamp(1rem, 2.5vw, 3rem);
+  line-height: clamp(1.3em, 2.5vw, 60px);
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
   position: relative;
@@ -356,8 +369,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper {
   position: relative;
-  width: min(450px, 95%);
-  height: min(450px, 95%);
+  width: min(clamp(220px, 35vw, 450px), 95%);
+  height: min(clamp(220px, 35vw, 450px), 95%);
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -365,8 +378,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper {
-    width: min(33vw, 95%);
-    height: min(35vh, 95%);
+    width: min(clamp(150px, 30vw, 300px), 95%);
+    height: min(clamp(150px, 28vh, 300px), 95%);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-face {
@@ -380,8 +393,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-img-wrap {
   position: relative;
-  width: 450px;
-  height: 450px;
+  width: 100%;
+  height: 100%;
   background: transparent;
 }
 @media (max-width: 950px) and (orientation: landscape) {
@@ -401,8 +414,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   inset: 0;
   width: 108%;
   height: 107%;
-  left: -18px;
-  top: -16px;
+  left: -4%;
+  top: -3.5%;
   -o-object-fit: contain;
   object-fit: contain;
 }
@@ -412,8 +425,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     inset: 0;
     width: 108%;
     height: 110%;
-    left: -13px;
-    top: -16px;
+    left: -3%;
+    top: -3.5%;
     -o-object-fit: contain;
     object-fit: contain;
   }
@@ -441,20 +454,23 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .numbers-grid {
   display: grid;
-  grid-template-columns: repeat(2, 110px);
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(6px, 1.5vw, 12px);
   justify-content: center;
+  justify-items: center;
   overflow: visible;
+  width: 100%;
+  max-width: 260px;
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .numbers-grid {
-    gap: 0px;
-    grid-template-columns: repeat(2, 90px);
+    gap: clamp(4px, 1vw, 8px);
+    max-width: 180px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-item {
-  width: 75px;
-  height: 75px;
+  width: clamp(40px, 6vw, 75px);
+  height: clamp(40px, 6vw, 75px);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -462,7 +478,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   flex-shrink: 0;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-circle {
-  font-size: 48px;
+  font-size: clamp(1.4rem, 3.5vw, 48px);
   font-weight: normal;
   color: #000;
 }
@@ -513,8 +529,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-repeat: no-repeat;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable {
-  width: 70px;
-  height: 70px;
+  width: clamp(36px, 5.5vw, 70px);
+  height: clamp(36px, 5.5vw, 70px);
   background: url(../images/number_outline.png);
   background-repeat: no-repeat;
   background-size: contain;
@@ -522,7 +538,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+  font-size: clamp(1.2rem, 3vw, 3rem);
   font-weight: normal;
   cursor: grab;
   -webkit-user-select: none;
@@ -534,9 +550,9 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable {
-    font-size: 2rem !important;
-    width: 50px;
-    height: 50px;
+    font-size: clamp(1rem, 2.5vw, 2rem) !important;
+    width: clamp(30px, 5vw, 50px) !important;
+    height: clamp(30px, 5vw, 50px) !important;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .ghost {
@@ -548,7 +564,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+  font-size: clamp(1.2rem, 3vw, 3rem);
   color: #000;
   font-family: inherit;
   margin: 0;
@@ -558,15 +574,15 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .ghost {
-    font-size: 2rem;
+    font-size: clamp(1rem, 2.5vw, 2rem);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .slot {
-  font-size: 3rem;
+  font-size: clamp(1.2rem, 3vw, 3rem);
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .slot {
-    font-size: 2rem;
+    font-size: clamp(1rem, 2.5vw, 2rem);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .dragging {
@@ -581,8 +597,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .drop-slot {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: clamp(30px, 4.5vw, 60px);
+  height: clamp(30px, 4.5vw, 60px);
   border-radius: 50%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
@@ -590,14 +606,14 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-num-fixed {
   position: absolute;
-  font-size: 3rem;
+  font-size: clamp(0.8rem, 3vw, 3rem);
   color: #000;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-num-fixed {
-    font-size: 2rem;
+    font-size: clamp(1rem, 2.5vw, 2rem);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
@@ -664,8 +680,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-center {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: clamp(8px, 1.2vw, 18px);
+  height: clamp(8px, 1.2vw, 18px);
   background: #000;
   border: 3px solid #333;
   border-radius: 50%;
@@ -676,8 +692,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-center {
-    width: 14px;
-    height: 14px;
+    width: clamp(6px, 1vw, 14px);
+    height: clamp(6px, 1vw, 14px);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-hand {
