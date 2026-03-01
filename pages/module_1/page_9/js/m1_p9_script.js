@@ -647,26 +647,30 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
 
       // Build ghost
       ghost = document.createElement('div');
-      ghost.style.cssText = `
-        position: absolute;
-        width: ${dragEl.offsetWidth}px;
-        height: ${dragEl.offsetHeight}px;
-        z-index: 99999;
-        pointer-events: none;
-        border-radius: 50%;
-        background: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 48px;
-        font-weight: bold;
-        color: #000;
-        font-family: inherit;
-        margin: 0;
-        transform: none;
-        top: 0;
-        left: 0;
-      `;
+      ghost.classList.add('ghost');
+
+      ghost.style.width = dragEl.offsetWidth + 'px';
+      ghost.style.height = dragEl.offsetHeight + 'px';
+      // ghost.style.cssText = `
+      //   position: absolute;
+      //   width: ${dragEl.offsetWidth}px;
+      //   height: ${dragEl.offsetHeight}px;
+      //   z-index: 99999;
+      //   pointer-events: none;
+      //   border-radius: 50%;
+      //   background: transparent;
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   font-size: 3rem;
+      //   font-weight: bold;
+      //   color: #000;
+      //   font-family: inherit;
+      //   margin: 0;
+      //   transform: none;
+      //   top: 0;
+      //   left: 0;
+      // `;
       ghost.textContent = n;
 
       // ← Append to animat-container, not num-item
@@ -733,8 +737,9 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
 
         slot.innerHTML = n;
         slot.style.border = 'none';
-        slot.style.fontSize = '3vw';
-        slot.style.fontWeight = 'bold';
+        slot.classList.add("slot");
+        // slot.style.fontSize = '3rem';
+        // slot.style.fontWeight = 'bold';
         slot.style.color = '#000';
         slot.style.display = 'flex';
         slot.style.justifyContent = 'center';
@@ -940,7 +945,7 @@ function initHourHandDragScene(mountEl, sec) {
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="hourHandContainer">
-                  <img class="hand-preview draggable-hand" id="hourHandDrag"
+                  <img class="hand-preview draggable-hand draggable-hand-hour" id="hourHandDrag"
                        src="${hourImg}" alt="hour hand" style="transform:rotate(270deg)"/>
               </div>
           </div>
@@ -1018,7 +1023,7 @@ function initMinuteHandDragScene(mountEl, sec) {
           </div>
           <div class="hands-panel">
               <div class="hand-display" id="minuteHandContainer">
-                  <img class="hand-preview draggable-hand" id="minuteHandDrag"
+                  <img class="hand-preview draggable-hand draggable-hand-minute" id="minuteHandDrag"
                        src="${minuteImg}" alt="minute hand"/>
               </div>
           </div>
