@@ -44,6 +44,27 @@
 		height: calc(100% - 100px);
 		margin: 60px auto;
 		overflow: hidden;
+
+		@supports not (height: 100dvh) {
+			height: calc(100vh - 100px);
+		}
+
+		@media screen and (max-width: 480px) {
+			margin: 40px auto;
+			height: calc(100dvh - 80px);
+		}
+
+		// On mobile landscape — tightest constraint
+		@media screen and (max-height: 500px) {
+			margin: 20px auto;
+			height: calc(100dvh - 40px);
+		}
+
+		@media screen and (max-height: 300px) {
+			margin: 10px auto;
+			height: calc(100dvh - 20px);
+		}
+
 		// cursor: url('../images/cursor.png') 10 10, pointer;
 
 		.col-left {
@@ -83,8 +104,13 @@
 								line-height: 70px;
 
 								@include mobile-landscape {
-									font-size: 2rem;
+									font-size: clamp(2rem, 3vw, 2.5rem);
 									line-height: 40px;
+								}
+
+								@media screen and (max-height: 300px) {
+									font-size: 1.2rem;
+									line-height: 25px;
 								}
 							}
 
@@ -186,7 +212,7 @@
 
 								width: 100%;
 								height: 100%;
-								min-height: 400px; // VERY IMPORTANT
+								min-height: min(400px, 70vh);
 								display: flex;
 								justify-content: center;
 								align-items: center;
@@ -195,6 +221,10 @@
 
 								@include mobile-landscape {
 									min-height: 100%; // VERY IMPORTANT
+								}
+
+								@media screen and (max-width: 480px) {
+									min-height: min(300px, 65vh);
 								}
 
 								.dummy-patch {
@@ -213,10 +243,19 @@
 									justify-content: center; // ← CHANGE from space-evenly
 									align-items: center;
 									gap: clamp(10px, 3vw, 40px); // ← fluid gap, was fixed 40px
+									padding-top: env(safe-area-inset-top, 0px);
+
+									@media screen and (max-width: 300px) {
+										flex-direction: column; // stack vertically on narrow phones
+										margin-top: 10px;
+										gap: clamp(4px, 2vw, 12px);
+										justify-content: center;
+										align-items: center;
+									}
 
 									@include mobile-landscape {
 										margin-top: 0px;
-										gap: clamp(6px, 2vw, 20px);
+										gap: clamp(4px, 1.5vw, 10px);
 									}
 
 								}
@@ -230,6 +269,11 @@
 
 									@include mobile-landscape {
 										width: 48%;
+									}
+
+									@media screen and (max-width: 300px) {
+										width: 30%;
+										flex-shrink: 1;
 									}
 								}
 
@@ -255,6 +299,11 @@
 										@include mobile-landscape {
 											font-size: 2rem;
 											line-height: 40px;
+										}
+
+										@media screen and (max-height: 300px) {
+											font-size: 1.2rem;
+											line-height: 25px;
 										}
 									}
 
@@ -311,6 +360,16 @@
 									text-align: center;
 									width: 80%;
 									line-height: clamp(1.3em, 2vw, 1.8em);
+
+									@include mobile-landscape {
+										font-size: clamp(1.5rem, 2vw, 2rem);
+										line-height: 40px;
+									}
+
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1.2rem, 1.5vw, 3rem);
+										line-height: 25px;
+									}
 
 
 									.wrapTextaudio {
@@ -414,8 +473,8 @@
 
 								.clock-wrapper {
 									position: relative;
-									width: min(clamp(220px, 35vw, 450px), 95%);
-									height: min(clamp(220px, 35vw, 450px), 95%);
+									width: min(clamp(250px, 40vw, 600px), min(95%, 60vh));
+									height: min(clamp(250px, 40vw, 600px), min(95%, 60vh));
 									aspect-ratio: 1;
 									display: flex;
 									justify-content: center;
@@ -424,6 +483,11 @@
 									@include mobile-landscape {
 										width: min(clamp(150px, 30vw, 300px), 95%);
 										height: min(clamp(150px, 28vh, 300px), 95%);
+									}
+
+									@media screen and (max-height: 300px) {
+										width: min(clamp(90px, 22vw, 180px), 95%);
+										height: min(clamp(90px, 22vh, 180px), 95%);
 									}
 								}
 
@@ -470,8 +534,8 @@
 											inset: 0;
 											width: 108%;
 											height: 110%;
-											left: -3%;
-											top: -3.5%;
+											left: -4%;
+											top: -4.5%;
 											-o-object-fit: contain;
 											object-fit: contain;
 										}
@@ -518,6 +582,11 @@
 										max-width: 180px;
 
 									}
+
+									@media screen and (max-height: 300px) {
+										gap: clamp(2px, 0.8vw, 6px);
+										max-width: 90px;
+									}
 								}
 
 								.num-item {
@@ -529,57 +598,21 @@
 									justify-content: center;
 									align-items: center;
 									flex-shrink: 0;
+
+									@media screen and (max-height: 300px) {
+										width: clamp(20px, 4vw, 50px); // ← fluid, was fixed 75px
+										height: clamp(20px, 4vw, 50px);
+									}
 								}
 
 								.num-circle {
 									font-size: clamp(1.4rem, 3.5vw, 48px); // ← fluid, was fixed 48px
 									font-weight: normal;
 									color: #000;
-								}
 
-								/* ── Guide hand images (Scenes 6–9, replaced by real hands on drop) ── */
-								.guide-hand-img {
-									position: absolute;
-									bottom: 50%;
-									left: 50%;
-									transform-origin: bottom center;
-									pointer-events: none;
-									user-select: none;
-									-webkit-user-drag: none;
-									opacity: 1;
-								}
-
-								.hour-guide-img {
-									width: 24%;
-									height: 36px;
-									margin-left: -102px;
-									z-index: 8;
-									margin-bottom: -13px;
-
-									@include mobile-landscape {
-										width: 20%;
-										height: 25px;
-										margin-left: -60px;
-										z-index: 8;
-										margin-bottom: -9px;
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1rem, 2.5vw, 30px);
 									}
-								}
-
-								.minute-guide-img {
-									width: 27px;
-									height: 27%;
-									margin-left: -14px;
-									z-index: 7;
-								}
-
-								.hand-guide {
-									position: absolute;
-									right: -80px;
-									bottom: 0;
-									width: 150px;
-									height: 150px;
-									background-size: contain;
-									background-repeat: no-repeat;
 								}
 
 								.draggable {
@@ -601,11 +634,16 @@
 									position: relative;
 									transform: none !important;
 
-									/* ⭐ IMPORTANT */
 									@include mobile-landscape {
 										font-size: clamp(1rem, 2.5vw, 2rem) !important;
 										width: clamp(30px, 5vw, 50px) !important;
 										height: clamp(30px, 5vw, 50px) !important;
+									}
+
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1rem, 1.5vw, 1.5rem) !important;
+										width: clamp(15px, 4vw, 40px) !important;
+										height: clamp(15px, 4vw, 40px) !important;
 									}
 								}
 
@@ -630,6 +668,10 @@
 									@include mobile-landscape {
 										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
+
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1rem, 1.5vw, 1.5rem);
+									}
 								}
 
 								.slot {
@@ -637,6 +679,10 @@
 
 									@include mobile-landscape {
 										font-size: clamp(1rem, 2.5vw, 2rem);
+									}
+
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1rem, 1.5vw, 1.5rem);
 									}
 								}
 
@@ -674,6 +720,10 @@
 										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 
+									@media screen and (max-height: 300px) {
+										font-size: clamp(1rem, 1.5vw, 1.5rem);
+									}
+
 								}
 
 								/* ── Clock hands (Scenes 6–9) ── */
@@ -682,10 +732,49 @@
 									overflow: visible;
 								}
 
-								/* ── Hand images (Scenes 6–9) ── */
-								.clock-face--complete {
-									position: relative;
-									overflow: visible;
+								/* ── Guide hand images (Scenes 6–9, replaced by real hands on drop) ── */
+								.guide-hand-img {
+									position: absolute;
+									bottom: 50%;
+									left: 50%;
+									transform-origin: bottom center;
+									pointer-events: none;
+									user-select: none;
+									-webkit-user-drag: none;
+									opacity: 1;
+								}
+
+								.hour-guide-img {
+									width: 24%;
+									height: 36px;
+									margin-left: -102px;
+									z-index: 8;
+									margin-bottom: -13px;
+
+									@include mobile-landscape {
+										width: 20%;
+										height: 25px;
+										margin-left: -38px;
+										z-index: 8;
+										margin-bottom: -9px;
+									}
+								}
+
+								.minute-guide-img {
+									width: 27px;
+									height: 27%;
+									margin-left: -14px;
+									z-index: 7;
+								}
+
+								.hand-guide {
+									position: absolute;
+									right: -80px;
+									bottom: 0;
+									width: 150px;
+									height: 150px;
+									background-size: contain;
+									background-repeat: no-repeat;
 								}
 
 								.clock-hand-img {
@@ -792,6 +881,17 @@
 									align-items: flex-end;
 									gap: 30px;
 									margin: 20px 0;
+
+									@include mobile-landscape {
+										position: absolute;
+										bottom: 10px;
+									}
+
+									@media screen and (max-height: 300px) {
+										position: absolute;
+										bottom: 10px;
+									}
+
 									// pointer-events: none;
 								}
 
@@ -803,6 +903,10 @@
 
 									@include mobile-landscape {
 										height: 90px;
+									}
+
+									@media screen and (max-height: 300px) {
+										height: 50px;
 									}
 								}
 
@@ -816,6 +920,14 @@
 									&:active {
 										cursor: grabbing;
 									}
+
+									@include mobile-landscape {
+										margin-bottom: 0px;
+									}
+
+									@media screen and (max-height: 300px) {
+										margin-bottom: 0px;
+									}
 								}
 
 								.hour-preview {
@@ -826,6 +938,10 @@
 									@include mobile-landscape {
 										height: 60px; // short hand — shorter
 									}
+
+									@include mobile-landscape {
+										height: 45px; // short hand — shorter
+									}
 								}
 
 								.minute-preview {
@@ -835,6 +951,10 @@
 
 									@include mobile-landscape {
 										height: 90px; // long hand — taller
+									}
+
+									@include mobile-landscape {
+										height: 60px; // short hand — shorter
 									}
 								}
 
@@ -909,6 +1029,14 @@
 									color: #000;
 									text-align: center;
 									margin-bottom: 16px;
+
+									@include mobile-landscape {
+										font-size: 1.5rem;
+									}
+
+									@media screen and (max-height: 300px) {
+										font-size: 0.8rem;
+									}
 
 									.wrapTextaudio {
 										position: relative;

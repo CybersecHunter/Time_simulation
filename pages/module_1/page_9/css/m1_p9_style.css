@@ -60,6 +60,29 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   margin: 60px auto;
   overflow: hidden;
 }
+@supports not (height: 100dvh) {
+  #section-1 .content-holder {
+    height: calc(100vh - 100px);
+  }
+}
+@media screen and (max-width: 480px) {
+  #section-1 .content-holder {
+    margin: 40px auto;
+    height: calc(100dvh - 80px);
+  }
+}
+@media screen and (max-height: 500px) {
+  #section-1 .content-holder {
+    margin: 20px auto;
+    height: calc(100dvh - 40px);
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder {
+    margin: 10px auto;
+    height: calc(100dvh - 20px);
+  }
+}
 #section-1 .content-holder .col-left {
   position: relative;
   height: 100%;
@@ -98,8 +121,14 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
-    font-size: 2rem;
+    font-size: clamp(2rem, 3vw, 2.5rem);
     line-height: 40px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
+    font-size: 1.2rem;
+    line-height: 25px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
@@ -181,7 +210,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
   width: 100%;
   height: 100%;
-  min-height: 400px;
+  min-height: min(400px, 70vh);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -191,6 +220,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
     min-height: 100%;
+  }
+}
+@media screen and (max-width: 480px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
+    min-height: min(300px, 65vh);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .dummy-patch {
@@ -209,11 +243,21 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   justify-content: center;
   align-items: center;
   gap: clamp(10px, 3vw, 40px);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@media screen and (max-width: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-layout {
+    flex-direction: column;
+    margin-top: 10px;
+    gap: clamp(4px, 2vw, 12px);
+    justify-content: center;
+    align-items: center;
+  }
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-layout {
     margin-top: 0px;
-    gap: clamp(6px, 2vw, 20px);
+    gap: clamp(4px, 1.5vw, 10px);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left {
@@ -226,6 +270,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left {
     width: 48%;
+  }
+}
+@media screen and (max-width: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-left {
+    width: 30%;
+    flex-shrink: 1;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right {
@@ -251,6 +301,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right p {
     font-size: 2rem;
     line-height: 40px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right p {
+    font-size: 1.2rem;
+    line-height: 25px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
@@ -292,6 +348,18 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   text-align: center;
   width: 80%;
   line-height: clamp(1.3em, 2vw, 1.8em);
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    line-height: 40px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
+    font-size: clamp(1.2rem, 1.5vw, 3rem);
+    line-height: 25px;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
   position: relative;
@@ -369,8 +437,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper {
   position: relative;
-  width: min(clamp(220px, 35vw, 450px), 95%);
-  height: min(clamp(220px, 35vw, 450px), 95%);
+  width: min(clamp(250px, 40vw, 600px), min(95%, 60vh));
+  height: min(clamp(250px, 40vw, 600px), min(95%, 60vh));
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -380,6 +448,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper {
     width: min(clamp(150px, 30vw, 300px), 95%);
     height: min(clamp(150px, 28vh, 300px), 95%);
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-wrapper {
+    width: min(clamp(90px, 22vw, 180px), 95%);
+    height: min(clamp(90px, 22vh, 180px), 95%);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-face {
@@ -425,8 +499,8 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     inset: 0;
     width: 108%;
     height: 110%;
-    left: -3%;
-    top: -3.5%;
+    left: -4%;
+    top: -4.5%;
     -o-object-fit: contain;
     object-fit: contain;
   }
@@ -468,6 +542,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     max-width: 180px;
   }
 }
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .numbers-grid {
+    gap: clamp(2px, 0.8vw, 6px);
+    max-width: 90px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-item {
   width: clamp(40px, 6vw, 75px);
   height: clamp(40px, 6vw, 75px);
@@ -477,56 +557,21 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   flex-shrink: 0;
 }
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-item {
+    width: clamp(20px, 4vw, 50px);
+    height: clamp(20px, 4vw, 50px);
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-circle {
   font-size: clamp(1.4rem, 3.5vw, 48px);
   font-weight: normal;
   color: #000;
 }
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
-  /* ── Guide hand images (Scenes 6–9, replaced by real hands on drop) ── */
-}
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .guide-hand-img {
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom center;
-  pointer-events: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  -webkit-user-drag: none;
-  opacity: 1;
-}
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
-  width: 24%;
-  height: 36px;
-  margin-left: -102px;
-  z-index: 8;
-  margin-bottom: -13px;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
-    width: 20%;
-    height: 25px;
-    margin-left: -60px;
-    z-index: 8;
-    margin-bottom: -9px;
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .num-circle {
+    font-size: clamp(1rem, 2.5vw, 30px);
   }
-}
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-guide-img {
-  width: 27px;
-  height: 27%;
-  margin-left: -14px;
-  z-index: 7;
-}
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-guide {
-  position: absolute;
-  right: -80px;
-  bottom: 0;
-  width: 150px;
-  height: 150px;
-  background-size: contain;
-  background-repeat: no-repeat;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable {
   width: clamp(36px, 5.5vw, 70px);
@@ -546,13 +591,19 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
           user-select: none;
   position: relative;
   transform: none !important;
-  /* ⭐ IMPORTANT */
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable {
     font-size: clamp(1rem, 2.5vw, 2rem) !important;
     width: clamp(30px, 5vw, 50px) !important;
     height: clamp(30px, 5vw, 50px) !important;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable {
+    font-size: clamp(1rem, 1.5vw, 1.5rem) !important;
+    width: clamp(15px, 4vw, 40px) !important;
+    height: clamp(15px, 4vw, 40px) !important;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .ghost {
@@ -577,12 +628,22 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     font-size: clamp(1rem, 2.5vw, 2rem);
   }
 }
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .ghost {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .slot {
   font-size: clamp(1.2rem, 3vw, 3rem);
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .slot {
     font-size: clamp(1rem, 2.5vw, 2rem);
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .slot {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .dragging {
@@ -616,6 +677,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     font-size: clamp(1rem, 2.5vw, 2rem);
   }
 }
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-num-fixed {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
   /* ── Clock hands (Scenes 6–9) ── */
 }
@@ -624,11 +690,50 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   overflow: visible;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
-  /* ── Hand images (Scenes 6–9) ── */
+  /* ── Guide hand images (Scenes 6–9, replaced by real hands on drop) ── */
 }
-#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-face--complete {
-  position: relative;
-  overflow: visible;
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .guide-hand-img {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+  opacity: 1;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
+  width: 24%;
+  height: 36px;
+  margin-left: -102px;
+  z-index: 8;
+  margin-bottom: -13px;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
+    width: 20%;
+    height: 25px;
+    margin-left: -38px;
+    z-index: 8;
+    margin-bottom: -9px;
+  }
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-guide-img {
+  width: 27px;
+  height: 27%;
+  margin-left: -14px;
+  z-index: 7;
+}
+#section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-guide {
+  position: absolute;
+  right: -80px;
+  bottom: 0;
+  width: 150px;
+  height: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-hand-img {
   position: absolute;
@@ -733,6 +838,18 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   gap: 30px;
   margin: 20px 0;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hands-panel {
+    position: absolute;
+    bottom: 10px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hands-panel {
+    position: absolute;
+    bottom: 10px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-display {
   display: flex;
   justify-content: center;
@@ -742,6 +859,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-display {
     height: 90px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-display {
+    height: 50px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-preview {
@@ -757,6 +879,16 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-preview:active {
   cursor: grabbing;
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-preview {
+    margin-bottom: 0px;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hand-preview {
+    margin-bottom: 0px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-preview {
   height: 110px;
   width: auto;
@@ -767,6 +899,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     height: 60px;
   }
 }
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-preview {
+    height: 45px;
+  }
+}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
   height: 150px;
   width: auto;
@@ -775,6 +912,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
     height: 90px;
+  }
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
+    height: 60px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable-hand-hour {
@@ -847,6 +989,16 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   color: #000;
   text-align: center;
   margin-bottom: 16px;
+}
+@media (max-width: 950px) and (orientation: landscape) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (max-height: 300px) {
+  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title {
+    font-size: 0.8rem;
+  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
   position: relative;
