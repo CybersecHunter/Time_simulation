@@ -28,7 +28,7 @@
       "ost": "",
       "iText": [
         "",
-        "Hi there, little learner! <br/> Welcome to Tick-Tock <span class='red'>Clock Town!</span> Let's learn about time today!",
+        "Hi there, little learner! <br/> Welcome to Tick-Tock <span class='red'>Clock Town!</span><br/> Let's learn about <span class='red'>time</span> today!",
         "Look here! This is a <span class='red'>clock.</span>",
         "A <span class='red'>clock</span> tells us the time.",
         "",
@@ -48,9 +48,9 @@
         "Now, show <br/><span class='red'>6 o'clock.</span>",
         "Well done! <br/>This is <span class='red'>6 o'clock!</span>",
         "Can you show <br/><span class='red'>9 o'clock?</span>",
-        "Yay! This is <br/><span class='red'>9 o'clock</span>",
-        "Let's try <br/><span class='red'>12 o'clock</span>",
-        "Great job!<br/> This is <span class='red'>12 o'clock</span>",
+        "Yay! This is <br/><span class='red'>9 o'clock!</span>",
+        "Let's try <br/><span class='red'>12 o'clock!</span>",
+        "Great job!<br/> This is <span class='red'>12 o'clock.</span>",
         "Amazing! You built the <span class='red'>clock!</span> You are a time star! "
       ],
       "endAudio": "",
@@ -58,12 +58,18 @@
       "backBtnSrc": "assets/images/back.png",
       "infoAudio": "pages/module_1/page_9/audios/info.mp3",
       "introAudio": "pages/module_1/page_9/audios/Let’s learn about time today!.mp3",
-      "correctAudio": "pages/module_1/page_9/audios/correct.mp3",
+      "correctAudio": [
+        "pages/module_1/page_9/audios/correct.mp3",
+        "pages/module_1/page_9/audios/correct2.mp3",
+        "pages/module_1/page_9/audios/correct3.mp3",
+        "pages/module_1/page_9/audios/correct4.mp3"
+      ],
       "idleAudio": "pages/module_1/page_9/audios/idle.mp3",
       "wrongAudio": "pages/module_1/page_9/audios/wrong.mp3",
       "greatJob": "pages/module_1/page_9/audios/great_job.mp3",
-      "finalAudio": "pages/module_1/page_9/audios/final.mp3",
-      "endClock":"pages/module_1/page_9/images/end_clock.png",
+      "finalAudio": "pages/module_1/page_9/audios/final_audio.mp3",
+      "endClock": "pages/module_1/page_9/images/end_clock.png",
+      "emptyClock": "pages/module_1/page_9/images/empty_clock.png",
       "content": {
         "correctFeedback": {
           "text": "Great job!",
@@ -104,65 +110,11 @@
         ],
         "correctAudio": "pages/module_1/page_9/audios/correct.mp3",
         "clockImg": "pages/module_1/page_9/images/clock_bg.png",
-        "clockOverlayImg": "pages/module_1/page_9/images/clock_overlay_img.png",
         "overlay": "pages/module_1/page_9/images/red_overlay.png",
         "clockCompleteImg": "pages/module_1/page_9/images/clock_bg.png",
         "handGuideImg": "pages/module_1/page_9/images/hand_guide.png",
         "minute_guide": "pages/module_1/page_9/images/minute_guide.png",
         "seconds_guide": "pages/module_1/page_9/images/seconds_guide.png",
-        "numbersPanel": {
-          "numbers": [
-            1,
-            2,
-            4,
-            5,
-            7,
-            8,
-            10,
-            11
-          ],
-          "hand": "pages/module_1/page_9/images/cursor.png"
-        },
-        "dropZones": [
-          {
-            "num": 2,
-            "x": 60,
-            "y": 110
-          },
-          {
-            "num": 5,
-            "x": 220,
-            "y": 250
-          },
-          {
-            "num": 6,
-            "x": 150,
-            "y": 300
-          },
-          {
-            "num": 9,
-            "x": 40,
-            "y": 200
-          },
-          {
-            "num": 11,
-            "x": 128,
-            "y": 83
-          }
-        ],
-        "missingNumbers": [
-          2,
-          5,
-          6,
-          9,
-          11
-        ],
-        "rotationTargets": [
-          3,
-          6,
-          9,
-          12
-        ],
         "hands": {
           "hour": "pages/module_1/page_9/images/hour_hand.png",
           "minute": "pages/module_1/page_9/images/minute_hand.png"

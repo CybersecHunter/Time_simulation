@@ -282,7 +282,7 @@
 
 						.inst {
 							flex-shrink: 0; // ✅ NEVER shrink instruction line
-							margin-top: clamp(6px, 1.5vh, 15px); // ✅ small breathing room
+							margin-top: clamp(6px, 2.5vh, 20px); // ✅ small breathing room
 							margin-bottom: clamp(4px, 1vh, 10px);
 							text-align: center;
 							display: flex;
@@ -432,7 +432,7 @@
 							justify-content: center;
 							width: 100%;
 							max-width: 900px;
-							gap: clamp(30px, 10vw, 110px);
+							gap: clamp(40px, 15vw, 135px);
 							height: 100%;
 
 							@include mobile-landscape {
@@ -474,10 +474,11 @@
 
 						.options-panel {
 							flex: 0 0 auto;
-							width: clamp(110px, 25%, 230px);
+							width: clamp(130px, 26%, 230px);
 							display: flex;
 							flex-direction: column;
 							gap: clamp(16px, 4vh, 80px);
+							white-space: nowrap;
 
 							@include mobile-landscape {
 								gap: clamp(8px, 2vh, 60px);

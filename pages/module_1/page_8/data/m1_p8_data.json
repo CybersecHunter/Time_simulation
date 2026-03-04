@@ -122,14 +122,20 @@
       "endAudio": "",
       "backBtnSrc": "pages/module_1/page_8/images/back.png",
       "introAudio": "pages/module_1/page_8/audios/intro_audio.mp3",
-      "correctAudio": "pages/module_1/page_8/audios/good_job.mp3",
+      "correctAudio": [
+        "pages/module_1/page_8/audios/good_job.mp3",
+        "pages/module_1/page_8/audios/Excellent.mp3",
+        "pages/module_1/page_8/audios/Awesome!.mp3",
+        "pages/module_1/page_8/audios/Amazing!.mp3",
+        "pages/module_1/page_8/audios/Well_done.mp3"
+      ],
       "wrongAudio": "pages/module_1/page_8/audios/try_again.mp3",
       "finalAudio": "pages/module_1/page_8/audios/final_audio.mp3",
       "defaultPng": "pages/module_1/page_8/images/option_default.png",
       "correctPng": "pages/module_1/page_8/images/option_correct.png",
       "wrongPng": "pages/module_1/page_8/images/option_wrong.png",
       "star": "pages/module_1/page_7/images/star.png",
-      "cursor":"pages/module_1/page_7/images/hand.png",
+      "cursor": "pages/module_1/page_7/images/hand.png",
       "content": {
         "questions": [
           {

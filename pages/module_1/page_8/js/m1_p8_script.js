@@ -235,6 +235,22 @@ function quizRenderOptions(question) {
 }
 // let isEnd = false;
 
+function playAudiosSequentially(audioArray, callback) {
+  let index = 0;
+  function playNext() {
+    if (index >= audioArray.length) {
+      if (callback) callback();
+      return;
+    }
+    playFeedbackAudio(audioArray[index]);
+    audioEnd(function () {
+      index++;
+      playNext();
+    });
+  }
+  playNext();
+}
+
 function quizOnOptionClick($btn, question) {
   if (quizAnswered) return;
   quizAnswered = true;
@@ -249,9 +265,13 @@ function quizOnOptionClick($btn, question) {
     const starImg = `
     <img src="${_pageData.sections[sectionCnt - 1].star}" class="option-star">`;
     $btn.append(starImg);
-    $(".option-btn").css({"cursor":"auto", "pointer-events":"none"})
+    $(".option-btn").css({ "cursor": "auto", "pointer-events": "none" })
 
-    playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctAudio);
+    const correctAudios = _pageData.sections[sectionCnt - 1].correctAudio;
+
+    // ✅ Play ONLY one audio based on question index
+    playFeedbackAudio(correctAudios[quizCurrentIndex]);
+
     audioEnd(function () {
       // Remove star after audio
       setTimeout(function () {
@@ -290,17 +310,17 @@ function quizOnOptionClick($btn, question) {
 
         } else {
           setTimeout(function () {
-            $(".option-btn").css({"cursor":"pointer", "pointer-events":"auto"})
+            $(".option-btn").css({ "cursor": "pointer", "pointer-events": "auto" })
             quizLoadQuestion(quizCurrentIndex);
           }, 800);
         }
-      },2000)
+      }, 2000)
     });
 
   } else {
     $btn.addClass("wrong");
     playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
-    
+
     audioEnd(function () {
       setTimeout(function () {
         $btn.removeClass("wrong");

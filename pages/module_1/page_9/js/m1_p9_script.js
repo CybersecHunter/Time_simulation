@@ -258,42 +258,6 @@ window.startClockGame = function () {
 
 };
 
-// function initClockLayout(mountEl, sec) {
-
-//   if (!mountEl || !sec) return;
-
-//   const clockImg = sec.content.clockImg || "";
-
-//   mountEl.innerHTML = `
-
-//   <div class="clock-layout">
-
-//       <div class="clock-left">
-//           <div class="clock-wrapper">
-//               <div class="clock-face" 
-//                    style="background-image:url('${clockImg}')">
-//                   <div class="clock-center"></div>
-//               </div>
-//           </div>
-//       </div>
-
-//       <div class="clock-right">
-
-//           <div class="clock-title">
-//               ${sec.iText[2] || ""}
-//           </div>
-
-//           <div class="clock-message">
-//               ${sec.iText[3] || ""}
-//           </div>
-
-//       </div>
-
-//   </div>
-
-//   `;
-// }
-
 function replayLastAudio(btn) {
   const audio = document.getElementById("simulationAudio");
   const audioSource = btn.getAttribute('data-src') || window.replayBtnAudio;
@@ -344,19 +308,19 @@ function replayLastAudio(btn) {
 
 function initClockScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockImg || "";
+  const clockImg = sec.endClock || "";
 
   // BUILD fixed numbers HTML
-  const fixedNums = [3, 6, 9, 12];
+  // const fixedNums = [3, 6, 9, 12];
   let fixedHTML = '';
-  fixedNums.forEach(n => {
-    const pos = NUM_POSITIONS[n];
-    fixedHTML += `
-    <div class="clock-num-fixed clock-num-preset"
-         style="left:${pos.left}%;top:${pos.top}%;transform:translate(-50%,-50%);">
-         ${n}
-    </div>`;
-  });
+  // fixedNums.forEach(n => {
+  //   const pos = NUM_POSITIONS[n];
+  //   fixedHTML += `
+  //   <div class="clock-num-fixed clock-num-preset"
+  //        style="left:${pos.left}%;top:${pos.top}%;transform:translate(-50%,-50%);">
+  //        ${n}
+  //   </div>`;
+  // });
 
   mountEl.innerHTML = `
   
@@ -367,7 +331,7 @@ function initClockScene(mountEl, sec) {
               <div class="clock-face"
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
-                   ${fixedHTML}
+                    ${fixedHTML}
               </div>
           </div>
       </div>
@@ -605,8 +569,17 @@ function _buildGuideHandsHTML(sec) {
   `;
 }
 
+function _buildGuideHandsHTMLSeconds(sec) {
+  const minuteGuide = sec.content.minute_guide || "";
+  const secondsGuide = sec.content.seconds_guide || "";
 
-
+  return `
+    <img class="guide-hand-img minute-guide-img"
+         src="${minuteGuide}"
+         style=" pointer-events:none;"
+         alt=""/>
+  `;
+}
 
 
 function _initNumberDragDrop(sec, draggableNums, numPositions) {
@@ -754,8 +727,16 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         dragEl.style.pointerEvents = 'none';
         dragEl.style.cursor = 'default';
 
+        const audios = sec.correctAudio || [];
+
+        let audioToPlay = "";
+
+        if (Array.isArray(audios) && audios.length > 0) {
+          audioToPlay = audios[(_placedCount - 1) % audios.length];
+        }
+
         // ✅ Play correct audio
-        playBtnSounds(sec.correctAudio || "", function () {
+        playBtnSounds(audioToPlay, function () {
           if (_placedCount === draggableNums.length) {
             const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
             const sec = _pageData.sections[sectionCnt - 1];
@@ -804,7 +785,7 @@ function _buildClockNumbersHTML() {
 // ── SCENE 6: Numbers complete, something still missing ────────
 function initNumbersFixedScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockImg || "";
+  const clockImg = sec.emptyClock || "";
   const minuteGuide = sec.content.minute_guide || "";
   const secondsGuide = sec.content.seconds_guide || "";
 
@@ -817,7 +798,7 @@ function initNumbersFixedScene(mountEl, sec) {
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
                    ${_buildClockNumbersHTML()}
-                   ${_buildGuideHandsHTML(sec)}   <!-- ← ADD -->
+                   ${_buildGuideHandsHTML(sec)}
               </div>
           </div>
       </div>
@@ -846,7 +827,7 @@ function initNumbersFixedScene(mountEl, sec) {
 // ── SCENE 7: Show both hands on right, intro to dragging ─────
 function initHandIntroScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockImg || "";
+  const clockImg = sec.emptyClock || "";
   const hourImg = sec.content.hands.hour || "";
   const minuteImg = sec.content.hands.minute || "";
   const minuteGuide = sec.content.minute_guide || "";
@@ -914,7 +895,7 @@ function initHandIntroScene(mountEl, sec) {
 // ── SCENE 8: Drag hour hand onto clock ───────────────────────
 function initHourHandDragScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockImg || "";
+  const clockImg = sec.emptyClock || "";
   const hourImg = sec.content.hands.hour || "";
 
   mountEl.innerHTML = `
@@ -986,7 +967,7 @@ function initHourHandDragScene(mountEl, sec) {
 // ── SCENE 9: Drag minute hand onto clock ─────────────────────
 function initMinuteHandDragScene(mountEl, sec) {
 
-  const clockImg = sec.content.clockImg || "";
+  const clockImg = sec.emptyClock || "";
   const hourImg = sec.content.hands.hour || "";
   const minuteImg = sec.content.hands.minute || "";
 
@@ -999,7 +980,7 @@ function initMinuteHandDragScene(mountEl, sec) {
                    style="background-image:url('${clockImg}')">
                    <div class="clock-center"></div>
                    ${_buildClockNumbersHTML()}   <!-- ← ADD -->
-                    ${_buildGuideHandsHTML(sec)}   <!-- ← ADD -->
+                    ${_buildGuideHandsHTMLSeconds(sec)}   <!-- ← ADD -->
                    <!-- Hour hand already placed (fixed) -->
                    <img class="clock-hand-img hour-hand-img"
                         src="${hourImg}"
@@ -1200,7 +1181,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
 
 var HAND_TASKS = [
   { targetHour: 3, minuteAngle: 0, startAngle: 270, instructionIdx: 16, successIdx: 17, confettiIdx: 9, instructAudio: 9, completeAudio: 10 },
-  { targetHour: 6, minuteAngle: 0, startAngle: 270, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12 },
+  { targetHour: 6, minuteAngle: 0, startAngle: 90, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12 },
   { targetHour: 9, minuteAngle: 0, startAngle: 180, instructionIdx: 20, successIdx: 21, confettiIdx: 11, instructAudio: 13, completeAudio: 14 },
   { targetHour: 12, minuteAngle: 0, startAngle: 270, instructionIdx: 22, successIdx: 23, confettiIdx: 12, instructAudio: 15, completeAudio: 16 }
 ];
@@ -1595,29 +1576,19 @@ function _showCompletedPopup() {
 
   pageVisited();
 
-  // $(".popup-wrap").html(`
-  //   <div class="completed-popup-inner">
-  //     /* <div class="completed-text">
-  //         Simulation<br>Completed!
-  //     </div> */
-  //     <div class="popBtns">
-  //         <button id="homeBack" data-tooltip="Back"></button>
-  //         <button id="refresh"  data-tooltip="Replay"></button>
-  //     </div>
-  //   </div>
-  // `);
-
   $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
   $(".confetti").addClass("show");
-
-  setTimeout(function () {
-    $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
-    $(".popup").css({ visibility: "visible", opacity: "1" });
-  }, 1500);
-  setTimeout(function () {
-    $(".confetti").removeClass("show");
-    // $(".confetti").hide();                
-  }, 2000);
+  playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
+  audioEnd(function () {
+    setTimeout(function () {
+      $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+      $(".popup").css({ visibility: "visible", opacity: "1" });
+    }, 1500);
+    setTimeout(function () {
+      $(".confetti").removeClass("show");
+      // $(".confetti").hide();                
+    }, 2000);
+  })
 
   // Re-bind buttons since innerHTML was replaced
   $("#refresh").on("click", function () {
@@ -1944,81 +1915,82 @@ function restartActivity() {
   restartPage();
 }
 
-// ✅ REPLACE your existing showEndAnimations function with this:
+// var isEndAnimationTriggered = false;
 
+// function showEndAnimations() {
+//   if (isEndAnimationTriggered) return;
+//   isEndAnimationTriggered = true;
 
-var isEndAnimationTriggered = false;
+//   console.log("showEndAnimations initiated");
 
-function showEndAnimations() {
-  if (isEndAnimationTriggered) return;
-  isEndAnimationTriggered = true;
+//   // Cleanup previous states
+//   closePopup('introPopup-1');
+//   pageVisited();
 
-  console.log("showEndAnimations initiated");
+//   const $audio = $("#simulationAudio");
 
-  // Cleanup previous states
-  closePopup('introPopup-1');
-  pageVisited();
-  $(".confetti").addClass("show");
+//   // Remove previous timeupdate listeners to prevent stacking
+//   $audio.on("timeupdate", function () {
+//     // var currentTime = this.currentTime;
+//     setTimeout(function () {
+//       $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+//       $(".confetti").addClass("show");
 
-  const finalAudioSource = _pageData.sections[sectionCnt - 1].finalAudio;
-  const $audio = $("#simulationAudio");
+//       // 🔊 PLAY FINAL AUDIO
+//       playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
+//       audioEnd(function () {
+//         const audio = document.getElementById("simulationAudio");
+//         audio.onended = null; // 🚫 prevent repeat
 
-  // Remove previous timeupdate listeners to prevent stacking
-  $audio.on("timeupdate", function () {
-    var currentTime = this.currentTime;
-    $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+//         setTimeout(function () {
+//           $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+//           $(".popup").css({ visibility: "visible", opacity: "1" });
+//         }, 500);
 
-    if (currentTime >= 1) {
-      $(".confetti").addClass("show");
+//         setTimeout(function () {
+//           $(".confetti").removeClass("show");
+//         }, 800);
 
-      setTimeout(function () {
-        $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
-        $(".popup").css({ visibility: "visible", opacity: "1" });
-      }, 1500);
+//       })
+//       $audio.off("timeupdate");
+//     }, 400)
+//   })
+//   //  else {
+//   //     // Fallback if no audio exists
+//   //     $(".popup").css({ visibility: "visible", opacity: "1", display: "flex" });
+//   //   }
+// }
 
-      setTimeout(function () {
-        $(".confetti").removeClass("show");
-      }, 2000);
+// function showEndAnimations() {
+//   var $audio = $("#simulationAudio");
+//   closePopup('introPopup-1');
+//   console.log("Audio ending");
+//   pageVisited();
 
-      $audio.off("timeupdate");
-    }
-  })
-  //  else {
-  //     // Fallback if no audio exists
-  //     $(".popup").css({ visibility: "visible", opacity: "1", display: "flex" });
-  //   }
-}
+//   $audio.on("timeupdate", function () {
+//     var currentTime = this.currentTime;
+//     $(".greetingsPop").css("visibility", "visible");
+//     $(".greetingsPop").css("opacity", "1");
 
-function showEndAnimations() {
-  var $audio = $("#simulationAudio");
-  closePopup('introPopup-1');
-  console.log("Audio ending");
-  pageVisited();
+//     if (currentTime >= 1) {
+//       $(".confetti").addClass("show");
+//       // $(".confetti").show();
+//       setTimeout(function () {
+//         $(".greetingsPop").css("visibility", "hidden");
+//         $(".greetingsPop").css("opacity", "0");
+//         $(".popup").css("visibility", "visible");
+//         $(".popup").css("opacity", "1");
+//       }, 1500)
+//       setTimeout(function () {
+//         $(".confetti").removeClass("show");
+//         // $(".confetti").hide();                
+//       }, 2000);
 
-  $audio.on("timeupdate", function () {
-    var currentTime = this.currentTime;
-    $(".greetingsPop").css("visibility", "visible");
-    $(".greetingsPop").css("opacity", "1");
+//       $audio.off("timeupdate");
+//     }
 
-    if (currentTime >= 1) {
-      $(".confetti").addClass("show");
-      // $(".confetti").show();
-      setTimeout(function () {
-        $(".greetingsPop").css("visibility", "hidden");
-        $(".greetingsPop").css("opacity", "0");
-        $(".popup").css("visibility", "visible");
-        $(".popup").css("opacity", "1");
-      }, 1500)
-      setTimeout(function () {
-        $(".confetti").removeClass("show");
-        // $(".confetti").hide();                
-      }, 2000);
-
-      $audio.off("timeupdate");
-    }
-
-  });
-}
+//   });
+// }
 
 function replayLastAudio(btnElement, audioSrc) {
   playClickThen();
