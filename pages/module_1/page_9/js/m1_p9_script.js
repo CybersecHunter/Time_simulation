@@ -945,6 +945,7 @@ function initHourHandDragScene(mountEl, sec) {
   });
 
   _initHandDropDrag('hourHandDrag', 'clockFaceHour', function () {
+    $('.hour-guide-img').css("display","none");
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
@@ -956,7 +957,7 @@ function initHourHandDragScene(mountEl, sec) {
               </button><p>`
       titleEl.innerHTML = text + (sec.iText[13] || "The <span class='red'>short hand</span> shows the hour.") + `</p>`;
     }
-
+  
     playBtnSounds(sec.content.replayAudios[20], function () {
       initMinuteHandDragScene(mountEl, sec);
     });
@@ -1023,6 +1024,7 @@ function initMinuteHandDragScene(mountEl, sec) {
   });
 
   _initHandDropDrag('minuteHandDrag', 'clockFaceMinute', function () {
+    $('.minute-guide-img').css("display","none");
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
