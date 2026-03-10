@@ -188,18 +188,9 @@ function addSectionData() {
                 playBtnSounds(sec.content.replayAudios[3], function () {
 
                   $("#scenetext6").fadeOut(250, function () {
+                    // ✅ Scene 5 Numbers
+                    initNumberArrangeScene(mountEl, sec);
 
-                    $(this).html(`<button
-                class='wrapTextaudio playing'
-                id='wrapTextaudio_1'
-                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
-                onClick="replayLastAudio(this)">
-              </button><p>`+ (sec.iText[7] + `</p>` || "")).fadeIn(250);
-                    // SECOND LINE AUDIO
-                    playBtnSounds(sec.content.replayAudios[22], function () {
-                      // ✅ Scene 5 Numbers
-                      initNumberArrangeScene(mountEl, sec);
-                    });
                   });
                 });
 
@@ -457,6 +448,32 @@ function initClockScene4(mountEl, sec) {
   `;
 }
 
+// ── IDLE AUDIO REPEAT SYSTEM ─────────────────────────────────
+var _idleTimer = null;
+var _idleAudioSrc = null;
+
+function startIdleAudioTimer(audioSrc, delay) {
+  _idleAudioSrc = audioSrc;
+  clearIdleAudioTimer();
+  _idleTimer = setTimeout(function () {
+    playBtnSounds(_idleAudioSrc, function () {
+      // after replay, start timer again so it keeps repeating if still idle
+      startIdleAudioTimer(_idleAudioSrc, delay);
+    });
+  }, delay || 5000);
+}
+
+function clearIdleAudioTimer() {
+  if (_idleTimer) {
+    clearTimeout(_idleTimer);
+    _idleTimer = null;
+  }
+}
+
+function resetIdleAudioTimer(audioSrc, delay) {
+  startIdleAudioTimer(audioSrc, delay || 5000);
+}
+
 
 var _placedNumbers = {}; // stores { num: true } for each placed number
 var _fixedNumbers = [3, 6, 9, 12]; // always shown
@@ -479,6 +496,12 @@ var NUM_POSITIONS = {
 };
 
 function initNumberArrangeScene(mountEl, sec) {
+  clearIdleAudioTimer();
+  setTimeout(function() {
+    playBtnSounds(sec.content.replayAudios[22], function() {
+      startIdleAudioTimer(sec.content.replayAudios[22], 5000);
+    });
+  }, 300);
 
   _placedNumbers = {};  // ← RESET at start of number scene
   _placedCount = 0;
@@ -539,6 +562,14 @@ function initNumberArrangeScene(mountEl, sec) {
       </div>
 
       <div class="clock-right">
+      <div class="number-drag">
+      <button
+                class='wrapTextaudio playing'
+                id='wrapTextaudio_1'
+                data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+                onClick="replayLastAudio(this)">
+              </button>
+          <p>${sec.iText[7]}</p></div>
           <div class="numbers-panel">
               <div class="numbers-grid" id="numbersGrid">
                   ${gridHTML}
@@ -584,6 +615,8 @@ function _buildGuideHandsHTMLSeconds(sec) {
 
 function _initNumberDragDrop(sec, draggableNums, numPositions) {
 
+  // startIdleAudioTimer(sec.content.replayAudios[22], 5000);
+
   draggableNums.forEach(n => {
 
     const dragEl = document.getElementById('drag-' + n);
@@ -600,6 +633,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
     dragEl.addEventListener('touchstart', onDragStart, { passive: false });
 
     function onDragStart(e) {
+      clearIdleAudioTimer();
       e.preventDefault();
 
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -738,9 +772,12 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         // ✅ Play correct audio
         playBtnSounds(audioToPlay, function () {
           if (_placedCount === draggableNums.length) {
+            clearIdleAudioTimer();
             const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
             const sec = _pageData.sections[sectionCnt - 1];
             initNumbersFixedScene(mountEl, sec);
+          }else{
+            resetIdleAudioTimer(sec.content.replayAudios[22], 5000);
           }
         });
 
@@ -749,6 +786,7 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         dragEl.style.pointerEvents = 'auto';
         dragEl.style.color = '#000';
         playBtnSounds(sec.wrongAudio || "");
+        resetIdleAudioTimer(sec.content.replayAudios[22], 5000);
       }
     }
 
@@ -784,6 +822,7 @@ function _buildClockNumbersHTML() {
 
 // ── SCENE 6: Numbers complete, something still missing ────────
 function initNumbersFixedScene(mountEl, sec) {
+  clearIdleAudioTimer();
 
   const clockImg = sec.emptyClock || "";
   const minuteGuide = sec.content.minute_guide || "";
@@ -894,6 +933,7 @@ function initHandIntroScene(mountEl, sec) {
 
 // ── SCENE 8: Drag hour hand onto clock ───────────────────────
 function initHourHandDragScene(mountEl, sec) {
+  clearIdleAudioTimer();
 
   const clockImg = sec.emptyClock || "";
   const hourImg = sec.content.hands.hour || "";
@@ -942,10 +982,11 @@ function initHourHandDragScene(mountEl, sec) {
   playBtnSounds(sec.content.replayAudios[7], function () {
     // After first audio finishes → enable drag
     dragEnabled = true;
+    startIdleAudioTimer(sec.content.shortHandReplay, 5000); // ✅ ADD
   });
 
   _initHandDropDrag('hourHandDrag', 'clockFaceHour', function () {
-    $('.hour-guide-img').css("display","none");
+    $('.hour-guide-img').css("display", "none");
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
@@ -957,7 +998,7 @@ function initHourHandDragScene(mountEl, sec) {
               </button><p>`
       titleEl.innerHTML = text + (sec.iText[13] || "The <span class='red'>short hand</span> shows the hour.") + `</p>`;
     }
-  
+
     playBtnSounds(sec.content.replayAudios[20], function () {
       initMinuteHandDragScene(mountEl, sec);
     });
@@ -1021,10 +1062,11 @@ function initMinuteHandDragScene(mountEl, sec) {
   playBtnSounds(sec.content.replayAudios[8], function () {
     // After first audio finishes → enable drag
     dragEnabled = true;
+    startIdleAudioTimer(sec.content.longHandReplay, 5000);
   });
 
   _initHandDropDrag('minuteHandDrag', 'clockFaceMinute', function () {
-    $('.minute-guide-img').css("display","none");
+    $('.minute-guide-img').css("display", "none");
     // Replace title text with second text
     const titleEl = document.querySelector(".clock-title");
     if (titleEl) {
@@ -1061,6 +1103,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
   const ghostParent = document.querySelector('.animat-container');
 
   function onStart(e) {
+    clearIdleAudioTimer();
     e.preventDefault();
 
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -1152,6 +1195,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
     );
 
     if (hit) {
+      clearIdleAudioTimer();
       // ✅ Dropped on clock — move hand into face
       hand.style.opacity = '';
       hand.style.pointerEvents = 'none';
@@ -1169,6 +1213,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
       setTimeout(onSuccess, 500);
 
     } else {
+      resetIdleAudioTimer(_idleAudioSrc, 5000);
       // ❌ Snap back — already restored above
       hand.style.cursor = 'grab';
     }
@@ -1182,14 +1227,15 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
 // ─── HAND DRAG SCENES (6, 7, 8, 9) ───────────────────────────
 
 var HAND_TASKS = [
-  { targetHour: 3, minuteAngle: 0, startAngle: 270, instructionIdx: 16, successIdx: 17, confettiIdx: 9, instructAudio: 9, completeAudio: 10 },
-  { targetHour: 6, minuteAngle: 0, startAngle: 90, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12 },
-  { targetHour: 9, minuteAngle: 0, startAngle: 180, instructionIdx: 20, successIdx: 21, confettiIdx: 11, instructAudio: 13, completeAudio: 14 },
-  { targetHour: 12, minuteAngle: 0, startAngle: 270, instructionIdx: 22, successIdx: 23, confettiIdx: 12, instructAudio: 15, completeAudio: 16 }
+  { targetHour: 3, minuteAngle: 0, startAngle: 270, instructionIdx: 16, successIdx: 17, confettiIdx: 9, instructAudio: 9, completeAudio: 10, idleAudio: 'replay3' },
+  { targetHour: 6, minuteAngle: 0, startAngle: 90, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12, idleAudio: 'replay6' },
+  { targetHour: 9, minuteAngle: 0, startAngle: 180, instructionIdx: 20, successIdx: 21, confettiIdx: 11, instructAudio: 13, completeAudio: 14, idleAudio: 'replay9' },
+  { targetHour: 12, minuteAngle: 0, startAngle: 270, instructionIdx: 22, successIdx: 23, confettiIdx: 12, instructAudio: 15, completeAudio: 16, idleAudio: 'replay12' }
 ];
 
 var _currentTaskIdx = 0;
 function initHandScene(mountEl, sec, taskIdx) {
+  clearIdleAudioTimer();
 
   _currentTaskIdx = taskIdx;
   const task = HAND_TASKS[taskIdx];
@@ -1252,12 +1298,15 @@ function initHandScene(mountEl, sec, taskIdx) {
   // Step 1: drag hour hand first
   // ✅ Play instruction audio first, then enable dragging
   playBtnSounds(sec.content.replayAudios[task.instructAudio], function () {
+    const idleAudioSrc = sec.content[task.idleAudio];
+    startIdleAudioTimer(idleAudioSrc, 5000);
     _initImgHandDrag(
       'hourHandImg',
       targetAngle,
       startAngle,
       20,
       function onHourSuccess() {
+        clearIdleAudioTimer();
         _onHandSuccess(mountEl, sec, task);
       },
       false,  // ← isMinute = false for hour hand
@@ -1291,6 +1340,7 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
   }
 
   function onStart(e) {
+    clearIdleAudioTimer();
     e.preventDefault();
     isDragging = true;
     hand.style.cursor = 'grabbing';
@@ -1334,6 +1384,7 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
     if (diff > 180) diff = 360 - diff;
 
     if (diff <= tolerance) {
+      clearIdleAudioTimer();
 
       // Calculate full 360 based on current direction
       let finalAngle = targetAngle;
@@ -1398,6 +1449,7 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
       }, 100);
 
       // Play wrong sound
+      resetIdleAudioTimer(_idleAudioSrc, 5000);
       playBtnSounds(sec.content.wrongAudio || "");
     }
   }
@@ -1532,6 +1584,7 @@ function _onHandSuccess(mountEl, sec, task) {
 // ─── SCENE 10: Celebration ────────────────────────────────────
 
 function initCelebrationScene(mountEl, sec) {
+  clearIdleAudioTimer();
 
   // const endClockImg = sec.content.endClock || "";
   // const hourImg = sec.content.hands.hour || "";

@@ -118,7 +118,13 @@
         "hands": {
           "hour": "pages/module_1/page_9/images/hour_hand.png",
           "minute": "pages/module_1/page_9/images/minute_hand.png"
-        }
+        },
+        "shortHandReplay": "pages/module_1/page_9/audios/short_hand_replay.mp3",
+        "longHandReplay": "pages/module_1/page_9/audios/long_hand_replay.mp3",
+        "replay3": "pages/module_1/page_9/audios/replay_3_clock.mp3",
+        "replay6": "pages/module_1/page_9/audios/replay_6_clock.mp3",
+        "replay9": "pages/module_1/page_9/audios/replay_9_clock.mp3",
+        "replay12": "pages/module_1/page_9/audios/replay_12_clock.mp3"
       }
     }
   ],

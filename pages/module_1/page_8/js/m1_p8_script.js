@@ -270,62 +270,67 @@ function quizOnOptionClick($btn, question) {
     const correctAudios = _pageData.sections[sectionCnt - 1].correctAudio;
 
     // ✅ Play ONLY one audio based on question index
-    playFeedbackAudio(correctAudios[quizCurrentIndex]);
-
+    playFeedbackAudio(_pageData.sections[sectionCnt - 1].correctTune);
     audioEnd(function () {
-      // Remove star after audio
-      setTimeout(function () {
-        $btn.find(".option-star").remove();
-        quizCurrentIndex++;
-        if (quizCurrentIndex >= quizQuestions.length) {
-          // isEnd = true;
-          setTimeout(function () {
+      playFeedbackAudio(correctAudios[quizCurrentIndex]);
 
-            // 🎉 SHOW CONFETTI + GREAT JOB IMMEDIATELY
-            pageVisited();
-            $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
-            $(".confetti").addClass("show");
+      audioEnd(function () {
+        // Remove star after audio
+        setTimeout(function () {
+          $btn.find(".option-star").remove();
+          quizCurrentIndex++;
+          if (quizCurrentIndex >= quizQuestions.length) {
+            // isEnd = true;
+            setTimeout(function () {
 
-            // 🔊 PLAY FINAL AUDIO
-            playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
+              // 🎉 SHOW CONFETTI + GREAT JOB IMMEDIATELY
+              pageVisited();
+              $(".greetingsPop").css({ visibility: "visible", opacity: "1" });
+              $(".confetti").addClass("show");
 
-            // 🎯 WHEN AUDIO ENDS → SHOW COMPLETION POPUP
-            audioEnd(function () {
+              // 🔊 PLAY FINAL AUDIO
+              playBtnSounds(_pageData.sections[sectionCnt - 1].finalAudio);
 
-              const audio = document.getElementById("simulationAudio");
-              audio.onended = null; // 🚫 prevent repeat
+              // 🎯 WHEN AUDIO ENDS → SHOW COMPLETION POPUP
+              audioEnd(function () {
 
-              setTimeout(function () {
-                $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
-                $(".popup").css({ visibility: "visible", opacity: "1" });
-              }, 500);
+                const audio = document.getElementById("simulationAudio");
+                audio.onended = null; // 🚫 prevent repeat
 
-              setTimeout(function () {
-                $(".confetti").removeClass("show");
-              }, 800);
+                setTimeout(function () {
+                  $(".greetingsPop").css({ visibility: "hidden", opacity: "0" });
+                  $(".popup").css({ visibility: "visible", opacity: "1" });
+                }, 500);
 
-            });
+                setTimeout(function () {
+                  $(".confetti").removeClass("show");
+                }, 800);
 
-          }, 400);
+              });
 
-        } else {
-          setTimeout(function () {
-            $(".option-btn").css({ "cursor": "pointer", "pointer-events": "auto" })
-            quizLoadQuestion(quizCurrentIndex);
-          }, 800);
-        }
-      }, 2000)
+            }, 400);
+
+          } else {
+            setTimeout(function () {
+              $(".option-btn").css({ "cursor": "pointer", "pointer-events": "auto" })
+              quizLoadQuestion(quizCurrentIndex);
+            }, 800);
+          }
+        }, 2000)
+      });
     });
 
   } else {
     $btn.addClass("wrong");
-    playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
-
+    playFeedbackAudio(_pageData.sections[sectionCnt - 1].incorrectTune);
     audioEnd(function () {
-      setTimeout(function () {
-        $btn.removeClass("wrong");
-        quizAnswered = false;
-      }, 600);
+      playFeedbackAudio(_pageData.sections[sectionCnt - 1].wrongAudio);
+      audioEnd(function () {
+        setTimeout(function () {
+          $btn.removeClass("wrong");
+          quizAnswered = false;
+        }, 600);
+      });
     });
   }
 }
@@ -604,16 +609,16 @@ function showEndAnimations() {
   }, 2000);
 }
 
-function closeIntroPop(ldx) {
-  playClickThen();
-  // AudioController.play();
-  document.getElementById(ldx).style.display = 'none';
-  let audio = document.getElementById("popupAudio");
-  if (audio.src) {
-    audio.pause();
-    audio.currentTime = 0;
-  }
-}
+// function closeIntroPop(ldx) {
+//   playClickThen();
+//   // AudioController.play();
+//   document.getElementById(ldx).style.display = 'none';
+//   let audio = document.getElementById("popupAudio");
+//   if (audio.src) {
+//     audio.pause();
+//     audio.currentTime = 0;
+//   }
+// }
 
 
 // --- UPDATED REPLAY FUNCTION ---

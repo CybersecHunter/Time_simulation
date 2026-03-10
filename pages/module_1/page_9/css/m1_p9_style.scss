@@ -60,7 +60,7 @@
 			height: calc(100dvh - 40px);
 		}
 
-		@media screen and (max-height: 300px) {
+		@media screen and (max-height: 390px) {
 			margin: 10px auto;
 			height: calc(100dvh - 20px);
 		}
@@ -108,7 +108,7 @@
 									line-height: 40px;
 								}
 
-								@media screen and (max-height: 300px) {
+								@media screen and (max-height: 390px) {
 									font-size: 1.2rem;
 									line-height: 25px;
 								}
@@ -245,7 +245,7 @@
 									gap: clamp(10px, 3vw, 40px); // ← fluid gap, was fixed 40px
 									padding-top: env(safe-area-inset-top, 0px);
 
-									@media screen and (max-width: 300px) {
+									@media screen and (max-width: 390px) {
 										flex-direction: column; // stack vertically on narrow phones
 										margin-top: 10px;
 										gap: clamp(4px, 2vw, 12px);
@@ -271,7 +271,7 @@
 										width: 48%;
 									}
 
-									@media screen and (max-width: 300px) {
+									@media screen and (max-width: 390px) {
 										width: 30%;
 										flex-shrink: 1;
 									}
@@ -293,15 +293,24 @@
 										margin: 10px 0;
 									}
 
+									.number-drag {
+										text-align: center !important;
+										p {
+											
+											font-size: 4.5vh;
+										}
+									}
+
 									p {
 										text-align: center !important;
+
 
 										@include mobile-landscape {
 											font-size: 2rem;
 											line-height: 40px;
 										}
 
-										@media screen and (max-height: 300px) {
+										@media screen and (max-height: 390px) {
 											font-size: 1.2rem;
 											line-height: 25px;
 										}
@@ -366,7 +375,7 @@
 										line-height: 40px;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1.2rem, 1.5vw, 3rem);
 										line-height: 25px;
 									}
@@ -485,7 +494,7 @@
 										height: min(clamp(150px, 28vh, 300px), 95%);
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										width: min(clamp(90px, 22vw, 180px), 95%);
 										height: min(clamp(90px, 22vh, 180px), 95%);
 									}
@@ -569,23 +578,23 @@
 
 								.numbers-grid {
 									display: grid;
-									grid-template-columns: repeat(2, minmax(0, 1fr));
-									gap: clamp(6px, 1.5vw, 12px);
+									grid-template-columns: repeat(4, minmax(0, 1fr));
+									gap: 1.5vh;
 									justify-content: center;
 									justify-items: center;
 									overflow: visible; // ← ADD
 									width: 100%;
-									max-width: 260px;
+									max-width: 50vh;
 
 									@include mobile-landscape {
-										gap: clamp(4px, 1vw, 8px);
-										max-width: 180px;
+										// gap: clamp(4px, 1vw, 8px);
+										// max-width: 180px;
 
 									}
 
-									@media screen and (max-height: 300px) {
-										gap: clamp(2px, 0.8vw, 6px);
-										max-width: 90px;
+									@media screen and (max-height: 390px) {
+										// gap: clamp(2px, 0.8vw, 6px);
+										// max-width: 90px;
 									}
 								}
 
@@ -599,7 +608,7 @@
 									align-items: center;
 									flex-shrink: 0;
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										width: clamp(20px, 4vw, 50px); // ← fluid, was fixed 75px
 										height: clamp(20px, 4vw, 50px);
 									}
@@ -610,7 +619,7 @@
 									font-weight: normal;
 									color: #000;
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1rem, 2.5vw, 30px);
 									}
 								}
@@ -640,7 +649,7 @@
 										height: clamp(30px, 5vw, 50px) !important;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1rem, 1.5vw, 1.5rem) !important;
 										width: clamp(15px, 4vw, 40px) !important;
 										height: clamp(15px, 4vw, 40px) !important;
@@ -669,7 +678,7 @@
 										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1rem, 1.5vw, 1.5rem);
 									}
 								}
@@ -681,7 +690,7 @@
 										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1rem, 1.5vw, 1.5rem);
 									}
 								}
@@ -720,7 +729,7 @@
 										font-size: clamp(1rem, 2.5vw, 2rem);
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: clamp(1rem, 1.5vw, 1.5rem);
 									}
 
@@ -894,7 +903,7 @@
 										bottom: 10px;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										position: absolute;
 										bottom: 10px;
 									}
@@ -912,7 +921,7 @@
 										height: 90px;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										height: 50px;
 									}
 								}
@@ -932,7 +941,7 @@
 										margin-bottom: 0px;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										margin-bottom: 0px;
 									}
 								}
@@ -1020,7 +1029,7 @@
 										height: 44px;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										width: 40px;
 										height: 40px;
 									}
@@ -1050,7 +1059,7 @@
 										font-size: 1.5rem;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										font-size: 0.8rem;
 									}
 

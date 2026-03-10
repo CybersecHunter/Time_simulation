@@ -129,6 +129,8 @@
         "pages/module_1/page_8/audios/Amazing!.mp3",
         "pages/module_1/page_8/audios/Well_done.mp3"
       ],
+      "correctTune":"pages/module_1/page_8/audios/claping.mp3",
+      "incorrectTune":"pages/module_1/page_8/audios/incorrectDragNDrop.mp3",
       "wrongAudio": "pages/module_1/page_8/audios/try_again.mp3",
       "finalAudio": "pages/module_1/page_8/audios/final_audio.mp3",
       "defaultPng": "pages/module_1/page_8/images/option_default.png",

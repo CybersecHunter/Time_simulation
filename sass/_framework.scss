@@ -194,6 +194,7 @@ h2 {}
                     top: 0;
                     object-fit: cover;
                }
+               
 
                #intro-text {
                     position: relative;
@@ -727,7 +728,7 @@ h2 {}
           top: 0px;
           left: 0;
           z-index: 1;
-          background-size: 100% 100%;
+          background-size: contain !important;
           background-position: center;
           /* min-width: 1270px; */
 

@@ -169,6 +169,7 @@ function addSectionData() {
                 <source src="${_pageData.bgVid.videoSRC}" type="video/mp4">
             </video>
         `);
+        
     }
 
     //showVisitedModule();

@@ -75,7 +75,7 @@
 						display: flex;
 						flex-direction: column;
 						width: 100%;
-						padding-top: clamp(60px, 10vh, 100px); // match your header height
+						padding-top: clamp(60px, 12vh, 100px); // match your header height
 						height: 100%;
 
 						&>h1 {
@@ -116,7 +116,7 @@
 							}
 						}
 
-						.header {
+						#header {
 							background: url("../images/header_bg.png") repeat;
 							width: 100%;
 							height: clamp(60px, 10vh, 100px); // ✅ fluid but known size
@@ -126,7 +126,7 @@
 							align-items: center;
 							padding: 20px;
 							background-position: center;
-							background-size: contain;
+							background-size: contain !important;
 							box-sizing: border-box;
 
 							@include tablet-landscape-height {
@@ -281,8 +281,8 @@
 						}
 
 						.inst {
-							flex-shrink: 0; // ✅ NEVER shrink instruction line
-							margin-top: clamp(6px, 2.5vh, 20px); // ✅ small breathing room
+							flex-shrink: 0;
+							margin-top: 3.5vh;
 							margin-bottom: clamp(4px, 1vh, 10px);
 							text-align: center;
 							display: flex;
@@ -344,20 +344,20 @@
 							p {
 								color: #000;
 								text-align: center;
-								font-size: clamp(1.5rem, 2.5vw, 3rem);
+								font-size: 5vh;
 								margin-bottom: 0px;
 
-								@include mobile-landscape {
-									font-size: clamp(0.8rem, 2vw, 2rem);
-								}
+								// @include mobile-landscape {
+								// 	font-size: clamp(0.8rem, 2vw, 2rem);
+								// }
 
 
 								span {
 									color: red;
 
-									@include mobile-landscape {
-										font-size: clamp(0.8rem, 1.8vw, 1.5rem);
-									}
+									// @include mobile-landscape {
+									// 	font-size: clamp(0.8rem, 1.8vw, 1.5rem);
+									// }
 
 								}
 							}
@@ -442,63 +442,64 @@
 						}
 
 						.clock-panel {
+							flex: 1 1 0;
 							width: clamp(200px, 45%, 480px); // ✅ fluid
-							flex: 0 0 auto;
 							display: flex;
 							align-items: center;
-							justify-content: center;
+							justify-content: right;
 
 							@include mobile-landscape {
 								width: clamp(30px, 30vw, 350px);
 								// max-height: 60vh;
 							}
 
-							@media screen and (max-height: 300px) {
-								width: clamp(15px, 20vw, 240px); // ✅ wider on portrait mobile
-							}
+							// @media screen and (max-height: 400px) {
+							// 	width: clamp(15px, 20vw, 240px); // ✅ wider on portrait mobile
+							// }
 
 							img {
-								width: 100%;
-								max-height: 100%;
-								height: 100%;
-								max-width: 100%;
+								width: auto;
+								max-height: 48vh;
+								// height: 100%;
+								// max-width: 100%;
 								object-fit: contain;
 								pointer-events: none;
 
-								@include mobile-landscape {
-									max-width: 100%;
-									margin-top: 0;
-								}
+								// @include mobile-landscape {
+								// 	max-width: 100%;
+								// 	margin-top: 0;
+								// }
 							}
 						}
 
 						.options-panel {
-							flex: 0 0 auto;
-							width: clamp(130px, 26%, 230px);
+							flex: 1 1 0;
+							// width: clamp(130px, 26%, 230px);
 							display: flex;
 							flex-direction: column;
-							gap: clamp(16px, 4vh, 80px);
+							gap: 4vh;
 							white-space: nowrap;
+							// align-items: center;
 
-							@include mobile-landscape {
-								gap: clamp(8px, 2vh, 60px);
-							}
+							// @include mobile-landscape {
+							// 	gap: clamp(8px, 2vh, 60px);
+							// }
 
-							@media screen and (max-height: 300px) {
-								gap: clamp(3px, 1vh, 30px); // ✅ wider on portrait mobile
-								width: clamp(80px, 15%, 180px);
-							}
+							// @media screen and (max-height: 400px) {
+							// 	gap: clamp(3px, 1vh, 30px); // ✅ wider on portrait mobile
+							// 	width: clamp(80px, 15%, 180px);
+							// }
 
 
 						}
 
 						.option-btn {
-							width: 100%;
-							min-height: clamp(50px, 8vh, 90px);
+							width: 30vh;
+							max-height: 10vh;
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							padding: clamp(10px, 1.5vh, 14px) clamp(16px, 3vw, 50px);
+							padding: 2.5vh;
 							border-radius: 16px;
 							cursor: pointer;
 							background: url(../images/option_default.png) no-repeat center;
@@ -534,30 +535,30 @@
 								}
 							}
 
-							@include tablet-landscape-height {
-								min-height: 58px;
-							}
+							// @include tablet-landscape-height {
+							// 	min-height: 58px;
+							// }
 
-							@include mobile-landscape {
-								min-height: 48px;
-								padding: 10px 16px;
-							}
+							// @include mobile-landscape {
+							// 	min-height: 48px;
+							// 	padding: 10px 16px;
+							// }
 
-							@media screen and (max-height: 300px) {
-								min-height: 40px;
-								padding: 5px 10px;
-							}
+							// @media screen and (max-height: 400px) {
+							// 	min-height: 40px;
+							// 	padding: 5px 10px;
+							// }
 
 							span {
 								font-family: "Alphakind", Arial, sans-serif;
-								font-size: clamp(16px, 2.4vw, 26px);
+								font-size: 4vh;
 								font-weight: bold;
 								color: #333;
 								pointer-events: none;
 
-								@media screen and (max-height: 300px) {
-									font-size: clamp(10px, 1.8vw, 18px);
-								}
+								// @media screen and (max-height: 400px) {
+								// 	font-size: clamp(10px, 1.8vw, 18px);
+								// }
 							}
 
 							&:hover:not(.correct):not(.wrong) {
@@ -629,14 +630,19 @@
 						// 🟢 ADD this replacement:
 						.confetti {
 							position: fixed;
-							inset: 0;
-							pointer-events: none;
-							z-index: 4000;
-							overflow: hidden;
+							bottom: 0;
+							width: 100%;
+							height: 100%;
+							z-index: 1111111;
 							visibility: hidden;
+							opacity: 0;
+							background: url("../../../../assets/images/success.gif") no-repeat center;
+							background-size: cover;
+							transition: opacity 0.5 ease-in;
 
 							&.show {
 								visibility: visible;
+								opacity: 1;
 							}
 						}
 

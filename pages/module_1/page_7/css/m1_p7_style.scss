@@ -80,11 +80,11 @@
 						width: 100%;
 						height: 100%;
 						// ✅ pushes content below the framework's absolute header bar
-						padding-top: clamp(55px, 9vh, 100px);
+						// padding-top: clamp(55px, 9vh, 100px);
 						box-sizing: border-box;
 
 						@include mobile-landscape {
-							padding-top: clamp(45px, 8dvh, 70px);
+							// padding-top: clamp(45px, 8dvh, 70px);
 						}
 
 						&>h1 {
@@ -292,7 +292,7 @@
 						.inst {
 							flex-shrink: 0; // ✅ never squish
 							opacity: 1 !important; // ✅ immune to animation system
-							margin-top: clamp(15px, 2vh, 35px); // ✅ was clamp(4px,1vh,12px) — too tight
+							margin-top: 80px; // ✅ was clamp(4px,1vh,12px) — too tight
 							margin-bottom: clamp(6px, 1.2vh, 16px);
 							text-align: center;
 							display: flex;
@@ -301,9 +301,12 @@
 							gap: 10px;
 							padding: 0 10px;
 
-							@include mobile-landscape {
-								margin-top: clamp(5px, 1dvh, 12px);
-								margin-bottom: clamp(4px, 0.8dvh, 10px);
+							// @include mobile-landscape {
+							// 	margin-top: clamp(5px, 1dvh, 12px);
+							// 	margin-bottom: clamp(4px, 0.8dvh, 10px);
+							// }
+							@media (max-width: 950px) and (orientation: landscape) {
+								margin-top: 50px !important;
 							}
 
 							.wrapTextaudio {
@@ -360,7 +363,7 @@
 									font-size: clamp(1rem, 2.5vw, 2.5rem);
 								}
 
-								@media screen and (max-height: 300px) {
+								@media screen and (max-height: 390px) {
 									font-size: clamp(0.8rem, 1.5vw, 1.5rem); // ✅ wider on portrait mobile
 								}
 
@@ -401,7 +404,7 @@
 							width: 100%;
 							padding: clamp(4px, 1vh, 10px) 1%; // ✅ minimal padding
 							box-sizing: border-box;
-							
+
 							// max-height: 450px;
 
 							.animat-container {
@@ -444,7 +447,7 @@
 										width: 70%;
 									}
 
-									@media screen and (max-height: 300px) {
+									@media screen and (max-height: 390px) {
 										gap: clamp(1px, 0.6vw, 7px);
 										width: 40%;
 									}
@@ -495,18 +498,18 @@
 							width: 100%;
 							aspect-ratio: 3 / 4; // ✅ consistent portrait card shape
 							perspective: 1000px;
-							max-height: 40vh;
+							max-height: 35vh;
 							cursor: pointer;
 							position: relative;
 
-							@media screen and (max-height: 300px) {
+							@media screen and (max-height: 450px) {
 								width: 100%;
-								height: 20vh;
+								height: 25vh;
 							}
 
 							@include mobile-landscape {
 								// ✅ explicit height on mobile — drives everything
-								max-height: 30vh;
+								max-height: 35vh;
 								width: 100%; // ✅ width derived from height via aspect-ratio
 								aspect-ratio: 3 / 4;
 							}
@@ -609,14 +612,19 @@
 						// 🟢 ADD this replacement:
 						.confetti {
 							position: fixed;
-							inset: 0;
-							pointer-events: none;
-							z-index: 4000;
-							overflow: hidden;
+							bottom: 0;
+							width: 100%;
+							height: 100%;
+							z-index: 1111111;
 							visibility: hidden;
+							opacity: 0;
+							background: url("../../../../assets/images/success.gif") no-repeat center;
+							background-size: cover;
+							transition: opacity 0.5 ease-in;
 
 							&.show {
 								visibility: visible;
+								opacity: 1;
 							}
 						}
 

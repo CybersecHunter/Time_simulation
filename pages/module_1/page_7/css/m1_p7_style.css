@@ -85,13 +85,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding-top: clamp(55px, 9vh, 100px);
   box-sizing: border-box;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style {
-    padding-top: clamp(45px, 8dvh, 70px);
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > h1 {
   display: flex !important;
@@ -281,7 +275,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst {
   flex-shrink: 0;
   opacity: 1 !important;
-  margin-top: clamp(15px, 2vh, 35px);
+  margin-top: 80px;
   margin-bottom: clamp(6px, 1.2vh, 16px);
   text-align: center;
   display: flex;
@@ -292,8 +286,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .inst {
-    margin-top: clamp(5px, 1dvh, 12px);
-    margin-bottom: clamp(4px, 0.8dvh, 10px);
+    margin-top: 50px !important;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
@@ -340,7 +333,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     font-size: clamp(1rem, 2.5vw, 2.5rem);
   }
 }
-@media screen and (max-height: 300px) {
+@media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
     font-size: clamp(0.8rem, 1.5vw, 1.5rem);
   }
@@ -409,7 +402,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     width: 70%;
   }
 }
-@media screen and (max-height: 300px) {
+@media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container #memCardGrid {
     gap: clamp(1px, 0.6vw, 7px);
     width: 40%;
@@ -448,19 +441,19 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   width: 100%;
   aspect-ratio: 3/4;
   perspective: 1000px;
-  max-height: 40vh;
+  max-height: 35vh;
   cursor: pointer;
   position: relative;
 }
-@media screen and (max-height: 300px) {
+@media screen and (max-height: 450px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .mem-card {
     width: 100%;
-    height: 20vh;
+    height: 25vh;
   }
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .mem-card {
-    max-height: 30vh;
+    max-height: 35vh;
     width: 100%;
     aspect-ratio: 3/4;
   }
@@ -531,14 +524,19 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .confetti {
   position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 4000;
-  overflow: hidden;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1111111;
   visibility: hidden;
+  opacity: 0;
+  background: url("../../../../assets/images/success.gif") no-repeat center;
+  background-size: cover;
+  transition: opacity 0.5 ease-in;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .confetti.show {
   visibility: visible;
+  opacity: 1;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .confetti-piece {
   position: absolute;
