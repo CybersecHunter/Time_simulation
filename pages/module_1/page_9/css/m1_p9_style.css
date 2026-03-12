@@ -112,7 +112,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   width: 75%;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
-  font-size: 3rem;
+  font-size: 6vh;
   color: #000;
   justify-content: center;
   text-align: center;
@@ -121,37 +121,22 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
-    font-size: clamp(2rem, 3vw, 2.5rem);
     line-height: 40px;
   }
 }
 @media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style .inst p {
-    font-size: 1.2rem;
     line-height: 25px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
   position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 8vh;
+  height: 8vh;
   cursor: pointer;
-  top: 3px;
-  margin-left: 5px;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    max-width: 25px;
-    top: 0px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .inst .wrapTextaudio:disabled {
   pointer-events: none;
@@ -286,7 +271,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   align-items: center;
   color: #000;
   overflow: visible;
-  margin: 50px 0px;
+  margin: 0px 0px 50px 0px;
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right {
@@ -317,23 +302,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
   position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 8vh;
+  height: 8vh;
   cursor: pointer;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    max-width: 25px;
-    top: 0px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-right .wrapTextaudio:disabled {
   pointer-events: none;
@@ -347,7 +321,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-size: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
-  font-size: clamp(1rem, 3vw, 3rem);
+  font-size: 6vh;
   font-weight: normal;
   margin-bottom: 15px;
   color: #000;
@@ -357,37 +331,22 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
-    font-size: clamp(1.5rem, 2vw, 2rem);
     line-height: 40px;
   }
 }
 @media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title {
-    font-size: clamp(1.2rem, 1.5vw, 3rem);
     line-height: 25px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
   position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 8vh;
+  height: 8vh;
   cursor: pointer;
-  top: 3px;
-  margin-left: 5px;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    max-width: 25px;
-    top: 0px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-title .wrapTextaudio:disabled {
   pointer-events: none;
@@ -407,25 +366,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
   position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 8vh;
+  height: 8vh;
   cursor: pointer;
-  top: 3px;
-  margin-left: 5px;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    max-width: 25px;
-    top: 0px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-message .wrapTextaudio:disabled {
   pointer-events: none;
@@ -535,7 +481,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .numbers-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5vh;
+  gap: 2vh;
   justify-content: center;
   justify-items: center;
   overflow: visible;
@@ -699,11 +645,11 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   opacity: 1;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
-  width: 22%;
-  height: 8%;
-  margin-left: -22%;
+  width: 21%;
+  height: 7.5%;
+  margin-left: -21%;
   z-index: 8;
-  margin-bottom: -3%;
+  margin-bottom: -2.5%;
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-guide-img {
@@ -716,7 +662,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-guide-img {
   width: 27px;
-  height: 27%;
+  height: 26%;
   margin-left: -14px;
   z-index: 7;
 }
@@ -754,28 +700,24 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   cursor: grabbing;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-hand-img {
-  width: 35px;
-  height: 22%;
-  margin-left: -19px;
-  margin-bottom: 5px;
+  width: 6vh;
+  height: 12vh;
+  margin-left: -5.5%;
+  margin-bottom: 0.8vh;
   z-index: 11;
   transform: rotate(270deg);
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-hand-img {
-    width: 25px;
-    height: 19%;
-    margin-left: -15px;
-    margin-bottom: 3px;
-    z-index: 11;
-  }
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-hand-img {
-  width: 30px;
-  height: 27%;
-  margin-left: -15px;
+  width: 4vh;
+  height: 20vh;
+  margin-left: -3.5%;
   z-index: 10;
+  margin-bottom: -3%;
   transform: rotate(0deg);
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-hand-img {
@@ -783,6 +725,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
     height: 27%;
     margin-left: -12px;
     z-index: 10;
+    margin-bottom: 0%;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .clock-center {
@@ -843,7 +786,7 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hands-panel {
     position: absolute;
-    bottom: 10px;
+    bottom: 50px;
   }
 }
 @media screen and (max-height: 390px) {
@@ -892,38 +835,18 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-preview {
-  height: 110px;
+  height: 15vh;
   width: auto;
   pointer-events: none;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-preview {
-    height: 60px;
-  }
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .hour-preview {
-    height: 45px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
-  height: 150px;
+  height: 20vh;
   width: auto;
   pointer-events: none;
 }
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
-    height: 90px;
-  }
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .minute-preview {
-    height: 60px;
-  }
-}
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable-hand-hour {
-  height: 120px;
-  width: auto;
+  height: 12vh;
+  width: 6vh;
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .draggable-hand-hour {
@@ -972,14 +895,16 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 @media (max-width: 950px) and (orientation: landscape) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .target-ring {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ff4444;
   }
 }
 @media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .target-ring {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ff4444;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container {
@@ -1014,25 +939,12 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
   position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 8vh;
+  height: 8vh;
   cursor: pointer;
-  top: 3px;
-  margin-left: 5px;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-}
-@media (max-width: 950px) and (orientation: landscape) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    max-width: 25px;
-    top: 0px;
-  }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container .celebration-title .wrapTextaudio:disabled {
   pointer-events: none;

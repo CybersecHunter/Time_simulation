@@ -109,7 +109,7 @@ function addSectionData() {
       let popupDiv = "";
 
       popupDiv += '<div class="popup"><div class="popup-wrap"><div class="popBtns">';
-      popupDiv += '<button id="refresh" data-tooltip="Replay"></button>';
+      popupDiv += '<button id="refresh" data-tooltip="Restart"></button>';
       popupDiv += '<button id="homeBack" data-tooltip="Back"></button>';
       popupDiv += "</div></div></div>";
       popupDiv += '<div class="greetingsPop">';
@@ -451,14 +451,23 @@ function initClockScene4(mountEl, sec) {
 // ── IDLE AUDIO REPEAT SYSTEM ─────────────────────────────────
 var _idleTimer = null;
 var _idleAudioSrc = null;
+var _idleText = null;       // ✅ text to show on idle
+var _idleTextSelector = null; // ✅ which element to update
 
-function startIdleAudioTimer(audioSrc, delay) {
+function startIdleAudioTimer(audioSrc, delay, text, textSelector) {
   _idleAudioSrc = audioSrc;
+  _idleText = text || null;
+  _idleTextSelector = textSelector || null;
   clearIdleAudioTimer();
   _idleTimer = setTimeout(function () {
+    // ✅ update text on screen when idle fires
+    if (_idleText && _idleTextSelector) {
+      const el = document.querySelector(_idleTextSelector);
+      if (el) el.innerHTML = _idleText;
+    }
     playBtnSounds(_idleAudioSrc, function () {
       // after replay, start timer again so it keeps repeating if still idle
-      startIdleAudioTimer(_idleAudioSrc, delay);
+      startIdleAudioTimer(_idleAudioSrc, delay, _idleText, _idleTextSelector);
     });
   }, delay || 5000);
 }
@@ -470,8 +479,8 @@ function clearIdleAudioTimer() {
   }
 }
 
-function resetIdleAudioTimer(audioSrc, delay) {
-  startIdleAudioTimer(audioSrc, delay || 5000);
+function resetIdleAudioTimer(audioSrc, delay, text, textSelector) {
+  startIdleAudioTimer(audioSrc, delay || 5000, text, textSelector);
 }
 
 
@@ -497,9 +506,14 @@ var NUM_POSITIONS = {
 
 function initNumberArrangeScene(mountEl, sec) {
   clearIdleAudioTimer();
-  setTimeout(function() {
-    playBtnSounds(sec.content.replayAudios[22], function() {
-      startIdleAudioTimer(sec.content.replayAudios[22], 5000);
+  setTimeout(function () {
+    playBtnSounds(sec.content.replayAudios[22], function () {
+      const sec = _pageData.sections[sectionCnt - 1];
+      const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+      data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+      onClick="replayLastAudio(this)"></button>
+      <p>${sec.iText[7]}</p>`; // ✅ number drag instruction text
+      startIdleAudioTimer(sec.content.replayAudios[22], 5000, idleText, '.number-drag');
     });
   }, 300);
 
@@ -776,8 +790,13 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
             const mountEl = $("#section-" + sectionCnt).find(".animat-container")[0];
             const sec = _pageData.sections[sectionCnt - 1];
             initNumbersFixedScene(mountEl, sec);
-          }else{
-            resetIdleAudioTimer(sec.content.replayAudios[22], 5000);
+          } else {
+            const sec = _pageData.sections[sectionCnt - 1];
+            const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+      data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+      onClick="replayLastAudio(this)"></button>
+      <p>${sec.iText[7]}</p>`; // ✅ number drag instruction text
+            resetIdleAudioTimer(sec.content.replayAudios[22], 5000, idleText, '.number-drag');
           }
         });
 
@@ -785,8 +804,12 @@ function _initNumberDragDrop(sec, draggableNums, numPositions) {
         dragEl.style.opacity = '1';
         dragEl.style.pointerEvents = 'auto';
         dragEl.style.color = '#000';
+        const sec = _pageData.sections[sectionCnt - 1];
         playBtnSounds(sec.wrongAudio || "");
-        resetIdleAudioTimer(sec.content.replayAudios[22], 5000);
+        const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+      data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+      onClick="replayLastAudio(this)"></button><p>${sec.iText[7]}</p>`;
+        resetIdleAudioTimer(sec.content.replayAudios[22], 5000, idleText, '.number-drag');
       }
     }
 
@@ -980,9 +1003,15 @@ function initHourHandDragScene(mountEl, sec) {
 
   // ✅ PLAY FIRST AUDIO WHEN SCENE LOADS
   playBtnSounds(sec.content.replayAudios[7], function () {
+    const sec = _pageData.sections[sectionCnt - 1];
     // After first audio finishes → enable drag
     dragEnabled = true;
-    startIdleAudioTimer(sec.content.shortHandReplay, 5000); // ✅ ADD
+    const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+    data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+    onClick="replayLastAudio(this)"></button>
+    <p>${sec.content.shortHandReplayText || ""}</p>`; // ✅ same text as scene shows
+
+    startIdleAudioTimer(sec.content.shortHandReplay, 5000, idleText, '.clock-title'); // ✅ ADD
   });
 
   _initHandDropDrag('hourHandDrag', 'clockFaceHour', function () {
@@ -998,7 +1027,7 @@ function initHourHandDragScene(mountEl, sec) {
               </button><p>`
       titleEl.innerHTML = text + (sec.iText[13] || "The <span class='red'>short hand</span> shows the hour.") + `</p>`;
     }
-
+    $('.hands-panel').css("display", "none");
     playBtnSounds(sec.content.replayAudios[20], function () {
       initMinuteHandDragScene(mountEl, sec);
     });
@@ -1060,9 +1089,14 @@ function initMinuteHandDragScene(mountEl, sec) {
 
   // ✅ PLAY FIRST AUDIO WHEN SCENE LOADS
   playBtnSounds(sec.content.replayAudios[8], function () {
+    const sec = _pageData.sections[sectionCnt - 1];
     // After first audio finishes → enable drag
     dragEnabled = true;
-    startIdleAudioTimer(sec.content.longHandReplay, 5000);
+    const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+    data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+    onClick="replayLastAudio(this)"></button>
+    <p>${sec.content.longHandReplayText || ""}</p>`; // ✅ same text as scene shows
+    startIdleAudioTimer(sec.content.longHandReplay, 5000, idleText, '.clock-title');
   });
 
   _initHandDropDrag('minuteHandDrag', 'clockFaceMinute', function () {
@@ -1078,6 +1112,7 @@ function initMinuteHandDragScene(mountEl, sec) {
               </button><p>`
       titleEl.innerHTML = text + (sec.iText[15] || "The <span class='red'>long hand</span> shows the minutes.") + `</p>`;
     }
+    $('.hands-panel').css("display", "none");
     // Both hands placed → now go to HAND_TASKS (3 o'clock etc.)
     playBtnSounds(sec.content.replayAudios[21], function () {
       initHandScene(mountEl, sec, 0);
@@ -1213,7 +1248,7 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
       setTimeout(onSuccess, 500);
 
     } else {
-      resetIdleAudioTimer(_idleAudioSrc, 5000);
+      resetIdleAudioTimer(_idleAudioSrc, 5000,_idleText, _idleTextSelector);
       // ❌ Snap back — already restored above
       hand.style.cursor = 'grab';
     }
@@ -1227,10 +1262,10 @@ function _initHandDropDrag(handId, faceId, onSuccess, handClass, defaultAngle) {
 // ─── HAND DRAG SCENES (6, 7, 8, 9) ───────────────────────────
 
 var HAND_TASKS = [
-  { targetHour: 3, minuteAngle: 0, startAngle: 270, instructionIdx: 16, successIdx: 17, confettiIdx: 9, instructAudio: 9, completeAudio: 10, idleAudio: 'replay3' },
-  { targetHour: 6, minuteAngle: 0, startAngle: 90, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12, idleAudio: 'replay6' },
-  { targetHour: 9, minuteAngle: 0, startAngle: 180, instructionIdx: 20, successIdx: 21, confettiIdx: 11, instructAudio: 13, completeAudio: 14, idleAudio: 'replay9' },
-  { targetHour: 12, minuteAngle: 0, startAngle: 270, instructionIdx: 22, successIdx: 23, confettiIdx: 12, instructAudio: 15, completeAudio: 16, idleAudio: 'replay12' }
+  { targetHour: 3, minuteAngle: 0, startAngle: 270, instructionIdx: 16, successIdx: 17, confettiIdx: 9, instructAudio: 9, completeAudio: 10, idleAudio: 'replay3', idleTextIdx: 'replay3Text' },
+  { targetHour: 6, minuteAngle: 0, startAngle: 90, instructionIdx: 18, successIdx: 19, confettiIdx: 10, instructAudio: 11, completeAudio: 12, idleAudio: 'replay6', idleTextIdx: 'replay6Text' },
+  { targetHour: 9, minuteAngle: 0, startAngle: 180, instructionIdx: 20, successIdx: 21, confettiIdx: 11, instructAudio: 13, completeAudio: 14, idleAudio: 'replay9', idleTextIdx: 'replay9Text' },
+  { targetHour: 12, minuteAngle: 0, startAngle: 270, instructionIdx: 22, successIdx: 23, confettiIdx: 12, instructAudio: 15, completeAudio: 16, idleAudio: 'replay12', idleTextIdx: 'replay12Text' }
 ];
 
 var _currentTaskIdx = 0;
@@ -1299,7 +1334,12 @@ function initHandScene(mountEl, sec, taskIdx) {
   // ✅ Play instruction audio first, then enable dragging
   playBtnSounds(sec.content.replayAudios[task.instructAudio], function () {
     const idleAudioSrc = sec.content[task.idleAudio];
-    startIdleAudioTimer(idleAudioSrc, 5000);
+    const idleText = `<button class='wrapTextaudio playing' id='wrapTextaudio_1'
+    data-src="${_pageData.sections[sectionCnt - 1].replayBtnAudios}"
+    onClick="replayLastAudio(this)"></button>
+    <p>${sec.content[task.idleTextIdx] || ""}</p>`; // ✅ same as instruction text
+    console.log(sec.content[task.idleTextIdx], "checking what cominggg")
+    startIdleAudioTimer(idleAudioSrc, 5000, idleText, '#handInstruction');
     _initImgHandDrag(
       'hourHandImg',
       targetAngle,
@@ -1449,7 +1489,7 @@ function _initImgHandDrag(handId, targetAngle, startAngle, tolerance, onSuccess,
       }, 100);
 
       // Play wrong sound
-      resetIdleAudioTimer(_idleAudioSrc, 5000);
+      resetIdleAudioTimer(_idleAudioSrc, 5000, _idleText, _idleTextSelector);
       playBtnSounds(sec.content.wrongAudio || "");
     }
   }
@@ -1718,7 +1758,6 @@ function disableAll() {
   }
 }
 
-// ENABLE movement + controls
 window.enableClockControls = function () {
   $(".draggable").prop("disabled", false);
   $(".draggable").css({ "pointerEvents": "auto" });
@@ -1733,7 +1772,7 @@ window.enableClockControls = function () {
   $(".minute-hand-img").css({ "pointerEvents": "auto" });
 
   $(".target-ring").css("display", "block");
-  console.log("Snake controls enabled");
+  console.log("Clock controls enabled");
 };
 
 // DISABLE movement + controls
@@ -1751,7 +1790,7 @@ window.disableClockControls = function () {
   $(".minute-hand-img").css({ "pointerEvents": "none" });
 
   $(".target-ring").css("display", "none");
-  console.log("Snake controls disabled");
+  console.log("Clock controls disabled");
 };
 
 // ENABLE idle system

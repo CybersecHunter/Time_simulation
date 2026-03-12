@@ -405,7 +405,6 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 @media screen and (max-height: 390px) {
   #section-1 .content-holder .col-left .content .content-bg .content-style > .body .animat-container #memCardGrid {
     gap: clamp(1px, 0.6vw, 7px);
-    width: 40%;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style .star-top {

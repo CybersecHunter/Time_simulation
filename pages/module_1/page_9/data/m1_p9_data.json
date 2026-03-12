@@ -120,11 +120,17 @@
           "minute": "pages/module_1/page_9/images/minute_hand.png"
         },
         "shortHandReplay": "pages/module_1/page_9/audios/short_hand_replay.mp3",
+        "shortHandReplayText": "Drag the <span class='red'>short hand</span> on to the <span class='red'>clock</span>",
         "longHandReplay": "pages/module_1/page_9/audios/long_hand_replay.mp3",
+        "longHandReplayText": "Drag the <span class='red'>long hand</span> on to the <span class='red'>clock</span>",
         "replay3": "pages/module_1/page_9/audios/replay_3_clock.mp3",
+        "replay3Text": "Move the short hand to show<br/><span class='red'>3 o'clock</span>",
         "replay6": "pages/module_1/page_9/audios/replay_6_clock.mp3",
+        "replay6Text": "Move the short hand to show<br/><span class='red'>6 o'clock</span>",
         "replay9": "pages/module_1/page_9/audios/replay_9_clock.mp3",
-        "replay12": "pages/module_1/page_9/audios/replay_12_clock.mp3"
+        "replay9Text": "Move the short hand to show<br/><span class='red'>9 o'clock</span>",
+        "replay12": "pages/module_1/page_9/audios/replay_12_clock.mp3",
+        "replay12Text": "Move the short hand to show<br/><span class='red'>12 o'clock</span>"
       }
     }
   ],

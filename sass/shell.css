@@ -613,6 +613,7 @@ html {
   top: 0;
   -o-object-fit: cover;
      object-fit: cover;
+  background-position: top;
 }
 #f_wrapper #f_start_course #intro #intro-text {
   position: relative;

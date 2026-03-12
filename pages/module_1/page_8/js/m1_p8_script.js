@@ -136,7 +136,7 @@ function addSectionData() {
       // ---- Popup HTML ---- (UNCHANGED — identical to original)
       let popupDiv = "";
       popupDiv += `<div class="popup"><div class="popup-wrap"><div class="popBtns">`;
-      popupDiv += `<button id="refresh" data-tooltip="Replay"></button>`;
+      popupDiv += `<button id="refresh" data-tooltip="Restart"></button>`;
       popupDiv += `<button id="homeBack" data-tooltip="Back"></button>`;
       popupDiv += `</div></div></div>`;
       popupDiv += `<div class="greetingsPop"><div class="popup-wrap"></div></div>`;

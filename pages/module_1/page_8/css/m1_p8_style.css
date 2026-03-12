@@ -122,7 +122,6 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
 #section-1 .content-holder .col-left .content .content-bg .content-style #header {
   background: url("../images/header_bg.png") repeat;
   width: 100%;
-  height: clamp(60px, 10vh, 100px);
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -131,11 +130,6 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   background-position: center;
   background-size: contain !important;
   box-sizing: border-box;
-}
-@media screen and (orientation: landscape) and (min-width: 951px) and (max-height: 550px) {
-  #section-1 .content-holder .col-left .content .content-bg .content-style #header {
-    height: 70px;
-  }
 }
 @media (min-width: 951px) and (orientation: landscape) and (hover: none) {
   #section-1 .content-holder .col-left .content .content-bg .content-style #header {
@@ -146,7 +140,6 @@ $bg-position: -120px -120px, 0 0, 20px 50px, 25px 55px, 50px 125px;*/
   #section-1 .content-holder .col-left .content .content-bg .content-style #header {
     background-size: 100% 100%;
     padding: 0 20px;
-    height: 60px;
   }
 }
 #section-1 .content-holder .col-left .content .content-bg .content-style #header .navBtns {

@@ -194,7 +194,7 @@
 							align-items: center;
 							justify-content: center;
 							height: 100%;
-							gap: clamp(6px, 1.5vh, 10px); // ✅ ADD THIS — fluid gap, ~10px on desktop
+							gap: 2vh; // ✅ ADD THIS — fluid gap, ~10px on desktop
 
 							// ✅ Less side padding on mobile
 							@include mobile-landscape {
@@ -205,7 +205,7 @@
 							.btn_holder {
 								// width: calc(clamp(60px, 10vh, 120px) * 5);
 								aspect-ratio: 5/1;
-								height: clamp(60px, 10vh, 120px);
+								height: 14vh;
 								max-width: 90%; 
 								display: flex;
 								flex-direction: row;
@@ -213,20 +213,20 @@
 								justify-content: center;
 								position: relative;
 
-								@include mobile-landscape {
-									// width: calc(clamp(60px, 10vh, 120px) * 4); // ✅ fluid width
-									aspect-ratio: 5/1;
-									height: clamp(50px, 8vh, 90px); // ✅ fluid height
-									max-width: 85%;
+								// @include mobile-landscape {
+								// 	// width: calc(clamp(60px, 10vh, 120px) * 4); // ✅ fluid width
+								// 	aspect-ratio: 5/1;
+								// 	height: clamp(50px, 8vh, 90px); // ✅ fluid height
+								// 	max-width: 85%;
 
-								}
+								// }
 
-								// ✅ small phones (iPhone SE etc.)
-								@media screen and (max-width: 390px) {
-									height: clamp(40px, 6vh, 65px);
-									max-width: 78%;
-									min-width: 150px;
-								}
+								// // ✅ small phones (iPhone SE etc.)
+								// @media screen and (max-width: 390px) {
+								// 	height: clamp(40px, 6vh, 65px);
+								// 	max-width: 78%;
+								// 	min-width: 150px;
+								// }
 
 								.box {
 									width: 100%;
@@ -264,8 +264,8 @@
 									top: 0; // ✅ aligned to top of btn_holder
 									right: 0; // ✅ aligned to right of btn_holder
 									transform: translate(35%, -35%); // ✅ shift: 35% right, 35% up — works on ALL screens
-									width: clamp(24px, 3vw, 44px);
-									height: clamp(24px, 3vw, 44px);
+									width: 7vh;
+									height: 7vh;
 									background-image: url(../images/info.png);
 									background-size: contain;
 									background-position: center;
