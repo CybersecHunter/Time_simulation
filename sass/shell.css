@@ -609,11 +609,8 @@ html {
 #f_wrapper #f_start_course #intro video {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: auto;
   top: 0;
-  -o-object-fit: cover;
-     object-fit: cover;
-  background-position: top;
 }
 #f_wrapper #f_start_course #intro #intro-text {
   position: relative;
